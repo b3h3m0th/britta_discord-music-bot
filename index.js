@@ -11,6 +11,8 @@ client.on("ready", () => {
   console.log(
     "Sodele i bin jetzt parat mit minara version " + VERSION.toString()
   );
+  client.user.setActivity("Britta", { type: "STREAMING" });
+  client.user.setUsername("Britta aus Nordrhein-Westfalen");
 });
 
 //YOUTUBE
@@ -29,6 +31,7 @@ let dispatcher;
 
 client.on("message", (message) => {
   if (message.author.bot) return;
+  if (message.content.substring(0, 1) !== PREFIX) return;
   let args = message.content.substring(PREFIX.length).split(" ");
   console.log(args);
 
@@ -53,7 +56,10 @@ client.on("message", (message) => {
           ytSearch(songRequest, opts, function (err, results) {
             if (err) return console.log(err);
 
+            if (!results) return;
+
             let songRequest_data = results[0];
+            console.log(results);
             queue.push(songRequest_data);
             let songRequest_link = results[0].link;
             let songRequest_title = results[0].title;
@@ -61,7 +67,7 @@ client.on("message", (message) => {
             console.log(results[0].link);
 
             voiceChannel.join().then((connection) => {
-              const stream = ytdl(queue[0].link, {
+              const stream = ytdl(results[0].link, {
                 filter: "audioonly",
               });
               dispatcher = connection.play(stream);
@@ -127,8 +133,12 @@ client.on("message", (message) => {
       }
       break;
     case "stop":
-      dispatcher.pause();
-      message.channel.send("Sodele, da song isch jetzt auf Pause.");
+      try {
+        dispatcher.pause();
+        message.channel.send("Sodele, da song isch jetzt auf Pause.");
+      } catch (error) {
+        message.channel.send("Aue, mir isch an Fehler unterlaufa");
+      }
       break;
 
     case "resume":
@@ -158,13 +168,34 @@ client.on("message", (message) => {
 
     case "queue":
       let output = "";
-      queue.forEach((element) => {
-        output += element.title.toString() + "\n";
+      queue.forEach((element, index) => {
+        output += index + 1 + ") " + element.title.toString() + "\n";
       });
       if (!output) {
         message.channel.send("Im Moment sind kua Liader in da queue");
       } else {
-        message.channel.send("Des isch dine liste: \n" + output);
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "Obacht! d'" + client.user.username + " hot sWort",
+              icon_url: client.user.avatarURL,
+            },
+            title: "Des isch dine Song Liste: ",
+            description: output,
+            fields: [
+              {
+                name: "Brittas social media:",
+                value: "[brittas website](https://britta.com)",
+              },
+            ],
+            timestamp: new Date(),
+            footer: {
+              icon_url: client.user.avatarURL,
+              text: "© Britta",
+            },
+          },
+        });
       }
       break;
 
@@ -181,16 +212,76 @@ client.on("message", (message) => {
       message.channel.send("Na.");
       break;
 
-    case "geilesau":
-      message.channel.send("Du Schlingel");
+    case "prefix":
+      if (typeof args[1] !== undefined) {
+        switch (args[1]) {
+          case "set":
+            if (args.length >= 3) {
+              newPREFIX = args[2];
+              PREFIX = newPREFIX;
+              message.channel.send("Din neuer Prefix: " + PREFIX);
+            } else {
+              message.channel.send(
+                "I hob kuan neua Prefix in dinara message entdecka künna."
+              );
+            }
+            break;
+
+          case "show":
+            message.channel.send("Din aktueller Prefix: " + PREFIX);
+            break;
+
+          default:
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                author: {
+                  name: "Obacht! d'" + client.user.username + " hot sWort",
+                  icon_url: client.user.avatarURL,
+                },
+                title: "I hilf da do a bizle: ",
+                description:
+                  "set Prefix: " +
+                  PREFIX +
+                  "set [neua Prefix]\nshow Prefix: " +
+                  PREFIX +
+                  "show [neua Prefix]",
+                fields: [
+                  {
+                    name: "Brittas social media:",
+                    value: "[brittas website](https://britta.com)",
+                  },
+                ],
+                timestamp: new Date(),
+                footer: {
+                  icon_url: client.user.avatarURL,
+                  text: "© Britta",
+                },
+              },
+            });
+            break;
+        }
+      }
       break;
 
-    case "winsi":
-      message.channel.send(
-        "Es fehlt ein Satzzeichen in deiner Vernetzung von Wortkonstrukten! \n Knockout!"
-      );
+    case "setVolume":
+      if (args.length >= 2 && Number.isInteger(parseInt(args[1]))) {
+        dispatcher.setVolume(args[1] / 100);
+        message.channel.send(
+          "I hob dVolume jetzt uf " + args[1] + "% gestellt"
+        );
+        if (dispatcher.volume >= 1000) {
+          message.channel.send(
+            "Hosch an Vogel dMusik so lut zum macha?? Do kut no glei da nochbur umme, he"
+          );
+        }
+      } else {
+        message.channel.send("Seg ma halt wia lut i singa söll Schwerzkeks");
+      }
+      break;
+
     default:
-      message.channel.send("Dean Befehlt kennt 'dBritta neda. Sorry.");
+      message.channel.send("Des Kommando kennt dBritta neda, sorry");
       break;
   }
 });
