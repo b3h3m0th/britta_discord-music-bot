@@ -1,0 +1,21 @@
+{
+  "name": "britta_music-bot",
+  "version": "1.0.0",
+  "description": "Weltbesta Musikbot sit nocham kriag mit viel milka und piece brüders",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "index.js"
+  },
+  "author": "Simon Ostini",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "discord.js": "^12.2.0",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^4.2.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "youtube-search": "^1.1.4",
+    "ytdl-core": "^2.1.7"
+  }
+}
