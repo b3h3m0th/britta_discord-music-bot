@@ -1,2 +1,2 @@
-# britta_music-bot
+# Britta discord-music-bot
  
