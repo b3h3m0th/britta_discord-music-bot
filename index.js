@@ -12,7 +12,7 @@ client.on("ready", () => {
     "Sodele i bin jetzt parat mit minara version " + VERSION.toString()
   );
   client.user.setActivity("Britta", { type: "STREAMING" });
-  client.user.setUsername("Britta aus Nordrhein-Westfalen");
+  client.user.setUsername("Britta usam hintara Bregenzerwald");
 });
 
 //YOUTUBE
@@ -60,10 +60,13 @@ client.on("message", (message) => {
 
             let songRequest_data = results[0];
             console.log(results);
+            console.log(results[0].thumbnails.high);
             queue.push(songRequest_data);
             let songRequest_link = results[0].link;
             let songRequest_title = results[0].title;
             let songRequest_description = results[0].description;
+            let songRequest_thumbnail = results[0].thumbnails.high.url;
+            console.log(songRequest_thumbnail);
             console.log(results[0].link);
 
             voiceChannel.join().then((connection) => {
@@ -73,8 +76,8 @@ client.on("message", (message) => {
               dispatcher = connection.play(stream);
 
               dispatcher.on("end", () => {
-                voiceChannel.leave();
                 queue.shift();
+                play();
                 //queue shift
               });
             });
@@ -89,6 +92,9 @@ client.on("message", (message) => {
                 title: songRequest_title,
                 url: songRequest_link,
                 description: songRequest_description,
+                thumbnail: {
+                  url: songRequest_thumbnail,
+                },
                 fields: [
                   {
                     name: "Brittas social media:",
@@ -212,57 +218,57 @@ client.on("message", (message) => {
       message.channel.send("Na.");
       break;
 
-    case "prefix":
-      if (typeof args[1] !== undefined) {
-        switch (args[1]) {
-          case "set":
-            if (args.length >= 3) {
-              newPREFIX = args[2];
-              PREFIX = newPREFIX;
-              message.channel.send("Din neuer Prefix: " + PREFIX);
-            } else {
-              message.channel.send(
-                "I hob kuan neua Prefix in dinara message entdecka künna."
-              );
-            }
-            break;
+    // case "prefix":
+    //   if (typeof args[1] !== undefined) {
+    //     switch (args[1]) {
+    //       case "set":
+    //         if (args.length >= 3) {
+    //           newPREFIX = args[2];
+    //           PREFIX = newPREFIX;
+    //           message.channel.send("Din neuer Prefix: " + PREFIX);
+    //         } else {
+    //           message.channel.send(
+    //             "I hob kuan neua Prefix in dinara message entdecka künna."
+    //           );
+    //         }
+    //         break;
 
-          case "show":
-            message.channel.send("Din aktueller Prefix: " + PREFIX);
-            break;
+    //       case "show":
+    //         message.channel.send("Din aktueller Prefix: " + PREFIX);
+    //         break;
 
-          default:
-            message.channel.send({
-              embed: {
-                color: 3447003,
-                author: {
-                  name: "Obacht! d'" + client.user.username + " hot sWort",
-                  icon_url: client.user.avatarURL,
-                },
-                title: "I hilf da do a bizle: ",
-                description:
-                  "set Prefix: " +
-                  PREFIX +
-                  "set [neua Prefix]\nshow Prefix: " +
-                  PREFIX +
-                  "show [neua Prefix]",
-                fields: [
-                  {
-                    name: "Brittas social media:",
-                    value: "[brittas website](https://britta.com)",
-                  },
-                ],
-                timestamp: new Date(),
-                footer: {
-                  icon_url: client.user.avatarURL,
-                  text: "© Britta",
-                },
-              },
-            });
-            break;
-        }
-      }
-      break;
+    //       default:
+    //         message.channel.send({
+    //           embed: {
+    //             color: 3447003,
+    //             author: {
+    //               name: "Obacht! d'" + client.user.username + " hot sWort",
+    //               icon_url: client.user.avatarURL,
+    //             },
+    //             title: "I hilf da do a bizle: ",
+    //             description:
+    //               "set Prefix: " +
+    //               PREFIX +
+    //               "set [neua Prefix]\nshow Prefix: " +
+    //               PREFIX +
+    //               "show [neua Prefix]",
+    //             fields: [
+    //               {
+    //                 name: "Brittas social media:",
+    //                 value: "[brittas website](https://britta.com)",
+    //               },
+    //             ],
+    //             timestamp: new Date(),
+    //             footer: {
+    //               icon_url: client.user.avatarURL,
+    //               text: "© Britta",
+    //             },
+    //           },
+    //         });
+    //         break;
+    //     }
+    //   }
+    //   break;
 
     case "setVolume":
       if (args.length >= 2 && Number.isInteger(parseInt(args[1]))) {
