@@ -3,6 +3,8 @@ const ytdl = require("ytdl-core");
 
 const client = new Discord.Client();
 
+const guild = new Discord.Guild(client);
+
 //Britta data
 const { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
 var VERSION = 1.0;
@@ -11,8 +13,28 @@ client.on("ready", () => {
   console.log(
     "Sodele i bin jetzt parat mit minara version " + VERSION.toString()
   );
+  client.user.setUsername("Britta usam Bregenzerwald");
   client.user.setActivity("Britta", { type: "STREAMING" });
-  client.user.setUsername("Britta usam hintara Bregenzerwald");
+  // guild.roles
+  //   .create({
+  //     data: {
+  //       name: "Super Cool People",
+  //       color: "BLUE",
+  //     },
+  //     reason: "we needed a role for Super Cool People",
+  //   })
+  //   .then(console.log)
+  //   .catch(console.error);
+
+  //Britta role
+  // let role;
+  // role = await message.guild.createRole({
+  //   name: "Britta",
+  //   color: "#000",
+  //   permission: [
+  //     ADMINISTRATOR
+  //   ]
+  // })
 });
 
 //YOUTUBE
@@ -28,6 +50,9 @@ var opts = {
 //QUEUE
 let queue = [];
 let dispatcher;
+
+//EARRAPE
+let earrape = false;
 
 client.on("message", (message) => {
   if (message.author.bot) return;
@@ -50,7 +75,9 @@ client.on("message", (message) => {
           if (message.channel.type !== "text") return;
           const voiceChannel = message.member.voice.channel;
           if (!voiceChannel) {
-            return message.reply("Du seckel hoksch ned in anam Voicechat");
+            return message.channel.send(
+              "Du seckel hoksch ned in anam Voicechat"
+            );
           }
 
           ytSearch(songRequest, opts, function (err, results) {
@@ -161,8 +188,12 @@ client.on("message", (message) => {
       break;
 
     case "leave":
-      message.member.voice.channel.leave();
-      message.channel.send("Tschö mit Ö!");
+      if (message.member.voice.channel) {
+        message.member.voice.channel.leave();
+        message.channel.send("Tschö mit Ö!");
+      } else {
+        message.channel.send("I bin ned mol gejoined du Sack");
+      }
       break;
 
     case "clear":
@@ -206,7 +237,15 @@ client.on("message", (message) => {
       break;
 
     case "join":
-      message.member.voice.channel.join();
+      if (message.member.voice.channel) {
+        message.member.voice.channel.join().then((connection) => {
+          connection.play("assets/audios/britta_join.mp3", {
+            volume: 5,
+          });
+        });
+      } else {
+        message.channel.send("Du befindesch di ned in uanam Sprachkanal");
+      }
 
     case "britta":
       message.channel.send(
@@ -283,6 +322,18 @@ client.on("message", (message) => {
         }
       } else {
         message.channel.send("Seg ma halt wia lut i singa söll Schwerzkeks");
+      }
+      break;
+
+    case "earrape":
+      if (!earrape) {
+        dispatcher.setVolume(99999);
+        earrape = true;
+        message.channel.send("Alta jetzt gohts ab!");
+      } else {
+        dispatcher.setVolume(1);
+        earrape = false;
+        message.channel.send("Jetzt isch widda guat");
       }
       break;
 
