@@ -1,10 +1,8 @@
 # Britta discord-music-bot
 
-## installation
-- git clone https://github.com/b3h3m0th/britta_discord-music-bot.git
-- cd britta_discord-music-bot
-- install dependencies (npm install)
-- invite to your discord server
+## How to add Britta to your server
+- go to https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=0
+- invite Britta to your server
 
 
 ## commands
