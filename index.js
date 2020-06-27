@@ -3,7 +3,12 @@ const ytdl = require("ytdl-core");
 
 const client = new Discord.Client();
 
-const guild = new Discord.Guild(client);
+//Britta requirements
+let britta = require("./components/britta");
+let gibarua = require("./components/gibarua");
+let help = require("./components/help");
+let add = require("./components/add");
+let play = require("./components/play");
 
 //Britta data
 const { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
@@ -49,9 +54,13 @@ var opts = {
 
 //QUEUE
 let queue = [];
-let dispatcher;
 
-//EARRAPE
+//internals
+let dispatcher;
+let stream;
+let voiceChannel;
+
+//FILTERS
 let earrape = false;
 
 client.on("message", (message) => {
@@ -67,13 +76,13 @@ client.on("message", (message) => {
         "Habe die ehre, min nama isch britta und i lof uf da version " +
           VERSION.toString()
       );
-    case "play":
+    case "playnow":
       play = () => {
         try {
           let songRequest = args[1];
 
           if (message.channel.type !== "text") return;
-          const voiceChannel = message.member.voice.channel;
+          voiceChannel = message.member.voice.channel;
           if (!voiceChannel) {
             return message.channel.send(
               "Du seckel hoksch ned in anam Voicechat"
@@ -88,7 +97,6 @@ client.on("message", (message) => {
             let songRequest_data = results[0];
             console.log(results);
             console.log(results[0].thumbnails.high);
-            queue.push(songRequest_data);
             let songRequest_link = results[0].link;
             let songRequest_title = results[0].title;
             let songRequest_description = results[0].description;
@@ -97,14 +105,13 @@ client.on("message", (message) => {
             console.log(results[0].link);
 
             voiceChannel.join().then((connection) => {
-              const stream = ytdl(results[0].link, {
+              stream = ytdl(results[0].link, {
                 filter: "audioonly",
               });
               dispatcher = connection.play(stream);
 
               dispatcher.on("end", () => {
-                queue.shift();
-                play();
+                //play();
                 //queue shift
               });
             });
@@ -144,12 +151,29 @@ client.on("message", (message) => {
       };
 
       play();
+      break;
+
+    case "add":
+      add(client, message, args[1], queue);
+      console.log(queue);
+      break;
+
+    case "play":
+      console.log(queue);
+      if (queue.length <= 0) {
+        message.channel.send(
+          "Du musch ersch songs zur queue hinzufügen. Sus kann i nix abspiela"
+        );
+      } else {
+        message.channel.send("I spiel jetzt dine queue ab");
+        voiceChannel = message.member.voice.channel;
+
+        play(queue, voiceChannel);
+      }
 
       break;
     case "help":
-      message.channel.send(
-        "Uansch musch wissa. Vo da Britta krigsch kua Hilfe"
-      );
+      help();
       break;
 
     case "skip":
@@ -159,7 +183,6 @@ client.on("message", (message) => {
         message.channel.send(
           "Der song gfallt ma ned. i hob dean übersprunga, bürschle"
         );
-        play();
         queue.shift();
       } else {
         message.channel.send("Es lauft grad kua Liad, des ma skippen kann");
@@ -190,7 +213,7 @@ client.on("message", (message) => {
     case "leave":
       if (message.member.voice.channel) {
         message.member.voice.channel.leave();
-        message.channel.send("Tschö mit Ö!");
+        message.channel.send("Tschau Pfuite!");
       } else {
         message.channel.send("I bin ned mol gejoined du Sack");
       }
@@ -248,13 +271,11 @@ client.on("message", (message) => {
       }
 
     case "britta":
-      message.channel.send(
-        "Habedeehre i bin dBritta und i los suppa musik lofa. I segs da jetzt isch party hard"
-      );
+      britta(message);
       break;
 
     case "gibarua":
-      message.channel.send("Na.");
+      gibarua(message);
       break;
 
     // case "prefix":
