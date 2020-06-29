@@ -2,44 +2,35 @@ const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
 
 const client = new Discord.Client();
+const guild = new Discord.Guild(client, {
+  name: "michi",
+});
 
 //Britta requirements
-let britta = require("./components/britta");
-let gibarua = require("./components/gibarua");
-let help = require("./components/help");
-let add = require("./components/add");
-let play = require("./components/play");
+const britta = require("./commands/britta");
+const gibarua = require("./commands/gibarua");
+const help = require("./commands/help");
+const add = require("./commands/add");
+const play = require("./commands/play");
+const operators = require("./commands/operators");
+const setPrefix = require("./commands/changePrefix");
+const skip = require("./commands/skip");
+const clear = require("./commands/clear");
+const np = require("./commands/np");
+const showQueue = require("./commands/queue");
 
 //Britta data
-const { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
+let { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
 var VERSION = 1.0;
+const inviteLink =
+  "https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=0";
 
 client.on("ready", () => {
   console.log(
     "Sodele i bin jetzt parat mit minara version " + VERSION.toString()
   );
   client.user.setUsername("Britta usam Bregenzerwald");
-  client.user.setActivity("Britta", { type: "STREAMING" });
-  // guild.roles
-  //   .create({
-  //     data: {
-  //       name: "Super Cool People",
-  //       color: "BLUE",
-  //     },
-  //     reason: "we needed a role for Super Cool People",
-  //   })
-  //   .then(console.log)
-  //   .catch(console.error);
-
-  //Britta role
-  // let role;
-  // role = await message.guild.createRole({
-  //   name: "Britta",
-  //   color: "#000",
-  //   permission: [
-  //     ADMINISTRATOR
-  //   ]
-  // })
+  client.user.setActivity("Britta", { type: "LISTENING" });
 });
 
 //YOUTUBE
@@ -59,9 +50,14 @@ let queue = [];
 let dispatcher;
 let stream;
 let voiceChannel;
+let currentPlaynow_link;
 
 //FILTERS
-let earrape = false;
+const filters = require("./filters/filtersConfig");
+const earrape = require("./filters/earrape");
+const setVolume = require("./commands/setVolume");
+
+let earrapeOn = filters.earrape;
 
 client.on("message", (message) => {
   if (message.author.bot) return;
@@ -77,7 +73,7 @@ client.on("message", (message) => {
           VERSION.toString()
       );
     case "playnow":
-      play = () => {
+      playnow = () => {
         try {
           let songRequest = args[1];
 
@@ -90,58 +86,63 @@ client.on("message", (message) => {
           }
 
           ytSearch(songRequest, opts, function (err, results) {
-            if (err) return console.log(err);
+            try {
+              if (err) return console.log(err);
 
-            if (!results) return;
+              if (!results) return;
 
-            let songRequest_data = results[0];
-            console.log(results);
-            console.log(results[0].thumbnails.high);
-            let songRequest_link = results[0].link;
-            let songRequest_title = results[0].title;
-            let songRequest_description = results[0].description;
-            let songRequest_thumbnail = results[0].thumbnails.high.url;
-            console.log(songRequest_thumbnail);
-            console.log(results[0].link);
+              let songRequest_data = results[0];
+              console.log(results);
+              console.log(results[0].thumbnails.high);
+              let songRequest_link = results[0].link;
+              currentPlaynow_link = results[0].link;
+              let songRequest_title = results[0].title;
+              let songRequest_description = results[0].description;
+              let songRequest_thumbnail = results[0].thumbnails.high.url;
+              console.log(songRequest_thumbnail);
+              console.log(results[0].link);
 
-            voiceChannel.join().then((connection) => {
-              stream = ytdl(results[0].link, {
-                filter: "audioonly",
+              voiceChannel.join().then((connection) => {
+                stream = ytdl(results[0].link, {
+                  filter: "audioonly",
+                });
+                dispatcher = connection.play(stream);
+
+                dispatcher.on("end", () => {
+                  //play();
+                  //queue shift
+                });
               });
-              dispatcher = connection.play(stream);
 
-              dispatcher.on("end", () => {
-                //play();
-                //queue shift
-              });
-            });
-
-            message.channel.send({
-              embed: {
-                color: 3447003,
-                author: {
-                  name: "Obacht! d'" + client.user.username + " hot sWort",
-                  icon_url: client.user.avatarURL,
-                },
-                title: songRequest_title,
-                url: songRequest_link,
-                description: songRequest_description,
-                thumbnail: {
-                  url: songRequest_thumbnail,
-                },
-                fields: [
-                  {
-                    name: "Brittas social media:",
-                    value: "[brittas website](https://britta.com)",
+              message.channel.send({
+                embed: {
+                  color: 3447003,
+                  author: {
+                    name: "Obacht! d'" + client.user.username + " hot sWort",
+                    icon_url: client.user.avatarURL,
                   },
-                ],
-                timestamp: new Date(),
-                footer: {
-                  icon_url: client.user.avatarURL,
-                  text: "© Britta",
+                  title: songRequest_title,
+                  url: songRequest_link,
+                  description: songRequest_description,
+                  thumbnail: {
+                    url: songRequest_thumbnail,
+                  },
+                  fields: [
+                    {
+                      name: "Brittas social media:",
+                      value: "[brittas website](https://britta.com)",
+                    },
+                  ],
+                  timestamp: new Date(),
+                  footer: {
+                    icon_url: client.user.avatarURL,
+                    text: "© Britta",
+                  },
                 },
-              },
-            });
+              });
+            } catch (error) {
+              message.channel.send("Sorry des Liad hobi ned finda künna");
+            }
           });
         } catch (error) {
           message.channel.send(
@@ -150,7 +151,7 @@ client.on("message", (message) => {
         }
       };
 
-      play();
+      playnow();
       break;
 
     case "add":
@@ -177,37 +178,18 @@ client.on("message", (message) => {
       break;
 
     case "skip":
-      if (queue[1]) {
-        queue.shift();
-        console.log(queue[0]);
-        message.channel.send(
-          "Der song gfallt ma ned. i hob dean übersprunga, bürschle"
-        );
-        queue.shift();
-      } else {
-        message.channel.send("Es lauft grad kua Liad, des ma skippen kann");
-      }
+      skip(queue, message, voiceChannel);
       break;
     case "stop":
-      try {
-        dispatcher.pause();
-        message.channel.send("Sodele, da song isch jetzt auf Pause.");
-      } catch (error) {
-        message.channel.send("Aue, mir isch an Fehler unterlaufa");
-      }
+      operators.stop(message, currentPlaynow_link, voiceChannel);
       break;
 
     case "resume":
-      dispatcher.resume();
-      message.channel.send("Sodele, da song läuft jetzt witta.");
+      operators.resume(message, currentPlaynow_link, voiceChannel);
       break;
 
     case "np":
-      try {
-        message.channel.send("Jetzt lauft gad " + queue[0].title);
-      } catch (error) {
-        message.channel.send("Im Moment lauft kua Liad.");
-      }
+      np(message, queue);
       break;
 
     case "leave":
@@ -220,43 +202,11 @@ client.on("message", (message) => {
       break;
 
     case "clear":
-      message.channel.send(
-        "Dine Liste isch jetzt widda leer wia a leeres array"
-      );
-      queue = [];
+      clear(message, queue);
       break;
 
     case "queue":
-      let output = "";
-      queue.forEach((element, index) => {
-        output += index + 1 + ") " + element.title.toString() + "\n";
-      });
-      if (!output) {
-        message.channel.send("Im Moment sind kua Liader in da queue");
-      } else {
-        message.channel.send({
-          embed: {
-            color: 3447003,
-            author: {
-              name: "Obacht! d'" + client.user.username + " hot sWort",
-              icon_url: client.user.avatarURL,
-            },
-            title: "Des isch dine Song Liste: ",
-            description: output,
-            fields: [
-              {
-                name: "Brittas social media:",
-                value: "[brittas website](https://britta.com)",
-              },
-            ],
-            timestamp: new Date(),
-            footer: {
-              icon_url: client.user.avatarURL,
-              text: "© Britta",
-            },
-          },
-        });
-      }
+      showQueue(message, queue, client);
       break;
 
     case "join":
@@ -271,91 +221,23 @@ client.on("message", (message) => {
       }
 
     case "britta":
-      britta(message);
+      britta(message, guild);
       break;
 
     case "gibarua":
       gibarua(message);
       break;
 
-    // case "prefix":
-    //   if (typeof args[1] !== undefined) {
-    //     switch (args[1]) {
-    //       case "set":
-    //         if (args.length >= 3) {
-    //           newPREFIX = args[2];
-    //           PREFIX = newPREFIX;
-    //           message.channel.send("Din neuer Prefix: " + PREFIX);
-    //         } else {
-    //           message.channel.send(
-    //             "I hob kuan neua Prefix in dinara message entdecka künna."
-    //           );
-    //         }
-    //         break;
-
-    //       case "show":
-    //         message.channel.send("Din aktueller Prefix: " + PREFIX);
-    //         break;
-
-    //       default:
-    //         message.channel.send({
-    //           embed: {
-    //             color: 3447003,
-    //             author: {
-    //               name: "Obacht! d'" + client.user.username + " hot sWort",
-    //               icon_url: client.user.avatarURL,
-    //             },
-    //             title: "I hilf da do a bizle: ",
-    //             description:
-    //               "set Prefix: " +
-    //               PREFIX +
-    //               "set [neua Prefix]\nshow Prefix: " +
-    //               PREFIX +
-    //               "show [neua Prefix]",
-    //             fields: [
-    //               {
-    //                 name: "Brittas social media:",
-    //                 value: "[brittas website](https://britta.com)",
-    //               },
-    //             ],
-    //             timestamp: new Date(),
-    //             footer: {
-    //               icon_url: client.user.avatarURL,
-    //               text: "© Britta",
-    //             },
-    //           },
-    //         });
-    //         break;
-    //     }
-    //   }
-    //   break;
+    case "prefix":
+      PREFIX = setPrefix(message, args, PREFIX);
+      break;
 
     case "setVolume":
-      if (args.length >= 2 && Number.isInteger(parseInt(args[1]))) {
-        dispatcher.setVolume(args[1] / 100);
-        message.channel.send(
-          "I hob dVolume jetzt uf " + args[1] + "% gestellt"
-        );
-        if (dispatcher.volume >= 1000) {
-          message.channel.send(
-            "Hosch an Vogel dMusik so lut zum macha?? Do kut no glei da nochbur umme, he"
-          );
-        }
-      } else {
-        message.channel.send("Seg ma halt wia lut i singa söll Schwerzkeks");
-      }
+      setVolume(message, args, dispatcher);
       break;
 
     case "earrape":
-      if (!earrape) {
-        dispatcher.setVolume(99999);
-        earrape = true;
-        message.channel.send("Alta jetzt gohts ab!");
-      } else {
-        dispatcher.setVolume(1);
-        earrape = false;
-        message.channel.send("Jetzt isch widda guat");
-      }
+      earrapeOn = earrape(message, earrapeOn, dispatcher);
       break;
 
     default:
