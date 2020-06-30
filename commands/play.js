@@ -13,7 +13,7 @@ let play = (queue, voiceChannel) => {
     dispatcher.on("end", () => {
       queue.shift();
       if (queue.length > 0) {
-        play(queue);
+        play(queue, voiceChannel);
       } else return;
     });
   });

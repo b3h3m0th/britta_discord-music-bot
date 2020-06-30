@@ -19,6 +19,14 @@ const clear = require("./commands/clear");
 const np = require("./commands/np");
 const showQueue = require("./commands/queue");
 const playnow = require("./commands/playnow");
+const ping = require("./commands/ping");
+const join = require("./commands/join");
+
+//dev
+const joinVirtualUser = require("./dev/joinVirtualUser");
+
+//components
+const newMemberJoin = require("./components/newMemberJoin");
 
 //Britta data
 let { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
@@ -97,7 +105,7 @@ client.on("message", (message) => {
 
       break;
     case "help":
-      help();
+      help(message);
       break;
 
     case "skip":
@@ -133,18 +141,11 @@ client.on("message", (message) => {
       break;
 
     case "join":
-      if (message.member.voice.channel) {
-        message.member.voice.channel.join().then((connection) => {
-          connection.play("assets/audios/britta_join.mp3", {
-            volume: 5,
-          });
-        });
-      } else {
-        message.channel.send("Du befindesch di ned in uanam Sprachkanal");
-      }
+      join(message);
+      break;
 
     case "britta":
-      britta(message, guild);
+      britta(message, guild, message.channel, message.member);
       break;
 
     case "gibarua":
@@ -161,6 +162,10 @@ client.on("message", (message) => {
 
     case "earrape":
       earrapeOn = earrape(message, earrapeOn, dispatcher);
+      break;
+
+    case "ping":
+      ping(client, message);
       break;
 
     default:
