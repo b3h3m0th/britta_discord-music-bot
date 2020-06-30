@@ -10,53 +10,73 @@ var opts = {
   type: "video",
 };
 
-let add = (client, message, songRequest, queue) => {
-  ytSearch(songRequest, opts, function (err, results) {
-    if (err) return console.log(err);
+let add = (client, message, args, queue) => {
+  let songRequest;
 
-    if (!results) {
-      message.channel.send("Sorry aba i hob dean Song ned finda künna");
-      return;
-    }
+  if (args.length < 2) {
+    message.channel.send("Couldn't find a song request");
+    return;
+  }
+  if (
+    args[1].includes("https://youtube.com/watch") ||
+    args[1].includes("https://www.youtube.com/watch") ||
+    args[1].includes("http://youtube.com/watch") ||
+    args[1].includes("http://www.youtube.com/watch") ||
+    args[1].includes("https://youtu.be/") ||
+    args[1].includes("https://www.youtu.be/") ||
+    args[1].includes("http://www.youtu.be/") ||
+    args[1].includes("http://youtu.be/")
+  ) {
+    songRequest = args[1];
+    message.channel.send("Song has been added to queue");
+    queue.push(songRequest);
+  } else {
+    args.shift();
+    songRequest = args.join(" ");
+    ytSearch(songRequest, opts, function (err, results) {
+      if (err) return;
 
-    let songRequest_data = results[0];
-    queue.push(songRequest_data);
-    console.log(results);
-    let songRequest_link = results[0].link;
-    let songRequest_title = results[0].title;
-    let songRequest_description = results[0].description;
-    let songRequest_thumbnail = results[0].thumbnails.high.url;
-    console.log(songRequest_thumbnail);
-    console.log(results[0].link);
+      if (!results) {
+        message.channel.send("This song could not be found");
+        return;
+      }
 
-    message.channel.send({
-      embed: {
-        color: 3447003,
-        author: {
-          name: "Obacht! d'" + client.user.username + " hot sWort",
-          icon_url: client.user.avatarURL,
-        },
-        title: songRequest_title,
-        url: songRequest_link,
-        description: songRequest_description,
-        thumbnail: {
-          url: songRequest_thumbnail,
-        },
-        fields: [
-          {
-            name: "Brittas social media:",
-            value: "[brittas website](https://britta.com)",
+      let songRequest_data = results[0];
+      queue.push(songRequest_data.link);
+      let songRequest_link = results[0].link;
+      let songRequest_title = results[0].title;
+      let songRequest_description = results[0].description;
+      let songRequest_thumbnail = results[0].thumbnails.high.url;
+      console.log(results[0].link);
+
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: "Song has been added to queue",
+            icon_url: client.user.avatarURL,
           },
-        ],
-        timestamp: new Date(),
-        footer: {
-          icon_url: client.user.avatarURL,
-          text: "© Britta",
+          title: songRequest_title,
+          url: songRequest_link,
+          description: songRequest_description,
+          thumbnail: {
+            url: songRequest_thumbnail,
+          },
+          fields: [
+            {
+              name: "Brittas social media:",
+              value: "[brittas website](https://britta.com)",
+            },
+          ],
+          timestamp: new Date(),
+          footer: {
+            icon_url: client.user.avatarURL,
+            text: "© Britta",
+          },
         },
-      },
+      });
     });
-    message.channel.send("I hob din song zur queue dazua tau");
-  });
+  }
 };
 
 module.exports = add;

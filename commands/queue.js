@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 let queue = (message, queue, client) => {
   let output = "";
   queue.forEach((element, index) => {
-    output += index + 1 + ") " + element.title.toString() + "\n";
+    output += index + 1 + ". " + element + "\n";
   });
   if (!output) {
     message.channel.send("Im Moment sind kua Liader in da queue");

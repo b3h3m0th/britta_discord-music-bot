@@ -12,7 +12,7 @@ let ping = (client, message) => {
         icon_url: client.user.avatarURL,
       },
       title: "🏓Pong",
-      description: "I schüß dir da Ball zruck",
+      description: "you pinged me",
       fields: [
         {
           name: "Ping",

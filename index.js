@@ -86,7 +86,7 @@ client.on("message", (message) => {
       break;
 
     case "add":
-      add(client, message, args[1], queue);
+      add(client, message, args, queue);
       console.log(queue);
       break;
 
@@ -105,7 +105,7 @@ client.on("message", (message) => {
 
       break;
     case "help":
-      help(message);
+      help(message, client);
       break;
 
     case "skip":
