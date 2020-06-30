@@ -105,4 +105,4 @@ dist
 .tern-port
 
 #custom
-config/config
+config/
