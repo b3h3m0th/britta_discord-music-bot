@@ -24,16 +24,11 @@ let queue = (message, queue, client) => {
         color: 3447003,
         author: {
           name: client.user.username,
-          icon_url: client.user.avatarURL,
+          icon_url:
+            "https://images-ext-1.discordapp.net/external/9_3dcPqCXGMU3WFySOvtVYjIKsZnN6zcyg7oVTn8Zlw/%3Fv%3D1/https/cdn.discordapp.com/emojis/673357192203599904.gif",
         },
         title: "🎧 Your song queue: ",
         description: output,
-        fields: [
-          {
-            name: "Brittas social media:",
-            value: "[brittas website](https://britta.com)",
-          },
-        ],
         timestamp: new Date(),
         footer: {
           icon_url: client.user.avatarURL,

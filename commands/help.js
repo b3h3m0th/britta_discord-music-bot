@@ -7,7 +7,6 @@ let help = (message, client) => {
       color: 3447003,
       author: {
         name: "Britta",
-        icon_url: client.user.avatarURL,
       },
       title: "ℹ️ Command list",
       description: "A list of all of brittas commands",

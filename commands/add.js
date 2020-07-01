@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const play = require("../commands/play");
 
 var SpotifyWebApi = require("spotify-web-api-node");
 
@@ -30,7 +31,7 @@ var opts = {
   type: "video",
 };
 
-let add = (client, message, args, queue) => {
+let add = (client, message, args, queue, voiceChannel) => {
   let songRequest;
 
   if (args.length < 2) {
@@ -83,8 +84,6 @@ let add = (client, message, args, queue) => {
             color: 3447003,
             author: {
               name: "Song has been added to queue",
-              icon_url:
-                "https://cdn.discordapp.com/emojis/496793735946960916.gif",
             },
             title: songRequest_title,
             url: songRequest_link,
@@ -92,12 +91,6 @@ let add = (client, message, args, queue) => {
             thumbnail: {
               url: songRequest_thumbnail,
             },
-            fields: [
-              {
-                name: "Brittas social media:",
-                value: "[brittas website](https://britta.com)",
-              },
-            ],
             timestamp: new Date(),
             footer: {
               icon_url: client.user.avatarURL,
@@ -124,6 +117,7 @@ let add = (client, message, args, queue) => {
     }
   } else if (args[1].includes("https://open.spotify.com/track/")) {
     songRequest = args[1];
+    message.channel.send("spotify");
     //https://open.spotify.com/track/6skRokbpxb1OFXqxzpEQVi?si=R4vnoprlT5SaXi7JduBrzA
   } else {
     args.shift();
@@ -134,7 +128,18 @@ let add = (client, message, args, queue) => {
         if (err) return;
 
         if (!results) {
-          message.channel.send("This song could not be found");
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              author: {
+                name: "❗ This song couln't be found",
+              },
+              timestamp: new Date(),
+              footer: {
+                text: "© Britta",
+              },
+            },
+          });
           return;
         }
 
@@ -153,8 +158,6 @@ let add = (client, message, args, queue) => {
             color: 3447003,
             author: {
               name: "Song has been added to queue",
-              icon_url:
-                "https://images-ext-1.discordapp.net/external/9_3dcPqCXGMU3WFySOvtVYjIKsZnN6zcyg7oVTn8Zlw/%3Fv%3D1/https/cdn.discordapp.com/emojis/673357192203599904.gif",
             },
             title: songRequest_title,
             url: songRequest_link,
@@ -162,12 +165,6 @@ let add = (client, message, args, queue) => {
             thumbnail: {
               url: songRequest_thumbnail,
             },
-            fields: [
-              {
-                name: "Brittas social media:",
-                value: "[brittas website](https://britta.com)",
-              },
-            ],
             timestamp: new Date(),
             footer: {
               icon_url: client.user.avatarURL,
@@ -192,6 +189,11 @@ let add = (client, message, args, queue) => {
         },
       });
     }
+  }
+
+  if (queue.length == 0) {
+    play(queue, voiceChannel, message);
+    console.log(queue);
   }
 };
 

@@ -28,7 +28,7 @@ let play = (queue, voiceChannel, message) => {
         dispatcher.on("end", () => {
           queue.shift();
           if (queue.length > 0) {
-            play(queue, voiceChannel);
+            play(queue, voiceChannel, message);
           } else return;
         });
       });

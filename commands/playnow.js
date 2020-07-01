@@ -88,8 +88,9 @@ let playnow = (client, voiceChannel, args, message) => {
             embed: {
               color: 3447003,
               author: {
-                name: "Obacht! d'" + client.user.username + " hot sWort",
-                icon_url: client.user.avatarURL,
+                name: client.user.username,
+                icon_url:
+                  "https://images-ext-1.discordapp.net/external/9_3dcPqCXGMU3WFySOvtVYjIKsZnN6zcyg7oVTn8Zlw/%3Fv%3D1/https/cdn.discordapp.com/emojis/673357192203599904.gif",
               },
               title: songRequest_title,
               url: songRequest_link,

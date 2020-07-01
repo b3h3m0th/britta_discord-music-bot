@@ -23,7 +23,6 @@ const join = require("./commands/join");
 const joinVirtualUser = require("./dev/joinVirtualUser");
 
 //components
-const newMemberJoin = require("./components/newMemberJoin");
 
 //Britta data
 let { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
@@ -79,11 +78,7 @@ client.on("message", (message) => {
 
     case "add":
       voiceChannel = message.member.voice.channel;
-      add(client, message, args, queue);
-      console.log(queue);
-      if (queue.length == 0) {
-        play(queue, voiceChannel, message);
-      }
+      add(client, message, args, queue, voiceChannel);
       break;
 
     case "play":
@@ -132,6 +127,7 @@ client.on("message", (message) => {
       break;
 
     case "resume":
+      currentPlaynow_link = queue[0];
       operators.resume(message, currentPlaynow_link, voiceChannel);
       break;
 
@@ -207,7 +203,19 @@ client.on("message", (message) => {
       break;
 
     default:
-      message.channel.send("Des Kommando kennt dBritta neda, sorry");
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: "❌ This command doesn't exist",
+          },
+          description: "`" + PREFIX + "help` to see a list of all commands",
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
       break;
   }
 });
