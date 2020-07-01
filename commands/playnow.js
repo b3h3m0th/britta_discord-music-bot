@@ -48,6 +48,13 @@ let playnow = (client, voiceChannel, args, message) => {
       } catch (error) {
         message.channel.send("Sorry aba der link isch am arsch");
       }
+    } else if (args[1].includes("https://open.spotify.com/track/")) {
+      voiceChannel.join().then((connection) => {
+        stream = ytdl(args[1], {
+          filter: "audioonly",
+        });
+        dispatcher = connection.play(stream);
+      });
     } else {
       args.shift();
       console.log(args);

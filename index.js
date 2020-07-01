@@ -2,9 +2,6 @@ const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
 
 const client = new Discord.Client();
-const guild = new Discord.Guild(client, {
-  name: "michi",
-});
 
 //Britta requirements
 const britta = require("./commands/britta");
@@ -38,7 +35,7 @@ client.on("ready", () => {
   console.log(
     "Sodele i bin jetzt parat mit minara version " + VERSION.toString()
   );
-  client.user.setUsername("Britta usam Bregenzerwald");
+  client.user.setUsername("Britta");
   client.user.setActivity("Britta", { type: "LISTENING" });
 });
 
@@ -76,31 +73,50 @@ client.on("message", (message) => {
 
   //COMMANDS
   switch (args[0]) {
-    case "version":
-      message.channel.send(
-        "Habe die ehre, min nama isch britta und i lof uf da version " +
-          VERSION.toString()
-      );
     case "playnow":
       playnow(client, voiceChannel, args, message);
       break;
 
     case "add":
+      voiceChannel = message.member.voice.channel;
       add(client, message, args, queue);
       console.log(queue);
+      if (queue.length == 0) {
+        play(queue, voiceChannel, message);
+      }
       break;
 
     case "play":
+      voiceChannel = message.member.voice.channel;
       console.log(queue);
       if (queue.length <= 0) {
-        message.channel.send(
-          "Du musch ersch songs zur queue hinzufügen. Sus kann i nix abspiela"
-        );
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "❗ There are no songs in queue",
+            },
+            timestamp: new Date(),
+            footer: {
+              text: "© Britta",
+            },
+          },
+        });
+        return;
       } else {
-        message.channel.send("I spiel jetzt dine queue ab");
-        voiceChannel = message.member.voice.channel;
-
-        play(queue, voiceChannel);
+        play(queue, voiceChannel, message);
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "🎵 Playing songs from your queue",
+            },
+            timestamp: new Date(),
+            footer: {
+              text: "© Britta",
+            },
+          },
+        });
       }
 
       break;
@@ -109,7 +125,7 @@ client.on("message", (message) => {
       break;
 
     case "skip":
-      skip(queue, message, voiceChannel);
+      skip(client, queue, message, voiceChannel);
       break;
     case "stop":
       operators.stop(message, currentPlaynow_link, voiceChannel);
@@ -120,15 +136,37 @@ client.on("message", (message) => {
       break;
 
     case "np":
-      np(message, queue);
+      np(message, queue, client);
       break;
 
     case "leave":
       if (message.member.voice.channel) {
         message.member.voice.channel.leave();
-        message.channel.send("Tschau Pfuite!");
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "⭕ Bye, i left your voice channel",
+            },
+            timestamp: new Date(),
+            footer: {
+              text: "© Britta",
+            },
+          },
+        });
       } else {
-        message.channel.send("I bin ned mol gejoined du Sack");
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "❗ You are not in a voice channel",
+            },
+            timestamp: new Date(),
+            footer: {
+              text: "© Britta",
+            },
+          },
+        });
       }
       break;
 
@@ -145,7 +183,7 @@ client.on("message", (message) => {
       break;
 
     case "britta":
-      britta(message, guild, message.channel, message.member);
+      britta(message, message.channel, client);
       break;
 
     case "gibarua":

@@ -3,19 +3,30 @@ const Discord = require("discord.js");
 let queue = (message, queue, client) => {
   let output = "";
   queue.forEach((element, index) => {
-    output += index + 1 + ". " + element + "\n";
+    output += index + 1 + ". " + element.title + "\n";
   });
   if (!output) {
-    message.channel.send("Im Moment sind kua Liader in da queue");
+    message.channel.send({
+      embed: {
+        color: 3447003,
+        author: {
+          name: "❗ There are no songs in queue",
+        },
+        timestamp: new Date(),
+        footer: {
+          text: "© Britta",
+        },
+      },
+    });
   } else {
     message.channel.send({
       embed: {
         color: 3447003,
         author: {
-          name: "Obacht! d'" + client.user.username + " hot sWort",
+          name: client.user.username,
           icon_url: client.user.avatarURL,
         },
-        title: "Des isch dine Song Liste: ",
+        title: "🎧 Your song queue: ",
         description: output,
         fields: [
           {

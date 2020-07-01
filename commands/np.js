@@ -1,16 +1,36 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-let np = (message, queue) => {
+let np = (message, queue, client) => {
   if (queue) {
-    message.channel.send("Right now **" + queue[0].title + "** is playing.");
+    message.channel.send({
+      embed: {
+        color: 3447003,
+        author: {
+          name: queue[0].title + "is playing right now",
+          icon_url:
+            "https://images-ext-1.discordapp.net/external/9_3dcPqCXGMU3WFySOvtVYjIKsZnN6zcyg7oVTn8Zlw/%3Fv%3D1/https/cdn.discordapp.com/emojis/673357192203599904.gif",
+        },
+        timestamp: new Date(),
+        footer: {
+          icon_url: client.user.avatarURL,
+          text: "© Britta",
+        },
+      },
+    });
   } else {
-    message.channel.send("There is no song playing right now");
-  }
-  try {
-    message.channel.send("Jetzt lauft gad " + queue[0].title);
-  } catch (error) {
-    message.channel.send("Im Moment lauft kua Liad us da queue");
+    message.channel.send({
+      embed: {
+        color: 3447003,
+        author: {
+          name: "❗ There is no song playing right now",
+        },
+        timestamp: new Date(),
+        footer: {
+          text: "© Britta",
+        },
+      },
+    });
   }
 };
 

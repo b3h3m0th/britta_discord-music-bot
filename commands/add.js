@@ -1,6 +1,26 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+var SpotifyWebApi = require("spotify-web-api-node");
+
+// credentials are optional
+var spotifyApi = new SpotifyWebApi({
+  clientId: "72e60c5e4c49409198f6037b3df7ed22",
+  clientSecret: "dac25a37ea7441708cec86772fbf35ae",
+  redirectUri: "https://google.com",
+});
+
+spotifyApi.setAccessToken("dac25a37ea7441708cec86772fbf35ae");
+
+spotifyApi.getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE").then(
+  function (data) {
+    console.log("Artist albums", data.body);
+  },
+  function (err) {
+    console.error(err);
+  }
+);
+
 var ytSearch = require("youtube-search");
 const { PREFIX, TOKEN, YOUTUBE_API } = require("../config/config.json");
 
@@ -14,7 +34,18 @@ let add = (client, message, args, queue) => {
   let songRequest;
 
   if (args.length < 2) {
-    message.channel.send("Couldn't find a song request");
+    message.channel.send({
+      embed: {
+        color: 3447003,
+        author: {
+          name: "❗ Couldn't find a song request",
+        },
+        timestamp: new Date(),
+        footer: {
+          text: "© Britta",
+        },
+      },
+    });
     return;
   }
   if (
@@ -28,46 +59,61 @@ let add = (client, message, args, queue) => {
     args[1].includes("http://youtu.be/")
   ) {
     songRequest = args[1];
-    message.channel.send("Song has been added to queue");
-    queue.push(songRequest);
-  } else {
-    args.shift();
-    songRequest = args.join(" ");
-    ytSearch(songRequest, opts, function (err, results) {
-      if (err) return;
+    try {
+      ytSearch(songRequest, opts, function (err, results) {
+        if (err) return;
 
-      if (!results) {
-        message.channel.send("This song could not be found");
-        return;
-      }
+        if (!results) {
+          message.channel.send("This song could not be found");
+          return;
+        }
 
-      let songRequest_data = results[0];
-      queue.push(songRequest_data.link);
-      let songRequest_link = results[0].link;
-      let songRequest_title = results[0].title;
-      let songRequest_description = results[0].description;
-      let songRequest_thumbnail = results[0].thumbnails.high.url;
-      console.log(results[0].link);
+        let songRequest_data = results[0];
+        queue.push(songRequest_data);
+        console.log(queue);
+        let songRequest_link = results[0].link;
+        let songRequest_title = results[0].title;
+        let songRequest_description = results[0].description;
+        let songRequest_thumbnail = results[0].thumbnails.high.url;
+        console.log(results[0].link);
+        console.log(results[0]);
 
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "Song has been added to queue",
+              icon_url:
+                "https://cdn.discordapp.com/emojis/496793735946960916.gif",
+            },
+            title: songRequest_title,
+            url: songRequest_link,
+            description: songRequest_description,
+            thumbnail: {
+              url: songRequest_thumbnail,
+            },
+            fields: [
+              {
+                name: "Brittas social media:",
+                value: "[brittas website](https://britta.com)",
+              },
+            ],
+            timestamp: new Date(),
+            footer: {
+              icon_url: client.user.avatarURL,
+              text: "© Britta",
+            },
+          },
+        });
+      });
+    } catch (error) {
       message.channel.send({
         embed: {
           color: 3447003,
           author: {
-            name: "Song has been added to queue",
+            name: "⚠️ There was an error adding your song to queue",
             icon_url: client.user.avatarURL,
           },
-          title: songRequest_title,
-          url: songRequest_link,
-          description: songRequest_description,
-          thumbnail: {
-            url: songRequest_thumbnail,
-          },
-          fields: [
-            {
-              name: "Brittas social media:",
-              value: "[brittas website](https://britta.com)",
-            },
-          ],
           timestamp: new Date(),
           footer: {
             icon_url: client.user.avatarURL,
@@ -75,7 +121,77 @@ let add = (client, message, args, queue) => {
           },
         },
       });
-    });
+    }
+  } else if (args[1].includes("https://open.spotify.com/track/")) {
+    songRequest = args[1];
+    //https://open.spotify.com/track/6skRokbpxb1OFXqxzpEQVi?si=R4vnoprlT5SaXi7JduBrzA
+  } else {
+    args.shift();
+    songRequest = args.join(" ");
+    console.log(songRequest);
+    try {
+      ytSearch(songRequest, opts, function (err, results) {
+        if (err) return;
+
+        if (!results) {
+          message.channel.send("This song could not be found");
+          return;
+        }
+
+        let songRequest_data = results[0];
+        queue.push(songRequest_data);
+        console.log(queue);
+        let songRequest_link = results[0].link;
+        let songRequest_title = results[0].title;
+        let songRequest_description = results[0].description;
+        let songRequest_thumbnail = results[0].thumbnails.high.url;
+        console.log(results[0].link);
+        console.log(results[0]);
+
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            author: {
+              name: "Song has been added to queue",
+              icon_url:
+                "https://images-ext-1.discordapp.net/external/9_3dcPqCXGMU3WFySOvtVYjIKsZnN6zcyg7oVTn8Zlw/%3Fv%3D1/https/cdn.discordapp.com/emojis/673357192203599904.gif",
+            },
+            title: songRequest_title,
+            url: songRequest_link,
+            description: songRequest_description,
+            thumbnail: {
+              url: songRequest_thumbnail,
+            },
+            fields: [
+              {
+                name: "Brittas social media:",
+                value: "[brittas website](https://britta.com)",
+              },
+            ],
+            timestamp: new Date(),
+            footer: {
+              icon_url: client.user.avatarURL,
+              text: "© Britta",
+            },
+          },
+        });
+      });
+    } catch (error) {
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: "⚠️ There was an error adding your song to queue",
+            icon_url: client.user.avatarURL,
+          },
+          timestamp: new Date(),
+          footer: {
+            icon_url: client.user.avatarURL,
+            text: "© Britta",
+          },
+        },
+      });
+    }
   }
 };
 

@@ -16,6 +16,8 @@
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.4",
     "fluent-ffmpeg": "^2.1.2",
+    "spotify-web-api-js": "^1.4.0",
+    "spotify-web-api-node": "^4.0.0",
     "youtube-search": "^1.1.4",
     "ytdl-core": "^2.1.7"
   }

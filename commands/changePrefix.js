@@ -19,7 +19,6 @@ let setPrefix = (message, args, PREFIX) => {
 
       case "show":
         message.channel.send("Din aktueller Prefix isch " + PREFIX);
-        return;
         break;
 
       default:
