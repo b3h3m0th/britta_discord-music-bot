@@ -24,7 +24,7 @@ let np = (message, queue, client) => {
       embed: {
         color: 3447003,
         author: {
-          name: "❗ There is no song playing right now",
+          name: "❗ There is no song out of the queue playing right now",
         },
         timestamp: new Date(),
         footer: {

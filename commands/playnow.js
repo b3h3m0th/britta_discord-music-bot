@@ -5,7 +5,7 @@ const ytSearch = require("youtube-search");
 
 let { PREFIX, TOKEN, YOUTUBE_API } = require("../config/config.json");
 
-let playnow = (client, voiceChannel, args, message) => {
+let playnow = (client, voiceChannel, args, message, dispatcher) => {
   var opts = {
     maxResults: 1,
     key: YOUTUBE_API,

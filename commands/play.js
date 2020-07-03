@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
 
-let play = (queue, voiceChannel, message) => {
+let play = async (queue, voiceChannel, message, dispatcher) => {
   if (!voiceChannel) {
     message.channel.send({
       embed: {

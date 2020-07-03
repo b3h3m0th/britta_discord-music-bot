@@ -10,7 +10,7 @@ let stop = (message, currentPlaynow_link, voiceChannel) => {
         filter: "audioonly",
       });
       dispatcher = connection.play(stream);
-      dispatcher.pause();
+      dispatcher.end();
     });
 
     message.channel.send("Sodele, da song isch jetzt auf Pause.");
