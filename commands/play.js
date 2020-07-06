@@ -2,13 +2,72 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
 
-let play = async (queue, voiceChannel, message, dispatcher) => {
-  if (!voiceChannel) {
+module.exports = {
+  name: "play",
+  description: "plays songs from queue",
+  async execute(message, args) {
+    const queue = message.client.queue.get(message.guild.id);
+    if (!message.member.voice.channel) {
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: "❗ You are in no voice channel",
+          },
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
+      return;
+    }
+
+    if (!queue) {
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: "❗ There are no songs in queue",
+          },
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
+      return;
+    }
+
+    if (queue.songs.length <= 0) {
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          author: {
+            name: "❗ There are no songs in queue",
+          },
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
+      return;
+    }
+
+    const dispatcher = queue.connection
+      .play(ytdl(queue.songs[0].url))
+      .on("finish", () => {
+        queue.songs.shift();
+        play(queue.songs[0]);
+      })
+      .on("error", (error) => console.error(error));
+    dispatcher.setVolumeLogarithmic(queue.volume / 5);
     message.channel.send({
       embed: {
         color: 3447003,
         author: {
-          name: "❗ You are in no voice channel",
+          name: "🎵 Playing songs from your queue",
         },
         timestamp: new Date(),
         footer: {
@@ -16,39 +75,5 @@ let play = async (queue, voiceChannel, message, dispatcher) => {
         },
       },
     });
-    return;
-  } else {
-    try {
-      voiceChannel.join().then((connection) => {
-        stream = ytdl(queue[0].link, {
-          filter: "audioonly",
-        });
-        dispatcher = connection.play(stream);
-
-        dispatcher.on("end", () => {
-          queue.shift();
-          if (queue.length > 0) {
-            play(queue, voiceChannel, message);
-          } else return;
-        });
-      });
-    } catch (error) {
-      message.channel.send({
-        embed: {
-          color: 3447003,
-          author: {
-            name: "⚠️ There was an error playing your song",
-            icon_url: client.user.avatarURL,
-          },
-          timestamp: new Date(),
-          footer: {
-            icon_url: client.user.avatarURL,
-            text: "© Britta",
-          },
-        },
-      });
-    }
-  }
+  },
 };
-
-module.exports = play;

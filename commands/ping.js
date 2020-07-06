@@ -1,52 +1,52 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
+module.exports = {
+  name: "ping",
+  description: "Shows the bot Latency and API Latency",
+  execute(message, args) {
+    let ping;
+    let APIping = (Date.now() - message.createdTimestamp) * -1 + " ms";
 
-let ping = (client, message) => {
-  let ping;
-  let APIping = Date.now() - message.createdTimestamp + " ms";
-
-  message.channel
-    .send({
-      embed: {
-        color: 3447003,
-
-        title: "🏓Pinging...",
-        timestamp: new Date(),
-        footer: {
-          icon_url: client.user.avatarURL,
-          text: "© Britta",
-        },
-      },
-    })
-    .then((m) => {
-      ping = m.createdTimestamp - message.createdTimestamp + " ms";
-      m.edit({
+    message.channel
+      .send({
         embed: {
-          color: 3447003,
-          author: {
-            name: client.user.username,
-            icon_url: client.user.avatarURL,
-          },
-          title: "🏓Pong",
-          description: message.author.username + " wants to know Brittas ping",
-          fields: [
-            {
-              name: "BOT Latency",
-              value: `${ping}`,
-            },
-            {
-              name: "API Latency",
-              value: `${APIping}`,
-            },
-          ],
+          color: message.client.messageEmbedData.color,
+
+          title: "🏓 Pinging...",
           timestamp: new Date(),
           footer: {
-            icon_url: client.user.avatarURL,
+            icon_url: message.client.user.avatarURL,
             text: "© Britta",
           },
         },
+      })
+      .then((m) => {
+        ping = m.createdTimestamp - message.createdTimestamp + " ms";
+        m.edit({
+          embed: {
+            color: message.client.messageEmbedData.color,
+            author: {
+              name: message.client.user.username,
+              icon_url: message.client.user.avatarURL,
+            },
+            title: "🏓 Pong",
+            description:
+              message.author.username + " wants to know Brittas ping",
+            fields: [
+              {
+                name: "BOT Latency",
+                value: `${ping}`,
+              },
+              {
+                name: "API Latency",
+                value: `${APIping}`,
+              },
+            ],
+            timestamp: new Date(),
+            footer: {
+              icon_url: message.client.user.avatarURL,
+              text: "© Britta",
+            },
+          },
+        });
       });
-    });
+  },
 };
-
-module.exports = ping;

@@ -1,77 +1,31 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
-
-let help = (message, client) => {
-  message.channel.send({
-    embed: {
-      color: 3447003,
-      author: {
-        name: "Britta",
+module.exports = {
+  name: "help",
+  description: "shows a list of all of brittas commands",
+  execute(message, args) {
+    var commands = message.client.commands;
+    var embed = {
+      embed: {
+        color: message.client.messageEmbedData.color,
+        author: {
+          name: message.client.user.username,
+        },
+        title: "ℹ️ Command list",
+        description: "Shows a list of all of brittas commands",
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          icon_url: message.client.user.avatarURL,
+          text: "© Britta",
+        },
       },
-      title: "ℹ️ Command list",
-      description: "A list of all of brittas commands",
-      fields: [
-        {
-          name: "`+join`",
-          value: "joins a voice channel",
-        },
-        {
-          name: "`+add`",
-          value: "adds a song to the queue",
-        },
-        {
-          name: "`+play`",
-          value: "plays the songs in the queue",
-        },
-        {
-          name: "`+playnow`",
-          value: "plays a song without adding it to the queue",
-        },
-        {
-          name: "`+clear`",
-          value: "clears the queue",
-        },
-        {
-          name: "`+leave`",
-          value: "leaves the voice channel",
-        },
-        {
-          name: "`+np`",
-          value: "shows the currently playing song",
-        },
-        {
-          name: "`+skip`",
-          value: "skips a song in the queue",
-        },
-        {
-          name: "`+clear`",
-          value: "lists all songs in the queue",
-        },
-        {
-          name: "`+ping`",
-          value: "pings the bot",
-        },
-        {
-          name: "`+setVolume`",
-          value: "changes the volume of the bot (1-100)",
-        },
-        {
-          name: "`+earrape`",
-          value: "puts an earrape filter over the song",
-        },
-
-        {
-          name: "`+britta`",
-          value: "mystic command",
-        },
-      ],
-      timestamp: new Date(),
-      footer: {
-        icon_url: client.user.avatarURL,
-        text: "© Britta",
-      },
-    },
-  });
+    };
+    commands.forEach((value, key, map) => {
+      embed.embed.fields.push({
+        name: "`" + value.name + "`",
+        value: value.description,
+      });
+    });
+    console.log(embed);
+    message.channel.send(embed);
+  },
 };
-
-module.exports = help;
