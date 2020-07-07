@@ -55,6 +55,7 @@ let getSpotifyTrackID = (uri) => {
         color: 3447003,
         author: {
           name: "❗ Please enter a valid Spotify URL of URI",
+          icon_url: message.client.user.avatarURL(),
         },
         timestamp: new Date(),
         footer: {
@@ -66,6 +67,37 @@ let getSpotifyTrackID = (uri) => {
 };
 
 let getSpotifyAlbumID = (uri) => {
+  try {
+    if (uri.includes("https://")) {
+      let url_parameters = uri.split("?");
+      let actual_url = url_parameters[0];
+      console.log("actual url: " + actual_url);
+      url_parts = actual_url.split("/");
+      console.log(url_parts);
+      console.log(url_parts[url_parts.length - 1]);
+      return url_parts[url_parts.length - 1];
+    } else {
+      let uri_parts = uri.split(":");
+      console.log(uri_parts[uri_parts.length - 1]);
+      return uri_parts[uri_parts.length - 1];
+    }
+  } catch (error) {
+    message.channel.send({
+      embed: {
+        color: 3447003,
+        author: {
+          name: "❗ Please enter a valid Spotify URL of URI",
+        },
+        timestamp: new Date(),
+        footer: {
+          text: "© Britta",
+        },
+      },
+    });
+  }
+};
+
+let getSpotifyPlaylistID = (uri) => {
   try {
     if (uri.includes("https://")) {
       let url_parameters = uri.split("?");
@@ -115,19 +147,7 @@ module.exports = {
           play(queue.songs[0]);
         })
         .on("error", (error) => console.error(error));
-      dispatcher.setVolumeLogarithmic(queue.volume / 5);
-      message.channel.send({
-        embed: {
-          color: 3447003,
-          author: {
-            name: "🎵 Playing songs from your queue",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
+      dispatcher.setVolumeLogarithmic(queue.volume / 5 / 100);
     };
 
     const serverQueue = message.client.queue.get(message.guild.id);
@@ -141,6 +161,7 @@ module.exports = {
           color: 3447003,
           author: {
             name: "❗ Couldn't find a song request",
+            icon_url: message.client.user.avatarURL(),
           },
           timestamp: new Date(),
           footer: {
@@ -174,6 +195,7 @@ module.exports = {
                 color: 3447003,
                 author: {
                   name: "❗ This song couldn't be found",
+                  icon_url: message.client.user.avatarURL(),
                 },
                 timestamp: new Date(),
                 footer: {
@@ -198,6 +220,7 @@ module.exports = {
                 color: 3447003,
                 author: {
                   name: "Song has been added to queue",
+                  icon_url: message.client.user.avatarURL(),
                 },
                 title: song.title,
                 url: song.link,
@@ -219,7 +242,7 @@ module.exports = {
               voiceChannel: message.member.voice.channel,
               connection: null,
               songs: [],
-              volume: 2,
+              volume: 100,
               playing: true,
             };
 
@@ -239,6 +262,7 @@ module.exports = {
                   color: 3447003,
                   author: {
                     name: "❗ I could not join your voice channel",
+                    icon_url: message.client.user.avatarURL(),
                   },
                   timestamp: new Date(),
                   footer: {
@@ -255,11 +279,10 @@ module.exports = {
             color: 3447003,
             author: {
               name: "⚠️ There was an error adding your song to queue",
-              icon_url: message.client.user.avatarURL,
+              icon_url: message.client.user.avatarURL(),
             },
             timestamp: new Date(),
             footer: {
-              icon_url: message.client.user.avatarURL,
               text: "© Britta",
             },
           },
@@ -289,6 +312,7 @@ module.exports = {
                     color: 3447003,
                     author: {
                       name: "❗ This song couln't be found",
+                      icon_url: message.client.user.avatarURL(),
                     },
                     timestamp: new Date(),
                     footer: {
@@ -311,9 +335,10 @@ module.exports = {
                 serverQueue.songs.push(song);
                 message.channel.send({
                   embed: {
-                    color: 3447003,
+                    color: message.client.messageEmbedData.color,
                     author: {
                       name: "Song has been added to queue",
+                      icon_url: message.client.user.avatarURL(),
                     },
                     title: song.title,
                     url: song.link,
@@ -323,7 +348,6 @@ module.exports = {
                     },
                     timestamp: new Date(),
                     footer: {
-                      icon_url: message.client.user.avatarURL,
                       text: "© Britta",
                     },
                   },
@@ -335,7 +359,7 @@ module.exports = {
                   voiceChannel: message.member.voice.channel,
                   connection: null,
                   songs: [],
-                  volume: 2,
+                  volume: 100,
                   playing: true,
                 };
 
@@ -355,6 +379,7 @@ module.exports = {
                       color: 3447003,
                       author: {
                         name: "❗ I could not join your voice channel",
+                        icon_url: message.client.user.avatarURL(),
                       },
                       timestamp: new Date(),
                       footer: {
@@ -367,9 +392,10 @@ module.exports = {
 
               message.channel.send({
                 embed: {
-                  color: 3447003,
+                  color: message.client.messageEmbedData.color,
                   author: {
                     name: "Song has been added to queue",
+                    icon_url: message.client.user.avatarURL(),
                   },
                   title: song.title,
                   url: song.link,
@@ -388,10 +414,10 @@ module.exports = {
           } catch (error) {
             message.channel.send({
               embed: {
-                color: 3447003,
+                color: message.client.messageEmbedData.color,
                 author: {
                   name: "⚠️ There was an error adding your song to queue",
-                  icon_url: message.client.user.avatarURL,
+                  icon_url: message.client.user.avatarURL(),
                 },
                 timestamp: new Date(),
                 footer: {
@@ -406,9 +432,10 @@ module.exports = {
           console.log(err);
           message.channel.send({
             embed: {
-              color: 3447003,
+              color: message.client.messageEmbedData.color,
               author: {
                 name: "❗ There was an error finding your song",
+                icon_url: message.client.user.avatarURL(),
               },
               timestamp: new Date(),
               footer: {
@@ -446,9 +473,10 @@ module.exports = {
                 if (!results) {
                   message.channel.send({
                     embed: {
-                      color: 3447003,
+                      color: message.client.messageEmbedData.color,
                       author: {
                         name: "❗ A song of that album couln't be found",
+                        icon_url: message.client.user.avatarURL(),
                       },
                       timestamp: new Date(),
                       footer: {
@@ -471,9 +499,10 @@ module.exports = {
                   serverQueue.songs.push(song);
                   message.channel.send({
                     embed: {
-                      color: 3447003,
+                      color: message.client.messageEmbedData.color,
                       author: {
                         name: "Song has been added to queue",
+                        icon_url: message.client.user.avatarURL(),
                       },
                       title: song.title,
                       url: song.link,
@@ -483,7 +512,6 @@ module.exports = {
                       },
                       timestamp: new Date(),
                       footer: {
-                        icon_url: message.client.user.avatarURL,
                         text: "© Britta",
                       },
                     },
@@ -495,7 +523,7 @@ module.exports = {
                     voiceChannel: message.member.voice.channel,
                     connection: null,
                     songs: [],
-                    volume: 2,
+                    volume: 100,
                     playing: true,
                   };
 
@@ -514,9 +542,10 @@ module.exports = {
                     await message.member.voice.channel.leave();
                     return message.channel.send({
                       embed: {
-                        color: 3447003,
+                        color: message.client.messageEmbedData.color,
                         author: {
                           name: "❗ I could not join your voice channel",
+                          icon_url: message.client.user.avatarURL(),
                         },
                         timestamp: new Date(),
                         footer: {
@@ -530,15 +559,14 @@ module.exports = {
             } catch (error) {
               message.channel.send({
                 embed: {
-                  color: 3447003,
+                  color: message.client.messageEmbedData.color,
                   author: {
                     name:
                       "⚠️ There was an error adding one of the song of you album to queue",
-                    icon_url: message.client.user.avatarURL,
+                    icon_url: message.client.user.avatarURL(),
                   },
                   timestamp: new Date(),
                   footer: {
-                    icon_url: message.client.user.avatarURL,
                     text: "© Britta",
                   },
                 },
@@ -547,10 +575,10 @@ module.exports = {
           });
           message.channel.send({
             embed: {
-              color: 3447003,
+              color: message.client.messageEmbedData.color,
               author: {
                 name: "✔️ Added " + tracks_count + " songs to the queue",
-                icon_url: message.client.user.avatarURL,
+                icon_url: message.client.user.avatarURL(),
               },
               timestamp: new Date(),
               footer: {
@@ -564,9 +592,10 @@ module.exports = {
           console.error(err);
           message.channel.send({
             embed: {
-              color: 3447003,
+              color: message.client.messageEmbedData.color,
               author: {
                 name: "❗ There was an error finding your album",
+                icon_url: message.client.user.avatarURL(),
               },
               timestamp: new Date(),
               footer: {
@@ -576,6 +605,21 @@ module.exports = {
           });
         }
       );
+    } else if (
+      args[1].includes("https://open.spotify.com/playlist/") ||
+      args[1].includes("spotify:playlist:")
+    ) {
+      songRequest = args[1];
+      console.log(songRequest);
+      spotifyApi
+        .getPlaylistTracks(getSpotifyAlbumID(songRequest))
+        .then(function (data) {
+          let tracks = data.body.items;
+          let tracks_count = data.body.total;
+          console.log(tracks);
+        });
+      //https://open.spotify.com/playlist/1s3lodV2riSx7EjVxHYafc?si=GSNA_gZPRCaZnu3JjZFC5g
+      //spotify:playlist:1s3lodV2riSx7EjVxHYafc
     } else {
       args.shift();
       songRequest = args.join(" ");
@@ -590,9 +634,10 @@ module.exports = {
           if (!results) {
             message.channel.send({
               embed: {
-                color: 3447003,
+                color: message.messageEmbedData.client.color,
                 author: {
-                  name: "❗ This song couln't be found",
+                  name: "❗ This song couldn't be found",
+                  icon_url: message.client.user.avatarURL(),
                 },
                 timestamp: new Date(),
                 footer: {
@@ -615,9 +660,10 @@ module.exports = {
             serverQueue.songs.push(song);
             message.channel.send({
               embed: {
-                color: 3447003,
+                color: message.client.messageEmbedData.color,
                 author: {
                   name: "Song has been added to queue",
+                  icon_url: message.client.user.avatarURL(),
                 },
                 title: song.title,
                 url: song.link,
@@ -639,7 +685,7 @@ module.exports = {
               voiceChannel: message.member.voice.channel,
               connection: null,
               songs: [],
-              volume: 2,
+              volume: 100,
               playing: true,
             };
 
@@ -656,9 +702,10 @@ module.exports = {
               message.member.voice.channel.leave();
               return message.channel.send({
                 embed: {
-                  color: 3447003,
+                  color: message.client.messageEmbedData.color,
                   author: {
                     name: "❗ I could not join your voice channel",
+                    icon_url: message.client.user.avatarURL(),
                   },
                   timestamp: new Date(),
                   footer: {
@@ -671,9 +718,10 @@ module.exports = {
 
           message.channel.send({
             embed: {
-              color: 3447003,
+              color: message.client.messageEmbedData.color,
               author: {
                 name: "Song has been added to queue",
+                icon_url: message.client.user.avatarURL(),
               },
               title: song.title,
               url: song.link,
@@ -683,7 +731,6 @@ module.exports = {
               },
               timestamp: new Date(),
               footer: {
-                icon_url: message.client.user.avatarURL,
                 text: "© Britta",
               },
             },
@@ -692,14 +739,13 @@ module.exports = {
       } catch (error) {
         message.channel.send({
           embed: {
-            color: 3447003,
+            color: message.client.messageEmbedData.color,
             author: {
               name: "⚠️ There was an error adding your song to queue",
-              icon_url: message.client.user.avatarURL,
+              icon_url: message.client.user.avatarURL(),
             },
             timestamp: new Date(),
             footer: {
-              icon_url: message.client.user.avatarURL,
               text: "© Britta",
             },
           },

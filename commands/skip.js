@@ -6,7 +6,7 @@ module.exports = {
     if (!message.member.voice.channel) {
       return message.channel.send({
         embed: {
-          color: 3447003,
+          color: message.client.messageEmbedData.color,
           author: {
             name: "❗ You are not in a voice channel",
           },
@@ -21,7 +21,7 @@ module.exports = {
     if (!serverQueue) {
       return message.channel.send({
         embed: {
-          color: 3447003,
+          color: message.client.messageEmbedData.color,
           author: {
             name: "❗ There is nothing playing that can be skipped",
           },
@@ -36,7 +36,7 @@ module.exports = {
       message.channel
         .send({
           embed: {
-            color: 3447003,
+            color: message.client.messageEmbedData.color,
             author: {
               name: "⏭️ Skipping a song",
               icon_url: message.client.user.avatarURL,

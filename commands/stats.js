@@ -18,43 +18,38 @@ var spotifyApi = new SpotifyWebApi({
 
 spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
 
-const checkYouTubeStatus = () => {
-  var status;
+var youtubeAPIConnectionStatus = "✔️ connected";
+
+function checkYouTubeStatus() {
   var opts = {
     maxResults: 1,
     key: YOUTUBE_API,
     type: "video",
   };
   try {
-    ytSearch(
-      "https://www.youtube.com/watch?v=C_ijc7A5oAc",
-      opts,
-      async function (err, results) {
-        if (err) {
-          console.log(err);
-          status = "❌ disconnected";
-          return status;
-        }
-
-        if (!results) {
-          status = "❌ disconnected";
-          return status;
-        }
+    ytSearch("Guns n Roses Sweet child o mine", opts, function (err, results) {
+      if (err) {
+        youtubeAPIConnectionStatus = "❌ disconnected";
       }
-    );
-
-    status = "✔️ connected";
-    return status;
+      if (results == undefined) {
+        youtubeAPIConnectionStatus = "❌ disconnected";
+      }
+      if (results[0].link != "https://www.youtube.com/watch?v=1w7OgIMMRc4") {
+        youtubeAPIConnectionStatus = "❌ disconnected";
+      } else {
+        youtubeAPIConnectionStatus = "✔️ connected";
+      }
+    });
   } catch (error) {
-    console.log(error);
-    status = "❌ disconnected";
-    return status;
+    console.log("fehler: " + error);
+    youtubeAPIConnectionStatus = "❌ disconnected";
   }
-};
+  return youtubeAPIConnectionStatus;
+}
 
-const checkSpotifyStatus = () => {
-  var status;
+var spotiyAPIConnectionStatus = "✔️ connected";
 
+function checkSpotifyStatus() {
   try {
     var spotifyApi = new SpotifyWebApi({
       clientId: SPOTIFY_CLIENT_ID,
@@ -64,24 +59,19 @@ const checkSpotifyStatus = () => {
 
     spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
     spotifyApi.getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE").then(
-      function (data) {
-        console.log("Artist albums", data.body);
-      },
+      function (data) {},
       function (err) {
-        console.error(err);
-        status = "❌ disconnected";
-        return status;
+        console.log("Spotify not connected " + err);
+        spotiyAPIConnectionStatus = "❌ disconnected";
       }
     );
   } catch (error) {
-    console.log(error);
-    status = "❌ disconnected";
-    return status;
+    console.log("Spotify not connected " + error);
+    spotiyAPIConnectionStatus = "❌ disconnected";
   }
 
-  status = "✔️ connected";
-  return status;
-};
+  return spotiyAPIConnectionStatus;
+}
 
 module.exports = {
   name: "stats",
@@ -92,13 +82,13 @@ module.exports = {
     let userCount = message.client.users.cache.size;
     message.channel.send({
       embed: {
-        color: 3447003,
+        color: message.client.messageEmbedData.color,
         author: {
           name: message.client.user.username,
-          icon_url: message.client.user.avatarURL,
+          icon_url: message.client.user.avatarURL(),
         },
         title: "📈 Britta stats",
-        description: "some statistics about the Britta discord music bot",
+        description: "Statistics about the Britta discord music bot",
         fields: [
           {
             name: "Number of servers",
@@ -125,7 +115,6 @@ module.exports = {
         ],
         timestamp: new Date(),
         footer: {
-          icon_url: message.client.user.avatarURL,
           text: "© Britta",
         },
       },

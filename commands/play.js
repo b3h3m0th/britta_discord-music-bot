@@ -4,7 +4,7 @@ const ytdl = require("ytdl-core");
 
 module.exports = {
   name: "play",
-  description: "plays songs from queue",
+  description: "Plays songs from queue",
   async execute(message, args) {
     const queue = message.client.queue.get(message.guild.id);
     if (!message.member.voice.channel) {
@@ -56,7 +56,7 @@ module.exports = {
     }
 
     const dispatcher = queue.connection
-      .play(ytdl(queue.songs[0].url))
+      .play(ytdl(queue.songs[0].link))
       .on("finish", () => {
         queue.songs.shift();
         play(queue.songs[0]);

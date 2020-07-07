@@ -55,15 +55,6 @@ client.on("ready", () => {
   console.log(table.toString());
 });
 
-//YOUTUBE
-var ytSearch = require("youtube-search");
-
-var opts = {
-  maxResults: 1,
-  key: YOUTUBE_API,
-  type: "video",
-};
-
 //QUEUE
 client.queue = new Map();
 

@@ -9,7 +9,7 @@ module.exports = {
         author: {
           name: message.client.user.username,
         },
-        title: "ℹ️ Command list",
+        title: "❔ Command list",
         description: "Shows a list of all of brittas commands",
         fields: [],
         timestamp: new Date(),

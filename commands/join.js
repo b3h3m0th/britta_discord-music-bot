@@ -5,7 +5,7 @@ module.exports = {
     if (message.member.voice.channel) {
       message.member.voice.channel.join().then((connection) => {
         connection.play("./assets/audios/britta_join.mp3", {
-          volume: 5,
+          volume: 1,
         });
         message.channel.send({
           embed: {
