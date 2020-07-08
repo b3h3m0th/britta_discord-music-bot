@@ -8,17 +8,4 @@
 ## commands
 
 ### prefix: +
-
-- +play
-- +join
-- +leave
-- +stop
-- +resume
-- +setVolume
-- +help
-- +clear
-- +queue
-- +britta
-- +gibarua
- 
  
