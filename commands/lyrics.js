@@ -21,6 +21,22 @@ module.exports = {
         };
 
         lyrics.getSong(searchOptions).then((song) => {
+          if (song.lyrics.length + song.url.length >= 2000) {
+            return message.channel.send({
+              embed: {
+                color: message.client.messageEmbedData.color,
+                author: {
+                  name:
+                    "❗ The lyrics of this song are too long to send them in discord. Here is the link to Genius lyrics:",
+                },
+                description: song.url,
+                timestamp: new Date(),
+                footer: {
+                  text: "© Britta",
+                },
+              },
+            });
+          }
           message.channel
             .send({
               embed: {
@@ -95,47 +111,80 @@ module.exports = {
         const searchOptions = {
           apiKey: GENIUS_API,
           title: serverQueue.songs[0].title,
-          artist: " ",
+          artist: serverQueue.songs[0].title,
         };
 
+        console.log("queue: " + serverQueue.songs[0].title);
+
         lyrics.getSong(searchOptions).then((song) => {
-          console.log(song);
-          message.channel
-            .send({
-              embed: {
-                color: message.client.messageEmbedData.color,
-                author: {
-                  name: "Getting lyrics from Genius Lyrics...",
-                  icon_url:
-                    "https://images.genius.com/8ed669cadd956443e29c70361ec4f372.1000x1000x1.png",
-                },
-                timestamp: new Date(),
-                footer: {
-                  text: "© Britta",
-                },
-              },
-            })
-            .then((m) => {
-              m.edit({
+          try {
+            if (song.lyrics.length + song.url.length >= 2000) {
+              return message.channel.send({
                 embed: {
                   color: message.client.messageEmbedData.color,
                   author: {
-                    name: "Britta",
-                    icon_url:
-                      "https://images.genius.com/8ed669cadd956443e29c70361ec4f372.1000x1000x1.png",
+                    name:
+                      "❗ The lyrics of this song are too long to send them in discord. Here is the link to Genius lyrics:",
                   },
-                  title: "Lyrics of " + song.url,
-                  description: song.lyrics,
-                  thumbnail: {
-                    url: song.albumArt,
-                  },
+                  description: song.url,
                   timestamp: new Date(),
                   footer: {
                     text: "© Britta",
                   },
                 },
               });
+            }
+            console.log(song);
+            message.channel
+              .send({
+                embed: {
+                  color: message.client.messageEmbedData.color,
+                  author: {
+                    name: "Getting lyrics from Genius Lyrics...",
+                    icon_url:
+                      "https://images.genius.com/8ed669cadd956443e29c70361ec4f372.1000x1000x1.png",
+                  },
+                  timestamp: new Date(),
+                  footer: {
+                    text: "© Britta",
+                  },
+                },
+              })
+              .then((m) => {
+                m.edit({
+                  embed: {
+                    color: message.client.messageEmbedData.color,
+                    author: {
+                      name: "Britta",
+                      icon_url:
+                        "https://images.genius.com/8ed669cadd956443e29c70361ec4f372.1000x1000x1.png",
+                    },
+                    title: "Lyrics of " + song.url,
+                    description: song.lyrics,
+                    thumbnail: {
+                      url: song.albumArt,
+                    },
+                    timestamp: new Date(),
+                    footer: {
+                      text: "© Britta",
+                    },
+                  },
+                });
+              });
+          } catch (error) {
+            message.channel.send({
+              embed: {
+                color: message.client.messageEmbedData.color,
+                author: {
+                  name: `❗ There was an error finding the lyrics to this song. \n Try to search for them manually: ${message.client.PREFIX}lyrics <song name>`,
+                },
+                timestamp: new Date(),
+                footer: {
+                  text: "© Britta",
+                },
+              },
             });
+          }
         });
       }
     } catch (error) {

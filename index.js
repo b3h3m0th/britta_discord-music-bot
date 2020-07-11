@@ -12,16 +12,6 @@ url =
 //   console.log(res.headers);
 // });
 
-https
-  .get(url, (response) => {
-    response.on("data", (chunk) => {
-      console.log(chunk);
-    });
-  })
-  .on("error", (err) => {
-    console.error(err);
-  });
-
 // https.get(
 //   "https://accounts.spotify.com/de/authorize?client_id=72e60c5e4c49409198f6037b3df7ed22&response_type=code&redirect_uri=https:%2F%2Fbuildtheearth-atchli.com%2F&scope=user-read-private%20user-read-email&state=34fFs29kd09",
 //   (resp) => {
