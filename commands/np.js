@@ -1,8 +1,23 @@
 module.exports = {
   name: "np",
   description: "Shows the currently playing song",
+  category: "music",
   execute(message, args) {
     const serverQueue = message.client.queue.get(message.guild.id);
+    if (!serverQueue) {
+      return message.channel.send({
+        embed: {
+          color: message.client.messageEmbedData.color,
+          author: {
+            name: "❗ There is no song of the queue playing right now",
+          },
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
+    }
     if (serverQueue.songs.length >= 1) {
       message.channel.send({
         embed: {

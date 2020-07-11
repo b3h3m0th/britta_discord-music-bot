@@ -1,6 +1,7 @@
 module.exports = {
   name: "queue",
   description: "Shows the songs in queue",
+  category: "music",
   execute(message, args) {
     let output = "";
     const serverQueue = message.client.queue.get(message.guild.id);

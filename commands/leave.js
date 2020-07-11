@@ -1,6 +1,7 @@
 module.exports = {
   name: "leave",
   description: "Leaves your voice channel",
+  category: "music",
   execute(message, args) {
     if (message.member.voice.channel) {
       message.member.voice.channel.leave();

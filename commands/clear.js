@@ -1,6 +1,7 @@
 module.exports = {
   name: "clear",
   description: "Clears the song queue",
+  category: "music",
   execute(message, args) {
     message.client.queue.delete(message.guild.id);
     message.client.queue.connection = null;

@@ -1,7 +1,14 @@
+const alexa = require("alexa-bot-api");
+const { replace } = require("ffmpeg-static");
+const chatbot = new alexa("aw2plm");
+
 module.exports = {
   name: "britta",
-  description: "This is Britta",
+  description:
+    "Britta will introduce herself. If you provide arguments after the Britta-command Britta she will start having a conversation with you",
+  category: "info",
   execute(message, args) {
+    console.log(args);
     let role = message.guild.roles.cache.find((role) => role.name === "Britta");
     if (!role) {
       role = message.guild.roles.create({
@@ -13,27 +20,36 @@ module.exports = {
       message.client.guild.roles.add(role);
     }
 
-    message.channel.send({
-      embed: {
-        color: message.client.messageEmbedData.color,
-        author: {
-          name: "Britta",
-          icon_url: message.client.user.avatarURL,
-        },
-        title: "👋🏻 Hello I'm Britta",
-        description: "I am your personal music bot",
-        fields: [
-          {
-            name: "PREFIX:",
-            value: "`" + message.client.PREFIX + "`",
+    if (args.length >= 2) {
+      args.shift();
+      var userMessage = args.join(" ");
+      chatbot
+        .getReply(userMessage)
+        .then((reply) => message.channel.send(reply));
+      console.log("userMessage: " + userMessage);
+    } else {
+      message.channel.send({
+        embed: {
+          color: message.client.messageEmbedData.color,
+          author: {
+            name: "Britta",
+            icon_url: message.client.user.avatarURL(),
           },
-        ],
-        timestamp: new Date(),
-        footer: {
-          icon_url: message.client.user.avatarURL,
-          text: "© Britta",
+          title: "👋🏻 Hello I'm Britta",
+          description: "I am your personal music bot",
+          fields: [
+            {
+              name: "PREFIX:",
+              value: "`" + message.client.PREFIX + "`",
+            },
+          ],
+          timestamp: new Date(),
+          footer: {
+            icon_url: message.client.user.avatarURL,
+            text: "© Britta",
+          },
         },
-      },
-    });
+      });
+    }
   },
 };

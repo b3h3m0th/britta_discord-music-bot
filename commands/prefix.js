@@ -1,6 +1,7 @@
 module.exports = {
-  name: "setPrefix",
+  name: "prefix",
   description: "Sets a new, custom prefix for the bot",
+  category: "info",
   execute(message, args) {
     message.channel.send({
       embed: {

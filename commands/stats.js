@@ -44,7 +44,6 @@ function checkYouTubeStatus() {
     console.log("fehler: " + error);
     youtubeAPIConnectionStatus = "❌ disconnected";
   }
-  return youtubeAPIConnectionStatus;
 }
 
 var spotiyAPIConnectionStatus = "✔️ connected";
@@ -69,14 +68,16 @@ function checkSpotifyStatus() {
     console.log("Spotify not connected " + error);
     spotiyAPIConnectionStatus = "❌ disconnected";
   }
-
-  return spotiyAPIConnectionStatus;
 }
 
 module.exports = {
   name: "stats",
   description: "Shows Brittas statistics",
+  category: "info",
   execute(message, args) {
+    checkYouTubeStatus();
+    checkSpotifyStatus();
+
     let serverCount = message.client.guilds.cache.size;
     let channelCount = message.client.channels.cache.size;
     let userCount = message.client.users.cache.size;
@@ -104,18 +105,18 @@ module.exports = {
           },
           {
             name: "YouTube API",
-            value: "`" + checkYouTubeStatus() + "`",
+            value: "`" + youtubeAPIConnectionStatus + "`",
             inline: true,
           },
           {
             name: "Spotify API",
-            value: "`" + checkSpotifyStatus() + "`",
+            value: "`" + spotiyAPIConnectionStatus + "`",
             inline: true,
           },
         ],
-        timestamp: new Date(),
         footer: {
-          text: "© Britta",
+          text: `Developed by ${message.client.developerData.name}${message.client.developerData.tag} | © Britta`,
+          icon_url: message.client.developerData.icon_url,
         },
       },
     });

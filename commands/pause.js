@@ -1,6 +1,7 @@
 module.exports = {
   name: "pause",
   description: "Pauses the music player",
+  category: "music",
   execute(message, args) {
     const serverQueue = message.client.queue.get(message.guild.id);
     if (serverQueue && serverQueue.playing) {

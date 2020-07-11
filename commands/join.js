@@ -1,6 +1,7 @@
 module.exports = {
   name: "join",
   description: "Joins your voice channel",
+  category: "music",
   execute(message, args) {
     if (message.member.voice.channel) {
       message.member.voice.channel.join().then((connection) => {

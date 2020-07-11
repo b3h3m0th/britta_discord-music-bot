@@ -1,6 +1,7 @@
 module.exports = {
   name: "ping",
   description: "Shows the bot Latency and API Latency",
+  category: "info",
   execute(message, args) {
     let ping;
     let APIping = (Date.now() - message.createdTimestamp) * -1 + " ms";
@@ -13,7 +14,6 @@ module.exports = {
           title: "🏓 Pinging...",
           timestamp: new Date(),
           footer: {
-            icon_url: message.client.user.avatarURL,
             text: "© Britta",
           },
         },
@@ -25,7 +25,7 @@ module.exports = {
             color: message.client.messageEmbedData.color,
             author: {
               name: message.client.user.username,
-              icon_url: message.client.user.avatarURL,
+              icon_url: message.member.user.avatarURL(),
             },
             title: "🏓 Pong",
             description:
@@ -33,11 +33,11 @@ module.exports = {
             fields: [
               {
                 name: "BOT Latency",
-                value: `${ping}`,
+                value: "`" + ping + "`",
               },
               {
                 name: "API Latency",
-                value: `${APIping}`,
+                value: "`" + APIping + "`",
               },
             ],
             timestamp: new Date(),

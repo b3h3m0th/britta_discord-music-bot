@@ -1,6 +1,7 @@
 module.exports = {
   name: "skip",
   description: "Skips a song of the queue",
+  category: "music",
   execute(message, args) {
     const serverQueue = message.client.queue.get(message.guild.id);
     if (!message.member.voice.channel) {
@@ -32,29 +33,15 @@ module.exports = {
         },
       });
     }
-    serverQueue.connection.dispatcher.end(() => {
-      message.channel
-        .send({
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: "⏭️ Skipping a song",
-              icon_url: message.client.user.avatarURL,
-            },
-            timestamp: new Date(),
-            footer: {
-              icon_url: message.client.user.avatarURL,
-              text: "© Britta",
-            },
-          },
-        })
-        .then((m) => {
-          ping = m.createdTimestamp - message.createdTimestamp + " ms";
-          m.edit({
+
+    try {
+      serverQueue.connection.dispatcher.end(() => {
+        message.channel
+          .send({
             embed: {
-              color: 3447003,
+              color: message.client.messageEmbedData.color,
               author: {
-                name: "✔️ Skipped a song",
+                name: "⏭️ Skipping a song",
                 icon_url: message.client.user.avatarURL,
               },
               timestamp: new Date(),
@@ -63,8 +50,38 @@ module.exports = {
                 text: "© Britta",
               },
             },
+          })
+          .then((m) => {
+            ping = m.createdTimestamp - message.createdTimestamp + " ms";
+            m.edit({
+              embed: {
+                color: message.client.messageEmbedData.color,
+                author: {
+                  name: "✔️ Skipped a song",
+                  icon_url: message.client.user.avatarURL,
+                },
+                timestamp: new Date(),
+                footer: {
+                  icon_url: message.client.user.avatarURL,
+                  text: "© Britta",
+                },
+              },
+            });
           });
-        });
-    });
+      });
+    } catch (error) {
+      return message.channel.send({
+        embed: {
+          color: message.client.messageEmbedData.color,
+          author: {
+            name: "❗ An error has occured while skipping that song",
+          },
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
+    }
   },
 };
