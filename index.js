@@ -94,7 +94,6 @@ client.prefix = new Map();
 //MESSAGE
 client.on("message", async (message) => {
   if (message.author.bot) return;
-  message.channel.send("asdfasdfsdfasdfadfasdfadf");
 
   var prefix = message.client.prefix.get(message.guild.id);
   console.log(prefix);
