@@ -7,5 +7,5 @@
 
 ## commands
 
-### prefix: +
+### prefix: `bri!` or custom
  
