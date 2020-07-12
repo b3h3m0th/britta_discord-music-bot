@@ -60,7 +60,7 @@ module.exports = {
       console.log(message.guild.members.cache);
       console.log(message.guild.id);
       message.guild.members.cache.forEach((element) => {
-        if (element.id == userToJailID) {
+        if (element.user.id == userToJailID) {
           userToJailAvatar = `https://cdn.discordapp.com/avatars/${userToJailID}/${element.user.avatar}.png?size=512`;
           console.log(userToJailAvatar);
         }

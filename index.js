@@ -88,11 +88,20 @@ client.on("ready", () => {
 //QUEUE
 client.queue = new Map();
 
+//PREFIX
+client.prefix = new Map();
+
 //MESSAGE
 client.on("message", async (message) => {
   if (message.author.bot) return;
-  if (!message.content.startsWith(PREFIX)) return;
-  let args = message.content.trim().substring(PREFIX.length).split(" ");
+
+  var prefix = message.client.prefix.get(message.guild.id);
+  console.log(prefix);
+  if (!prefix) {
+    prefix = PREFIX;
+  }
+  if (!message.content.startsWith(prefix)) return;
+  let args = message.content.trim().substring(prefix.length).split(" ");
   console.log(args);
 
   let command = client.commands.get(args[0].toLowerCase());

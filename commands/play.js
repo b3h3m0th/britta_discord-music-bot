@@ -133,6 +133,21 @@ module.exports = {
   description: "plays a song and adds it to the queue",
   category: "music",
   async execute(message, args) {
+    if (!message.member.voice.channel) {
+      return message.channel.send({
+        embed: {
+          color: message.client.messageEmbedData.color,
+          author: {
+            name: "❗ You need to be in a voice channel",
+            icon_url: message.member.user.avatarURL(),
+          },
+          timestamp: new Date(),
+          footer: {
+            text: "© Britta",
+          },
+        },
+      });
+    }
     const play = async (song) => {
       const queue = message.client.queue.get(message.guild.id);
       if (!song) {
@@ -260,7 +275,7 @@ module.exports = {
               await message.member.voice.channel.leave();
               return message.channel.send({
                 embed: {
-                  color: 3447003,
+                  color: message.client.messageEmbedData.color,
                   author: {
                     name: "❗ I could not join your voice channel",
                     icon_url: message.client.user.avatarURL(),
@@ -702,7 +717,6 @@ module.exports = {
             } catch (error) {
               console.error(`I could not join the voice channel: ${error}`);
               message.client.queue.delete(message.guild.id);
-              message.member.voice.channel.leave();
               return message.channel.send({
                 embed: {
                   color: message.client.messageEmbedData.color,
@@ -716,6 +730,7 @@ module.exports = {
                   },
                 },
               });
+              message.member.voice.channel.leave();
             }
           }
 

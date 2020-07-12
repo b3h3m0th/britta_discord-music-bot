@@ -5,9 +5,6 @@ module.exports = {
   execute(message, args) {
     if (message.member.voice.channel) {
       message.member.voice.channel.join().then((connection) => {
-        connection.play("./assets/audios/britta_join.mp3", {
-          volume: 1,
-        });
         message.channel.send({
           embed: {
             color: message.client.messageEmbedData.color,
