@@ -19,7 +19,7 @@ module.exports = {
     //   },
     // });
     if (args.length >= 2) {
-      if (message.member.hasPermission("CONNECT")) {
+      if (message.member.hasPermission("MOVE_MEMBERS")) {
         var newPrefix = args[1].trim();
         message.client.prefix.set(message.guild.id, newPrefix);
         message.channel.send({
