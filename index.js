@@ -66,7 +66,7 @@ client.inviteLink =
 client.messageEmbedData = {
   color: "e97e37",
 };
-+-client.developerData = {
+client.developerData = {
   name: "Behemoth",
   tag: "#4026",
   icon_url:

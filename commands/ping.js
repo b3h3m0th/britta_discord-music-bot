@@ -4,7 +4,7 @@ module.exports = {
   category: "info",
   execute(message, args) {
     let ping;
-    let APIping = (Date.now() - message.createdTimestamp) * -1 + " ms";
+    let APIping = Date.now() - message.createdTimestamp + " ms";
 
     message.channel
       .send({
