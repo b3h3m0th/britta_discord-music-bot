@@ -62,11 +62,11 @@ var { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
 client.PREFIX = PREFIX;
 client.VERSION = 1.0;
 client.inviteLink =
-  "https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=2146955121";
+  "https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=104123392";
 client.messageEmbedData = {
   color: "e97e37",
 };
-client.developerData = {
++-client.developerData = {
   name: "Behemoth",
   tag: "#4026",
   icon_url:
