@@ -61,16 +61,25 @@ table.setAlign(2, ascii.CENTER);
 var { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
 client.PREFIX = PREFIX;
 client.VERSION = 1.0;
+client.NAME = "Britta";
+client.admins = [
+  {
+    username: "Behemoth",
+    discriminator: "4026",
+    id: "491539179642028032",
+    icon_url:
+      "https://cdn.discordapp.com/avatars/491539179642028032/ece3770ec792f9919df9e2bf4fbdabd9.png?size=128",
+  },
+  {
+    username: "PatPlayz",
+    discriminator: "3128",
+    id: "348463533287145484",
+  },
+];
 client.inviteLink =
   "https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=104123392";
 client.messageEmbedData = {
   color: "e97e37",
-};
-client.developerData = {
-  name: "Behemoth",
-  tag: "#4026",
-  icon_url:
-    "https://cdn.discordapp.com/avatars/491539179642028032/ece3770ec792f9919df9e2bf4fbdabd9.png?size=128",
 };
 
 client.resources = {
@@ -80,8 +89,8 @@ client.resources = {
 };
 
 client.on("ready", () => {
-  client.user.setUsername("Britta");
-  client.user.setActivity("Britta", { type: "LISTENING" });
+  client.user.setUsername(client.NAME);
+  client.user.setActivity(client.NAME, { type: "LISTENING" });
   console.log(table.toString());
 });
 

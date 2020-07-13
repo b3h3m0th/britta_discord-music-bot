@@ -115,8 +115,8 @@ module.exports = {
           },
         ],
         footer: {
-          text: `Developed by ${message.client.developerData.name}${message.client.developerData.tag} | © Britta`,
-          icon_url: message.client.developerData.icon_url,
+          text: `Developed by ${message.client.admins[0].username}#${message.client.admins[0].discriminator} | © Britta`,
+          icon_url: message.client.admins[0].icon_url,
         },
       },
     });
