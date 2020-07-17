@@ -20,6 +20,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "follow-redirects": "^1.12.1",
     "genius-lyrics-api": "^3.0.2",
+    "grunt-bump": "^0.8.0",
     "https": "^1.0.0",
     "jimp": "^0.14.0",
     "request": "^2.88.2",
