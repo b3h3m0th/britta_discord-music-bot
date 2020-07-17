@@ -1,6 +1,6 @@
 {
   "name": "britta_music-bot",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Britta is an easy to use discord music bot that lets you play songs or albums from YouTube and Spotify.",
   "main": "index.js",
   "scripts": {
