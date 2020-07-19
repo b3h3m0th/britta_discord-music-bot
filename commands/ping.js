@@ -41,7 +41,7 @@ module.exports = {
                 value: "`" + APIping + "`",
               },
               {
-                name: ":leaves: MongoDB",
+                name: ":leaves:  MongoDB",
                 value: "`" + MongoDBPing + "`",
               },
             ],
