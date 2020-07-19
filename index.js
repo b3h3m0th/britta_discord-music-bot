@@ -3,35 +3,8 @@ const ytdl = require("ytdl-core");
 const fs = require("fs");
 const ascii = require("ascii-table");
 const request = require("request");
-
 const { http, https } = require("follow-redirects");
-
-url =
-  "https://accounts.spotify.com/de/authorize?client_id=72e60c5e4c49409198f6037b3df7ed22&response_type=code&redirect_uri=https:%2F%2Fbuildtheearth-atchli.com%2F&scope=user-read-private%20user-read-email&state=34fFs29kd09";
-// request({ url: url, followRedirect: false }, function (err, res, body) {
-//   console.log(res.headers);
-// });
-
-// https.get(
-//   "https://accounts.spotify.com/de/authorize?client_id=72e60c5e4c49409198f6037b3df7ed22&response_type=code&redirect_uri=https:%2F%2Fbuildtheearth-atchli.com%2F&scope=user-read-private%20user-read-email&state=34fFs29kd09",
-//   (resp) => {
-//     let data = "";
-
-//     resp.on("data", (chunk) => {
-//       data += chunk;
-//     });
-
-//     resp.on("end", () => {
-//       let url = JSON.parse(data);
-//       console.log(url);
-//     });
-
-//     resp.on("error", () => {
-//       let url = JSON.parse(data).hdurl;
-//       console.log(url);
-//     });
-//   }
-// );
+const getGuildPrefix = require("./utils/mongoDB/queries/getGuildPrefix");
 
 const client = new Discord.Client();
 
@@ -97,14 +70,14 @@ client.on("ready", () => {
 //QUEUE
 client.queue = new Map();
 
-//PREFIX
-client.prefix = new Map();
+//DATABASE
+client.mongoose = require("./utils/mongoDB/mongoose");
 
 //MESSAGE
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-  var prefix = message.client.prefix.get(message.guild.id);
+  var prefix = getGuildPrefix(message);
   console.log(prefix);
   if (!prefix) {
     prefix = PREFIX;
@@ -124,7 +97,7 @@ client.on("message", async (message) => {
         author: {
           name: "❌ This command doesn't exist",
         },
-        description: "`" + PREFIX + "help` to see a list of all commands",
+        description: "`" + prefix + "help` to see a list of all commands",
         timestamp: new Date(),
         footer: {
           text: "© Britta",
@@ -134,4 +107,5 @@ client.on("message", async (message) => {
   }
 });
 
+client.mongoose.init();
 client.login(TOKEN);

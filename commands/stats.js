@@ -9,6 +9,8 @@ const {
 } = require("../config/config.json");
 var ytSearch = require("youtube-search");
 var SpotifyWebApi = require("spotify-web-api-node");
+const mongoose = require("mongoose");
+const Guild = require("../utils/mongoDB/models/guild");
 
 var spotifyApi = new SpotifyWebApi({
   clientId: SPOTIFY_CLIENT_ID,
@@ -18,9 +20,9 @@ var spotifyApi = new SpotifyWebApi({
 
 spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
 
-var youtubeAPIConnectionStatus = "✔️ connected";
-
 function checkYouTubeStatus() {
+  var youtubeAPIConnectionStatus = "✔️ connected";
+
   var opts = {
     maxResults: 1,
     key: YOUTUBE_API,
@@ -44,11 +46,12 @@ function checkYouTubeStatus() {
     console.log("fehler: " + error);
     youtubeAPIConnectionStatus = "❌ disconnected";
   }
+  return youtubeAPIConnectionStatus;
 }
 
-var spotiyAPIConnectionStatus = "✔️ connected";
-
 function checkSpotifyStatus() {
+  var spotiyAPIConnectionStatus = "❌ disconnected";
+
   try {
     var spotifyApi = new SpotifyWebApi({
       clientId: SPOTIFY_CLIENT_ID,
@@ -58,7 +61,10 @@ function checkSpotifyStatus() {
 
     spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
     spotifyApi.getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE").then(
-      function (data) {},
+      function (data) {
+        console.log(data.body);
+        spotiyAPIConnectionStatus = "✔️ connected";
+      },
       function (err) {
         console.log("Spotify not connected " + err);
         spotiyAPIConnectionStatus = "❌ disconnected";
@@ -68,6 +74,30 @@ function checkSpotifyStatus() {
     console.log("Spotify not connected " + error);
     spotiyAPIConnectionStatus = "❌ disconnected";
   }
+  return spotiyAPIConnectionStatus;
+}
+
+function checkMongoDBStatus(message) {
+  var MongoDBConnectionStatus = "❌ disconnected";
+  try {
+    Guild.findOne({ connection_query: "successful" }, async (err, data) => {
+      if (err) {
+        MongoDBConnectionStatus = "❌ disconnected";
+        return console.log("asdf" + err);
+      }
+      if (data.connection_query == "successful") {
+        console.log(data);
+        MongoDBConnectionStatus = "✔️ connected";
+      } else {
+        MongoDBConnectionStatus = "❌ disconnected";
+      }
+    });
+    MongoDBConnectionStatus = "✔️ connected";
+  } catch (error) {
+    MongoDBConnectionStatus = "❌ disconnected";
+    console.log(error);
+  }
+  return MongoDBConnectionStatus;
 }
 
 module.exports = {
@@ -105,12 +135,17 @@ module.exports = {
           },
           {
             name: "YouTube API",
-            value: "`" + youtubeAPIConnectionStatus + "`",
+            value: "`" + checkYouTubeStatus() + "`",
             inline: true,
           },
           {
             name: "Spotify API",
-            value: "`" + spotiyAPIConnectionStatus + "`",
+            value: "`" + checkSpotifyStatus() + "`",
+            inline: true,
+          },
+          {
+            name: "MongoDB",
+            value: "`" + checkMongoDBStatus() + "`",
             inline: true,
           },
         ],

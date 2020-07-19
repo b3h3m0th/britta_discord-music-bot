@@ -1,10 +1,15 @@
+const Guild = require("../utils/mongoDB/models/guild");
+const mongoose = require("mongoose");
+const getGuildPrefix = require("../utils/mongoDB/queries/getGuildPrefix");
+
 module.exports = {
   name: "prefix",
   description: "Sets a new, custom prefix for the bot",
   category: "info",
-  execute(message, args) {
-    console.log(message.member.user);
-    var currentPrefix = message.client.prefix.get(message.guild.id);
+  async execute(message, args) {
+    // var currentPrefix = message.client.prefix.get(message.guild.id);
+    var currentPrefix = getGuildPrefix(message);
+
     // message.channel.send({
     //   embed: {
     //     color: message.client.messageEmbedData.color,
@@ -26,7 +31,12 @@ module.exports = {
         ).length == 1
       ) {
         var newPrefix = args[1].trim();
-        message.client.prefix.set(message.guild.id, newPrefix);
+        // message.client.prefix.set(message.guild.id, newPrefix);
+        await Guild.updateOne(
+          { guildID: message.guild.id },
+          { prefix: newPrefix }
+        );
+
         if (
           message.client.admins.filter(
             (admin) => admin.id == message.member.user.id
@@ -81,9 +91,6 @@ module.exports = {
         });
       }
     } else {
-      if (!currentPrefix) {
-        currentPrefix = message.client.PREFIX;
-      }
       message.channel.send({
         embed: {
           color: message.client.messageEmbedData.color,
