@@ -1,12 +1,13 @@
+const Guild = require("../utils/mongoDB/models/guild");
+
 module.exports = {
   name: "ping",
   description: "Shows the bot Latency and API Latency",
   category: "info",
-  execute(message, args) {
+  async execute(message, args) {
     let ping;
     let APIping = Date.now() - message.createdTimestamp + " ms";
-    let MongoDBPing = "235" + " ms";
-
+    let MongoDBPing = await getMongoDBPing();
     message.channel
       .send({
         embed: {
@@ -54,4 +55,30 @@ module.exports = {
         });
       });
   },
+};
+
+const getMongoDBPing = async () => {
+  const start = Date.now();
+  try {
+    await Guild.findOne(
+      { connection_query: "successful" },
+      async (err, data) => {
+        if (err) {
+          return console.log(err);
+        }
+        if (data.connection_query == "successful") {
+          console.log(data);
+        } else {
+          console.log("error");
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return "disconnected";
+  }
+
+  const end = Date.now();
+  console.log((start - end).toString());
+  return (start - end).toString() + " ms";
 };
