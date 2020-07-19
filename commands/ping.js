@@ -5,6 +5,7 @@ module.exports = {
   execute(message, args) {
     let ping;
     let APIping = Date.now() - message.createdTimestamp + " ms";
+    let MongoDBPing = "235" + " ms";
 
     message.channel
       .send({
@@ -32,12 +33,16 @@ module.exports = {
               message.author.username + " wants to know Brittas ping",
             fields: [
               {
-                name: "BOT Latency",
+                name: "Bot Latency",
                 value: "`" + ping + "`",
               },
               {
                 name: "API Latency",
                 value: "`" + APIping + "`",
+              },
+              {
+                name: ":leaves: MongoDB",
+                value: "`" + MongoDBPing + "`",
               },
             ],
             timestamp: new Date(),
