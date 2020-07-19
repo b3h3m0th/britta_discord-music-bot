@@ -28,7 +28,7 @@ module.exports = {
               name: message.client.user.username,
               icon_url: message.member.user.avatarURL(),
             },
-            title: "🏓 Pong",
+            title: "🏓  Pong",
             description:
               message.author.username + " wants to know Brittas ping",
             fields: [
