@@ -79,6 +79,6 @@ const getMongoDBPing = async () => {
   }
 
   const end = Date.now();
-  console.log((start - end).toString());
-  return (start - end).toString() + " ms";
+  console.log((end - start).toString());
+  return (end - start).toString() + " ms";
 };
