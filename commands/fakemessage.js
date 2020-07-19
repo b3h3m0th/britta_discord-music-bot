@@ -76,7 +76,7 @@ module.exports = {
 
     const canvas = Canvas.createCanvas(1500, 250);
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#2c2f33";
+    ctx.fillStyle = "#36393f";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.font = "75px Whitney";
