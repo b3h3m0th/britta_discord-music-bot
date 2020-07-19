@@ -33,11 +33,11 @@ module.exports = {
               message.author.username + " wants to know Brittas ping",
             fields: [
               {
-                name: "Bot Latency",
+                name: ":robot:  Bot Latency",
                 value: "`" + ping + "`",
               },
               {
-                name: "API Latency",
+                name: ":satellite:  API Latency",
                 value: "`" + APIping + "`",
               },
               {
