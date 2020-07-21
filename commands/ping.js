@@ -42,7 +42,7 @@ module.exports = {
                 value: "`" + APIping + "`",
               },
               {
-                name: "<:mongoDB:735183229669212201:>  MongoDB",
+                name: "<:mongoDB:735183229669212201>  MongoDB",
                 value: "`" + MongoDBPing + "`",
               },
             ],
