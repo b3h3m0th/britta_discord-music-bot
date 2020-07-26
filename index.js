@@ -79,9 +79,6 @@ const { logMessage } = require("./components/log");
 //MESSAGE
 client.on("message", async (message) => {
   if (message.author.bot) return;
-  console.log(message.guild.id);
-  console.log(message.guild.name);
-  console.log(message.content);
 
   var prefix = getGuildPrefix(message);
   if (!prefix) {
@@ -89,7 +86,11 @@ client.on("message", async (message) => {
   }
   if (!message.content.startsWith(prefix)) return;
   let args = message.content.trim().substring(prefix.length).split(" ");
-  logMessage(message);
+  console.log(message.guild.id);
+  console.log(message.guild.name);
+  console.log(message.content);
+
+  // logMessage(message);
 
   let command = client.commands.get(args[0].toLowerCase());
   if (command) {
