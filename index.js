@@ -73,21 +73,25 @@ client.queue = new Map();
 //DATABASE
 client.mongoose = require("./utils/mongoDB/mongoose");
 
+//LOGGING
+const { logMessage } = require("./components/log");
+
 //MESSAGE
 client.on("message", async (message) => {
   if (message.author.bot) return;
+  console.log(message.guild.id);
+  console.log(message.guild.name);
+  console.log(message.content);
 
   var prefix = getGuildPrefix(message);
-  console.log(prefix);
   if (!prefix) {
     prefix = PREFIX;
   }
   if (!message.content.startsWith(prefix)) return;
   let args = message.content.trim().substring(prefix.length).split(" ");
-  console.log(args);
+  logMessage(message);
 
   let command = client.commands.get(args[0].toLowerCase());
-  console.log(args[0]);
   if (command) {
     command.execute(message, args, client);
   } else {
