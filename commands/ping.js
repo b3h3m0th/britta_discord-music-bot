@@ -69,16 +69,13 @@ const getMongoDBPing = async () => {
         if (data.connection_query == "successful") {
           console.log(data);
         } else {
-          console.log("error");
         }
       }
     );
   } catch (error) {
-    console.log(error);
     return "disconnected";
   }
 
   const end = Date.now();
-  console.log((end - start).toString());
   return (end - start).toString() + " ms";
 };

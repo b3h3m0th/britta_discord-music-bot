@@ -5,7 +5,6 @@ module.exports = {
   description: "Prints out a big image message in the style of porn hub",
   category: "fun",
   execute(message, args) {
-    console.log(args);
     args.shift();
 
     var maxLength = 20;

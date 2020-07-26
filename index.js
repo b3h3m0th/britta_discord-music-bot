@@ -86,11 +86,8 @@ client.on("message", async (message) => {
   }
   if (!message.content.startsWith(prefix)) return;
   let args = message.content.trim().substring(prefix.length).split(" ");
-  console.log(message.guild.id);
-  console.log(message.guild.name);
-  console.log(message.content);
 
-  // logMessage(message);
+  logMessage(message);
 
   let command = client.commands.get(args[0].toLowerCase());
   if (command) {

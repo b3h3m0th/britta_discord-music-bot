@@ -6,7 +6,7 @@ const getGuildPrefix = (message) => {
   try {
     Guild.findOne({ guildID: message.guild.id }, async (err, data) => {
       if (err) {
-        return console.log(err);
+        return console.log("MongoDB error: " + err);
       }
       if (!data) {
         let newGuild = new Guild({
@@ -22,7 +22,7 @@ const getGuildPrefix = (message) => {
       }
     });
   } catch (err) {
-    console.log(err);
+    console.log("MongoDB error:" + err);
   }
   return prefix;
 };
