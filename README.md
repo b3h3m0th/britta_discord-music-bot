@@ -5,11 +5,11 @@
 - invite Britta to your server
 
 
-## commands
+### commands
 
 ### prefix: `bri!` or custom
 
-## Vote for Britta
+### Vote for Britta
 
 Vote for Britta on top.gg: https://top.gg/bot/722497903146565722/vote
  
