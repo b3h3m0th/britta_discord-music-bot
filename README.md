@@ -8,4 +8,8 @@
 ## commands
 
 ### prefix: `bri!` or custom
+
+## Vote for Britta
+
+https://top.gg/bot/722497903146565722/vote
  
