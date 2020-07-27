@@ -11,5 +11,5 @@
 
 ## Vote for Britta
 
-https://top.gg/bot/722497903146565722/vote
+Vote for Britta on top.gg: https://top.gg/bot/722497903146565722/vote
  
