@@ -7,6 +7,22 @@
 
 ### commands
 
+#### music
+
+- join
+- play
+- skip
+- leave
+- queue
+- np
+- volume
+
+#### fun
+
+- ph
+- fakemessage
+- jail
+
 ### prefix: `bri!` or custom
 
 ### Vote for Britta
