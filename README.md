@@ -5,9 +5,9 @@
 - invite Britta to your server
 
 
-### commands
+### Commands
 
-#### music
+#### Music
 
 - join
 - play
@@ -17,13 +17,13 @@
 - np
 - volume
 
-#### fun
+#### Fun
 
 - ph
 - fakemessage
 - jail
 
-### prefix: `bri!` or custom
+### Prefix: `bri!` or custom
 
 ### Vote for Britta
 
