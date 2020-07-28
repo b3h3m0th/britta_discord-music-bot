@@ -80,12 +80,15 @@ const { logMessage } = require("./components/log");
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-  var prefix = getGuildPrefix(message);
-  if (!prefix) {
+  message.client.PREFIX = getGuildPrefix(message);
+  if (message.client.PREFIX) {
     prefix = PREFIX;
   }
-  if (!message.content.startsWith(prefix)) return;
-  let args = message.content.trim().substring(prefix.length).split(" ");
+  if (!message.content.startsWith(message.client.PREFIX)) return;
+  let args = message.content
+    .trim()
+    .substring(message.client.PREFIX.length)
+    .split(" ");
 
   logMessage(message);
 

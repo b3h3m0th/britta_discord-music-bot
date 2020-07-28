@@ -325,7 +325,7 @@ module.exports = {
               if (!results) {
                 message.channel.send({
                   embed: {
-                    color: 3447003,
+                    color: message.client.messageEmbedData.color,
                     author: {
                       name: "❗ This song couln't be found",
                       icon_url: message.client.user.avatarURL(),

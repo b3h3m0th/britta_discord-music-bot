@@ -28,6 +28,10 @@ module.exports = {
               name: "🤪  Fun",
               value: " ",
             },
+            {
+              name: "⚙️  Moderation",
+              value: " ",
+            },
           ],
           timestamp: new Date(),
           footer: {
@@ -62,6 +66,15 @@ module.exports = {
         embed.embed.fields[2].value += "`" + value.name + "`, ";
       });
       embed.embed.fields[2].value = embed.embed.fields[2].value.slice(0, -2);
+
+      //moderation commands
+      var moderationCommands = message.client.commands.filter(
+        (command) => command.category == "moderation"
+      );
+      funCommands.forEach((value, index, map) => {
+        embed.embed.fields[3].value += "`" + value.name + "`, ";
+      });
+      embed.embed.fields[3].value = embed.embed.fields[3].value.slice(0, -1);
 
       //send embed
       message.channel.send(embed);
