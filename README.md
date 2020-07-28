@@ -18,6 +18,9 @@
 - queue
 - np
 - volume
+- lyrics
+- pause
+- resume
 
 #### Fun
 
