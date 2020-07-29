@@ -71,10 +71,10 @@ module.exports = {
       var moderationCommands = message.client.commands.filter(
         (command) => command.category == "moderation"
       );
-      funCommands.forEach((value, index, map) => {
+      moderationCommands.forEach((value, index, map) => {
         embed.embed.fields[3].value += "`" + value.name + "`, ";
       });
-      embed.embed.fields[3].value = embed.embed.fields[3].value.slice(0, -1);
+      embed.embed.fields[3].value = embed.embed.fields[3].value.slice(0, -2);
 
       //send embed
       message.channel.send(embed);

@@ -82,7 +82,7 @@ client.on("message", async (message) => {
 
   message.client.PREFIX = getGuildPrefix(message);
   if (message.client.PREFIX) {
-    prefix = PREFIX;
+    message.client.PREFIX = PREFIX;
   }
   if (!message.content.startsWith(message.client.PREFIX)) return;
   let args = message.content

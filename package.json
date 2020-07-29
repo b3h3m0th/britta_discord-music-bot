@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "index.js"
+    "start": "nodemon index.js"
   },
   "author": "Simon Ostini",
   "license": "ISC",
@@ -32,5 +32,8 @@
     "superagent": "^5.3.1",
     "youtube-search": "^1.1.4",
     "ytdl-core": "^2.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

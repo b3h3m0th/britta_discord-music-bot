@@ -34,6 +34,7 @@ module.exports = {
         // message.client.prefix.set(message.guild.id, newPrefix);
         await Guild.updateOne(
           { guildID: message.guild.id },
+          { guildName: message.guild.name },
           { prefix: newPrefix }
         );
 
