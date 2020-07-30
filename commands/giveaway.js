@@ -63,7 +63,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -88,7 +88,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -109,7 +109,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -131,7 +131,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -153,7 +153,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -175,7 +175,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -197,7 +197,7 @@ module.exports = {
               name: "Create a giveaway",
               value:
                 message.client.PREFIX +
-                "giveaway <time (m/h/d)> <image> <winnersCount> <prize>",
+                "giveaway <time (m/h/d)> <[bannedRoleID1, bannedRoleID2, ...] <image> <winnersCount> <prize>",
             },
           ],
           timestamp: new Date(),
@@ -294,6 +294,8 @@ module.exports = {
         }
       }
 
+      console.log("winners: " + winners);
+
       if (bans.length >= m.reactions.cache.get("🎉").count - 1) {
         return message.channel.send({
           embed: {
@@ -312,27 +314,18 @@ module.exports = {
 
       let formattedWinners = winners.join("\n");
 
-      channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "The " + prize + " giveaway has ended!",
-          },
-          description:
-            "*(" +
-            (reactionsCount > 1
-              ? reactionsCount + " valid entries)* \n \n"
-              : reactionsCount + " valid entry)* \n \n") +
-            (winnersCount > 1
-              ? "🎉  The **winners** of the giveaway are: \n" + formattedWinners
-              : "🎉  The **winner** of the giveaway is: \n" + formattedWinners),
+      channel.send(
+        `
+:tada:**The ${prize} giveaway has ended!**
 
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
+` +
+          (reactionsCount > 1
+            ? "*(" + reactionsCount + " valid entries)* \n \n"
+            : "*(" + reactionsCount + " valid entry)* \n \n") +
+          (winnersCount > 1
+            ? "🎉  The **winners** of the giveaway are: \n" + formattedWinners
+            : "🎉  The **winner** of the giveaway is: \n" + formattedWinners)
+      );
     }, ms(args[0]));
   },
 };
