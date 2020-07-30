@@ -316,7 +316,7 @@ module.exports = {
 
       channel.send(
         `
-:tada:**The ${prize} giveaway has ended!**
+:tada:  **The ${prize} giveaway has ended!**
 
 ` +
           (reactionsCount > 1
