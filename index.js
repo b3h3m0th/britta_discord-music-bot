@@ -80,19 +80,18 @@ const { logMessage } = require("./components/log");
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-  message.client.PREFIX = getGuildPrefix(message);
-  if (message.client.PREFIX) {
-    message.client.PREFIX = PREFIX;
+  var prefix = getGuildPrefix(message);
+  if (prefix) {
+    prefix = PREFIX;
   }
-  if (!message.content.startsWith(message.client.PREFIX)) return;
-  let args = message.content
-    .trim()
-    .substring(message.client.PREFIX.length)
-    .split(" ");
+  if (!message.content.startsWith(prefix)) return;
+  let args = message.content.trim().substring(prefix.length).split(" ");
 
   logMessage(message);
+  console.log(args);
 
   let command = client.commands.get(args[0].toLowerCase());
+  console.log(client.commands);
   if (command) {
     command.execute(message, args, client);
   } else {

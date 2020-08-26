@@ -168,7 +168,7 @@ module.exports = {
         embed: {
           color: message.client.messageEmbedData.color,
           author: {
-            name: "❗ Please choose an image for the giveaway",
+            name: "❗ Please choose an amount of winners for the giveaway",
           },
           fields: [
             {
