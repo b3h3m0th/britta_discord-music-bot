@@ -4,7 +4,6 @@ const {
   YOUTUBE_API,
   SPOTIFY_CLIENT_ID,
   SPOTIFY_CLIENT_SECRET,
-  SPOTIFY_ACCESS_TOKEN,
   SPOTIFY_REDIRECT_URI,
 } = require("../config/config.json");
 const ytdl = require("ytdl-core");
@@ -21,7 +20,26 @@ var spotifyApi = new SpotifyWebApi({
 //test song: https://open.spotify.com/track/5hdOAZuYJWsAGOxBKUHpvu?si=KHSPjTTqS2mOcVWx2-zKkw
 //same song but url from browser: https://open.spotify.com/track/5hdOAZuYJWsAGOxBKUHpvu
 
-spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
+// spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
+
+//const sAPI = new _spotifyWebApiNode.default({
+//  clientId: process.env.SPOTIFY_CLIENT_ID,
+//   clientSecret: process.env.SPOTIFY_CLIENT_SECRET
+ //  });
+
+var token = 0;
+
+const getToken = () => {
+  spotifyApi.clientCredentialsGrant().then(data => {
+      console.log('The access token expires in ' + data.body['expires_in']);
+              spotifyApi.setAccessToken(data.body['access_token']);
+                  setTimeout(() => getToken(), (data.body['expires_in'] - 20) * 1000);
+                    }, err => {
+                        console.log('Something went wrong when retrieving an access token', err);
+                            process.exit(1);
+                              });
+                              };
+getToken();
 
 var ytSearch = require("youtube-search");
 const { lastIndexOf } = require("ffmpeg-static");
@@ -770,7 +788,6 @@ module.exports = {
         });
       }
     }
-
     // if (message.client.queue.songs.length > 0) {
     //   play(queue, voiceChannel, message, dispatcher);
     // }
