@@ -1,0 +1,8 @@
+{ 
+  "PREFIX": "bri!",
+  "TOKEN": "<Discord Token Here>",
+  "YOUTUBE_API": "<Youtube API Token Here>",
+  "SPOTIFY_CLIENT_ID": "<Spotify Client ID>",
+  "SPOTIFY_CLIENT_SECRET": "<Spotify Client Secret>",
+  "MONGODB_CONNECTION_STRING": "MongoDB URI here"
+}
