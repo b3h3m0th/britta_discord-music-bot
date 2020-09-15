@@ -11,29 +11,7 @@
 - go to https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=3460160
 - invite Britta to your server
 
-
-### Commands
-
-#### Music
-
-- join
-- play
-- skip
-- leave
-- queue
-- np
-- volume
-- lyrics
-- pause
-- resume
-
-#### Fun
-
-- ph
-- fakemessage
-- jail
-
-### Prefix: `bri!` or custom
+### Prefix: `bri!`
 
 ### Vote for Britta
 
