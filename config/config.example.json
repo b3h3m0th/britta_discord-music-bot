@@ -1,0 +1,12 @@
+{
+  "INVITE_LINK": "",
+  "PREFIX": "",
+  "TOKEN": "",
+  "YOUTUBE_API": "",
+  "SPOTIFY_ACCESS_TOKEN": "",
+  "SPOTIFY_CLIENT_ID": "",
+  "SPOTIFY_CLIENT_SECRET": "",
+  "SPOTIFY_REDIRECT_URI": "",
+  "GENIUS_API": "",
+  "MONGODB_CONNECTION_STRING": ""
+}
