@@ -31,7 +31,7 @@ for (const file of commandFiles) {
 table.setAlign(2, ascii.CENTER);
 
 //Britta data
-var { PREFIX, TOKEN, YOUTUBE_API } = require("./config/config.json");
+var { PREFIX, TOKEN } = require("./config/config.json");
 client.PREFIX = PREFIX;
 client.VERSION = 1.0;
 client.NAME = "Britta";
@@ -95,19 +95,19 @@ client.on("message", async (message) => {
   if (command) {
     command.execute(message, args, client);
   } else {
-    message.channel.send({
-      embed: {
-        color: message.client.messageEmbedData.color,
-        author: {
-          name: "❌ This command doesn't exist",
-        },
-        description: "`" + prefix + "help` to see a list of all commands",
-        timestamp: new Date(),
-        footer: {
-          text: "© Britta",
-        },
-      },
-    });
+    // message.channel.send({
+    //   embed: {
+    //     color: message.client.messageEmbedData.color,
+    //     author: {
+    //       name: "❌ This command doesn't exist",
+    //     },
+    //     description: "`" + prefix + "help` to see a list of all commands",
+    //     timestamp: new Date(),
+    //     footer: {
+    //       text: "© Britta",
+    //     },
+    //   },
+    // });
   }
 });
 
