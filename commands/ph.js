@@ -47,7 +47,7 @@ module.exports = {
     const ctx = canvas.getContext("2d");
 
     ctx.font = "bold 150px Arial";
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#fff";
     ctx.textBaseline = "middle";
     ctx.fillText(prefixTXT, 0, canvas.height / 2);
 
@@ -90,7 +90,7 @@ module.exports = {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#000";
     ctx.fillText(mainTXT, prefixWidth, canvas.height / 2);
 
     const attachment = new Discord.MessageAttachment(canvas.toBuffer());

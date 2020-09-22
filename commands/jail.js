@@ -6,7 +6,6 @@ module.exports = {
   description: "Sends a user to jail ;)",
   category: "fun",
   async execute(message, args) {
-    console.log(args);
     args.shift();
 
     var userToJail;
@@ -56,13 +55,9 @@ module.exports = {
       jailUser(userToJailAvatar);
     } else {
       userToJailID = args[0].trim().substring(3).replace(">", "");
-      console.log(userToJailID);
-      console.log(message.guild.members.cache);
-      console.log(message.guild.id);
       message.guild.members.cache.forEach((element) => {
         if (element.user.id == userToJailID) {
           userToJailAvatar = `https://cdn.discordapp.com/avatars/${userToJailID}/${element.user.avatar}.png?size=512`;
-          console.log(userToJailAvatar);
         }
       });
       jailUser(userToJailAvatar);

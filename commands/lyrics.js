@@ -10,9 +10,7 @@ module.exports = {
 
     try {
       if (args.length >= 2) {
-        console.log(args);
         var searchSongRequest = args.join(" ");
-        console.log(searchSongRequest);
 
         const searchOptions = {
           apiKey: GENIUS_API,

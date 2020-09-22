@@ -88,10 +88,8 @@ client.on("message", async (message) => {
   let args = message.content.trim().substring(prefix.length).split(" ");
 
   logMessage(message);
-  console.log(args);
 
   let command = client.commands.get(args[0].toLowerCase());
-  console.log(client.commands);
   if (command) {
     command.execute(message, args, client);
   } else {

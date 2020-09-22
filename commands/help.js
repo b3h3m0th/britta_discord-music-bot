@@ -14,23 +14,19 @@ module.exports = {
           },
           title: "Command list",
           description:
-            "This is a brief overview of all of Brittas commands sorted by category. \n If you want to have an alphabetically sorted list of all of Brittas commands including a detailed description to every command you can type `+help -l` ",
+            "This is a brief overview of all of Brittas commands sorted by category. \n If you want to have an alphabetically sorted list of all of Brittas commands including a detailed description to every command you can type `bri!help -l` ",
           fields: [
             {
               name: "🎵  Music commands",
-              value: " ",
             },
             {
               name: "ℹ️  Info",
-              value: " ",
             },
             {
               name: "🤪  Fun",
-              value: " ",
             },
             {
               name: "⚙️  Moderation",
-              value: " ",
             },
           ],
           timestamp: new Date(),
@@ -67,14 +63,14 @@ module.exports = {
       });
       embed.embed.fields[2].value = embed.embed.fields[2].value.slice(0, -2);
 
-      //moderation commands
-      var moderationCommands = message.client.commands.filter(
-        (command) => command.category == "moderation"
-      );
-      moderationCommands.forEach((value, index, map) => {
-        embed.embed.fields[3].value += "`" + value.name + "`, ";
-      });
-      embed.embed.fields[3].value = embed.embed.fields[3].value.slice(0, -2);
+      // //moderation commands
+      // var moderationCommands = message.client.commands.filter(
+      //   (command) => command.category == "moderation"
+      // );
+      // moderationCommands.forEach((value, index, map) => {
+      //   embed.embed.fields[3].value += "`" + value.name + "`, ";
+      // });
+      // embed.embed.fields[3].value = embed.embed.fields[3].value.slice(0, -2);
 
       //send embed
       message.channel.send(embed);

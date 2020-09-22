@@ -10,7 +10,6 @@ module.exports = {
     "Britta will introduce herself. If you provide arguments after the Britta-command Britta she will start having a conversation with you",
   category: "info",
   execute(message, args) {
-    console.log(args);
     let role = message.guild.roles.cache.find((role) => role.name === "Britta");
     const prefix = getGuildPrefix(message);
 
@@ -30,7 +29,6 @@ module.exports = {
       chatbot
         .getReply(userMessage)
         .then((reply) => message.channel.send(reply));
-      console.log("userMessage: " + userMessage);
     } else {
       message.channel.send({
         embed: {

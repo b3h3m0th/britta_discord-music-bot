@@ -6,7 +6,6 @@ module.exports = {
   description: "Sends a customized fake message into the channel",
   category: "fun",
   async execute(message, args) {
-    console.log(args);
     args.shift();
 
     if (args.length < 1) {
@@ -69,8 +68,6 @@ module.exports = {
       if (element.user.id == senderID) {
         senderUsername = element.user.username;
         senderAvatar = `https://cdn.discordapp.com/avatars/${senderID}/${element.user.avatar}.png?size=512`;
-        console.log(senderAvatar);
-        console.log(element);
       }
     });
 
