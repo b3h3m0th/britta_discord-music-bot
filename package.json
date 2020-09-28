@@ -35,6 +35,7 @@
     "ytdl-core-discord": "^1.2.3"
   },
   "devDependencies": {
+    "eslint": "^7.10.0",
     "nodemon": "^2.0.4"
   }
 }

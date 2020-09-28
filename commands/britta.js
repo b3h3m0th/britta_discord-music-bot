@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const alexa = require("alexa-bot-api");
 const { replace } = require("ffmpeg-static");
 const chatbot = new alexa("aw2plm");

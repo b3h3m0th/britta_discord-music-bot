@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "queue",
   description: "Shows the songs in queue",

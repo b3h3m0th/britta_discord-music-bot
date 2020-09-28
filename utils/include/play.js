@@ -7,7 +7,7 @@ module.exports = {
     queue.connection.on("disconnect", () => message.client.queue.delete(message.guild.id));
 
     const dispatcher = queue.connection
-      .play(stream, { type: streamType })
+//      .play(stream, { type: streamType })
       .on("finish", () => {
         if (collector && !collector.ended) collector.stop();
 
@@ -102,7 +102,7 @@ module.exports = {
 
     collector.on("end", () => {
       playingMessage.reactions.removeAll().catch(console.error);
-      if (PRUNING && playingMessage && !playingMessage.deleted) {
+      if (playingMessage && !playingMessage.deleted) {
         playingMessage.delete({ timeout: 3000 }).catch(console.error);
       }
     });

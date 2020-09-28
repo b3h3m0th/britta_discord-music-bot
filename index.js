@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
 const fs = require("fs");

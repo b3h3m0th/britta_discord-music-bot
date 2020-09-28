@@ -1,3 +1,6 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const {
   PREFIX,
   TOKEN,
@@ -27,7 +30,6 @@ const { play } = require("../utils/include/play");
 //  clientId: process.env.SPOTIFY_CLIENT_ID,
 //   clientSecret: process.env.SPOTIFY_CLIENT_SECRET
 //  });
-
 var token = 0;
 
 const getToken = () => {
@@ -292,7 +294,7 @@ module.exports = {
               queueConstruct.connection = connection;
               if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
                 message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-            };
+            }
               play(queueConstruct.songs[0]);
             } catch (error) {
               console.error(`I could not join the voice channel: ${error}`);
@@ -413,7 +415,7 @@ module.exports = {
                   queueConstruct.connection = connection;
                   if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
                     message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-                };
+                }
                   play(queueConstruct.songs[0]);
                 } catch (error) {
                   console.error(`I could not join the voice channel: ${error}`);
@@ -581,7 +583,7 @@ module.exports = {
                     queueConstruct.connection = connection;
                     if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
                       message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-                  };
+                  }
                     play(queueConstruct.songs[0]);
                   } catch (error) {
                     console.error(
@@ -746,7 +748,7 @@ module.exports = {
               queueConstruct.connection = connection;
               if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
                 message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-            };
+            }
               play(queueConstruct.songs[0]);
             } catch (error) {
               console.error(`I could not join the voice channel: ${error}`);

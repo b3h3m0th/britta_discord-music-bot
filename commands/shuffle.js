@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const ytdl = require("ytdl-core");
 
 module.exports = {

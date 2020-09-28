@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "skip",
   description: "Skips a song of the queue",

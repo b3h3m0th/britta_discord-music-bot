@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const jimp = require("jimp");
 const { substring } = require("ffmpeg-static");
 const { arrayFill } = require("ascii-table");

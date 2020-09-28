@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "coinflip",
   description: "Flips a coin for you",

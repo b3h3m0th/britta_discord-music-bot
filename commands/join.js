@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "join",
   description: "Joins your voice channel",
@@ -19,7 +20,7 @@ module.exports = {
         });
         if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
           message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-      };
+      }
       });
     } else {
       message.channel.send({

@@ -3,6 +3,7 @@ name: Discord Bot Build Status
 on:
   push:
     branches: [ master ]
+    pull-request: [ master ]
 
 jobs:
 
@@ -12,5 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: NPM Install
+      run: npm install
+    - name: NODE CI
+      run: npm ci
+    - name: ESlint Checks
+      run: npx eslint .  
+    - name: NODE CI
+      run: docker build . --file Dockerfile --tag britta-bot:$(date +%s)
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag britta-bot:$(date +%s)
