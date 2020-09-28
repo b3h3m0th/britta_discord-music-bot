@@ -31,7 +31,8 @@
     "spotify-web-api-node": "^4.0.0",
     "superagent": "^5.3.1",
     "youtube-search": "^1.1.4",
-    "ytdl-core": "^2.1.7"
+    "ytdl-core": "^2.1.7",
+    "ytdl-core-discord": "^1.2.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
