@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "clear",
   description: "Clears the song queue",

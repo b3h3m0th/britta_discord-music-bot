@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const Guild = require("../utils/mongoDB/models/guild");
 
 module.exports = {
@@ -69,6 +70,7 @@ const getMongoDBPing = async () => {
         if (data.connection_query == "successful") {
           console.log(data);
         } else {
+          console.log("error to log data")
         }
       }
     );

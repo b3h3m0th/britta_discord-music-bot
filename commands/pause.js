@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "pause",
   description: "Pauses the music player",

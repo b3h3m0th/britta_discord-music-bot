@@ -1,11 +1,13 @@
+/* eslint-disable no-unused-vars */
 module.exports = {
   name: "help",
   description: "Shows a list of all of brittas commands",
   category: "info",
   execute(message, args) {
+    var embed;
     var commands = message.client.commands;
     if (args.length <= 1) {
-      var embed = {
+      embed = {
         embed: {
           color: message.client.messageEmbedData.color,
           author: {
@@ -78,7 +80,7 @@ module.exports = {
       var userHelpFlag = args[1];
       console.log(userHelpFlag);
       if (userHelpFlag == "-l") {
-        var embed = {
+        embed = {
           embed: {
             color: message.client.messageEmbedData.color,
             author: {
