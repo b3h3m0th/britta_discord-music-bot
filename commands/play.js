@@ -15,6 +15,7 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret: SPOTIFY_CLIENT_SECRET,
   redirectUri: SPOTIFY_REDIRECT_URI,
 });
+const { play } = require("../utils/include/play");
 
 // Spotify Token
 //test song: https://open.spotify.com/track/5hdOAZuYJWsAGOxBKUHpvu?si=KHSPjTTqS2mOcVWx2-zKkw
@@ -289,6 +290,9 @@ module.exports = {
             try {
               const connection = await message.member.voice.channel.join();
               queueConstruct.connection = connection;
+              if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
+                message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
+            };
               play(queueConstruct.songs[0]);
             } catch (error) {
               console.error(`I could not join the voice channel: ${error}`);
@@ -407,6 +411,9 @@ module.exports = {
                 try {
                   const connection = await message.member.voice.channel.join();
                   queueConstruct.connection = connection;
+                  if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
+                    message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
+                };
                   play(queueConstruct.songs[0]);
                 } catch (error) {
                   console.error(`I could not join the voice channel: ${error}`);
@@ -572,6 +579,9 @@ module.exports = {
                   try {
                     const connection = await message.member.voice.channel.join();
                     queueConstruct.connection = connection;
+                    if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
+                      message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
+                  };
                     play(queueConstruct.songs[0]);
                   } catch (error) {
                     console.error(
@@ -734,6 +744,9 @@ module.exports = {
             try {
               const connection = await message.member.voice.channel.join();
               queueConstruct.connection = connection;
+              if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
+                message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
+            };
               play(queueConstruct.songs[0]);
             } catch (error) {
               console.error(`I could not join the voice channel: ${error}`);
@@ -791,8 +804,5 @@ module.exports = {
         });
       }
     }
-    // if (message.client.queue.songs.length > 0) {
-    //   play(queue, voiceChannel, message, dispatcher);
-    // }
   },
 };

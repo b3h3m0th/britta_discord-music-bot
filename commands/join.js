@@ -2,9 +2,9 @@ module.exports = {
   name: "join",
   description: "Joins your voice channel",
   category: "music",
-  execute(message, args) {
+  execute(message, args) {  
     if (message.member.voice.channel) {
-      message.member.voice.channel.join().then((connection) => {
+      message.member.voice.channel.join().then((connections) => {
         message.channel.send({
           embed: {
             color: message.client.messageEmbedData.color,
@@ -17,6 +17,9 @@ module.exports = {
             },
           },
         });
+        if (message.guild.me.voice.channel) { // Checking if the bot is in a VoiceChannel.
+          message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
+      };
       });
     } else {
       message.channel.send({
