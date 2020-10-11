@@ -74,7 +74,7 @@ const { logMessage } = require("./components/log");
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-  var prefix = client.PREFIX;
+var prefix = client.PREFIX;
   if (prefix) {
     prefix = PREFIX;
   }
