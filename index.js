@@ -74,10 +74,17 @@ const { logMessage } = require("./components/log");
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-var prefix = client.PREFIX;
-  if (prefix) {
-    prefix = PREFIX;
+  let prefixes = JSON.parse(
+    fs.readFileSync("./commands/prefixes.json", "utf-8")
+  );
+  if (!prefixes[message.guild.id]) {
+    prefixes[message.guild.id] = {
+      prefixes: client.PREFIX,
+    };
   }
+
+  let prefix = prefixes[message.guild.id].prefixes;
+
   if (!message.content.startsWith(prefix)) return;
   let args = message.content.trim().substring(prefix.length).split(" ");
 
