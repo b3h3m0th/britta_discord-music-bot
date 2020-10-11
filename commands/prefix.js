@@ -7,7 +7,7 @@ module.exports = {
   category: "info",
   async execute(message, args) {
     let prefixes = JSON.parse(
-      fs.readFileSync(__dirname + "\\prefixes.json", "utf-8")
+      fs.readFileSync(__dirname + "/prefixes.json", "utf-8")
     );
     if (args.length >= 2) {
       if (
@@ -21,7 +21,7 @@ module.exports = {
         };
 
         fs.writeFile(
-          __dirname + "\\prefixes.json",
+          __dirname + "/prefixes.json",
           JSON.stringify(prefixes),
           (err) => {
             if (err) console.log(err);
