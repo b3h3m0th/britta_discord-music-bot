@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const Guild = require("../utils/mongoDB/models/guild");
 
 module.exports = {
   name: "ping",

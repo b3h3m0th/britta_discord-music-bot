@@ -1,9 +1,6 @@
 /* eslint-disable no-unused-vars */
 const alexa = require("alexa-bot-api");
-const { replace } = require("ffmpeg-static");
 const chatbot = new alexa("aw2plm");
-const mongoose = require("mongoose");
-const getGuildPrefix = require("../utils/mongoDB/queries/getGuildPrefix");
 
 module.exports = {
   name: "britta",
@@ -12,7 +9,7 @@ module.exports = {
   category: "info",
   execute(message, args) {
     let role = message.guild.roles.cache.find((role) => role.name === "Britta");
-    const prefix = getGuildPrefix(message);
+    const prefix = "bri!";
 
     if (!role) {
       role = message.guild.roles.create({

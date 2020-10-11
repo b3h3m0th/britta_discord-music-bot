@@ -2,7 +2,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ascii = require("ascii-table");
-const getGuildPrefix = require("./utils/mongoDB/queries/getGuildPrefix");
 
 const client = new Discord.Client();
 
@@ -68,9 +67,6 @@ client.on("ready", () => {
 //QUEUE
 client.queue = new Map();
 
-//DATABASE
-client.mongoose = require("./utils/mongoDB/mongoose");
-
 //LOGGING
 const { logMessage } = require("./components/log");
 
@@ -78,7 +74,7 @@ const { logMessage } = require("./components/log");
 client.on("message", async (message) => {
   if (message.author.bot) return;
 
-  var prefix = getGuildPrefix(message);
+  var prefix = client.PREFIX;
   if (prefix) {
     prefix = PREFIX;
   }
@@ -107,5 +103,4 @@ client.on("message", async (message) => {
   }
 });
 
-client.mongoose.init();
 client.login(TOKEN);

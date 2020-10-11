@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
-const Guild = require("../utils/mongoDB/models/guild");
 const mongoose = require("mongoose");
-const getGuildPrefix = require("../utils/mongoDB/queries/getGuildPrefix");
 
 module.exports = {
   name: "prefix",
