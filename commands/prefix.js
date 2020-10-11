@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const { MessageAttachment } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
     let prefixes = JSON.parse(
       fs.readFileSync(__dirname + "/prefixes.json", "utf-8")
     );
+    console.log(prefixes);
     if (args.length >= 2) {
       if (
         message.member.hasPermission("MOVE_MEMBERS") ||
@@ -43,8 +45,10 @@ module.exports = {
         });
       }
     } else {
-      let prefix = prefixes[message.guild.id].prefixes;
-      if (!prefix) prefix = message.client.PREFIX;
+      let prefix;
+      if (prefixes[message.guild.id])
+        prefix = prefixes[message.guild.id].prefixes;
+      else prefix = message.client.PREFIX;
       message.channel.send({
         embed: {
           color: message.client.messageEmbedData.color,
