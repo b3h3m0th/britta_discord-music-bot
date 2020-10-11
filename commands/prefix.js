@@ -8,7 +8,6 @@ module.exports = {
   description: "Sets a new, custom prefix for the bot",
   category: "info",
   async execute(message, args) {
-    // var currentPrefix = message.client.prefix.get(message.guild.id);
     var currentPrefix = getGuildPrefix(message);
     if (args.length >= 2) {
       if (
