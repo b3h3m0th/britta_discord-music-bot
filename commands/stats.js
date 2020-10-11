@@ -11,7 +11,6 @@ const {
 var ytSearch = require("youtube-search");
 var SpotifyWebApi = require("spotify-web-api-node");
 const mongoose = require("mongoose");
-const Guild = require("../utils/mongoDB/models/guild");
 
 var spotifyApi = new SpotifyWebApi({
   clientId: SPOTIFY_CLIENT_ID,
@@ -78,29 +77,6 @@ function checkSpotifyStatus() {
   return spotiyAPIConnectionStatus;
 }
 
-function checkMongoDBStatus(message) {
-  var MongoDBConnectionStatus = "❌ disconnected";
-  try {
-    Guild.findOne({ connection_query: "successful" }, async (err, data) => {
-      if (err) {
-        MongoDBConnectionStatus = "❌ disconnected";
-        return console.log("asdf" + err);
-      }
-      if (data.connection_query == "successful") {
-        console.log(data);
-        MongoDBConnectionStatus = "✔️ connected";
-      } else {
-        MongoDBConnectionStatus = "❌ disconnected";
-      }
-    });
-    MongoDBConnectionStatus = "✔️ connected";
-  } catch (error) {
-    MongoDBConnectionStatus = "❌ disconnected";
-    console.log(error);
-  }
-  return MongoDBConnectionStatus;
-}
-
 module.exports = {
   name: "stats",
   description: "Shows Brittas statistics",
@@ -143,12 +119,7 @@ module.exports = {
             name: "Spotify API",
             value: "`" + checkSpotifyStatus() + "`",
             inline: true,
-          },
-          {
-            name: "MongoDB",
-            value: "`" + checkMongoDBStatus() + "`",
-            inline: true,
-          },
+          }, 
         ],
         footer: {
           text: `Developed by ${message.client.admins[0].username}#${message.client.admins[0].discriminator} | © Britta`,
