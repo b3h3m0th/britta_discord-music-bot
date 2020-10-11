@@ -9,7 +9,6 @@ module.exports = {
     let prefixes = JSON.parse(
       fs.readFileSync(__dirname + "\\prefixes.json", "utf-8")
     );
-    console.log(prefixes);
     if (args.length >= 2) {
       if (
         message.member.hasPermission("MOVE_MEMBERS") ||
@@ -44,7 +43,6 @@ module.exports = {
         });
       }
     } else {
-      console.log(prefixes);
       let prefix = prefixes[message.guild.id].prefixes;
       if (!prefix) prefix = message.client.PREFIX;
       message.channel.send({
