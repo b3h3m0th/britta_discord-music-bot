@@ -10,20 +10,6 @@ module.exports = {
   async execute(message, args) {
     // var currentPrefix = message.client.prefix.get(message.guild.id);
     var currentPrefix = getGuildPrefix(message);
-
-    // message.channel.send({
-    //   embed: {
-    //     color: message.client.messageEmbedData.color,
-    //     author: {
-    //       name: "🛠️ This feature is still in progress",
-    //       icon_url: message.client.user.avatarURL(),
-    //     },
-    //     timestamp: new Date(),
-    //     footer: {
-    //       text: "© Britta",
-    //     },
-    //   },
-    // });
     if (args.length >= 2) {
       if (
         message.member.hasPermission("MOVE_MEMBERS") ||
@@ -32,7 +18,6 @@ module.exports = {
         ).length == 1
       ) {
         var newPrefix = args[1].trim();
-        // message.client.prefix.set(message.guild.id, newPrefix);
         await Guild.updateOne(
           { guildID: message.guild.id },
           { guildName: message.guild.name },
