@@ -23,7 +23,7 @@
     "genius-lyrics-api": "^3.0.2",
     "grunt-bump": "^0.8.0",
     "https": "^1.0.0",
-    "jimp": "^0.14.0",
+    "jimp": "^0.16.1",
     "mongoose": "^5.9.25",
     "ms": "^2.1.2",
     "prettier": "^2.1.2",
