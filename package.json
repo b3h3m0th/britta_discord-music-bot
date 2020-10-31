@@ -15,7 +15,7 @@
     "ascii": "^1.0.0",
     "ascii-table": "0.0.9",
     "chalk": "^4.1.0",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.3.1",
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.4",
     "fluent-ffmpeg": "^2.1.2",
