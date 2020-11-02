@@ -19,7 +19,7 @@
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
     "fluent-ffmpeg": "^2.1.2",
-    "follow-redirects": "^1.12.1",
+    "follow-redirects": "^1.13.0",
     "genius-lyrics-api": "^3.0.2",
     "grunt-bump": "^0.8.0",
     "https": "^1.0.0",
