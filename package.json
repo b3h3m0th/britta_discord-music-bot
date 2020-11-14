@@ -33,7 +33,7 @@
     "superagent": "^5.3.1",
     "youtube-search": "^1.1.4",
     "ytdl-core": "^2.1.7",
-    "ytdl-core-discord": "^1.2.3"
+    "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {
     "eslint": "^7.10.0",
