@@ -10,7 +10,6 @@ const {
 } = require("../config/config.json");
 var ytSearch = require("youtube-search");
 var SpotifyWebApi = require("spotify-web-api-node");
-const mongoose = require("mongoose");
 
 var spotifyApi = new SpotifyWebApi({
   clientId: SPOTIFY_CLIENT_ID,
@@ -119,7 +118,7 @@ module.exports = {
             name: "Spotify API",
             value: "`" + checkSpotifyStatus() + "`",
             inline: true,
-          }, 
+          },
         ],
         footer: {
           text: `Developed by ${message.client.admins[0].username}#${message.client.admins[0].discriminator} | © Britta`,
