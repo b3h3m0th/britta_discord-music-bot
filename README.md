@@ -11,14 +11,14 @@
 [Click here to Visit](https://britta.netlify.app/)
 
 ## How to add Britta to your server
-- go to https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=3460160
+- Open https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=3460160
 - invite Britta to your server
 
 ### Build Status
 
 ![Discord Bot Build Status](https://github.com/b3h3m0th/britta_discord-music-bot/workflows/Discord%20Bot%20Build%20Status/badge.svg)
 
-### Prefix: `bri!`
+### Prefix: `bri!` or custom
 
 ### Vote for Britta
 

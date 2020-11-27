@@ -1,113 +1,125 @@
-/* eslint-disable no-unused-vars */
-const Discord = require("discord.js");
-const fs = require("fs");
-const ascii = require("ascii-table");
+/**
+ * Module Imports
+ */
+const { Client, Collection } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
+const { readdirSync } = require("fs");
+const { join } = require("path");
+const config = require("./config.js");
+const { getGuildPrefix } = require("./util/prefixUtil");
 
-const client = new Discord.Client();
+/**
+ * Language
+ */
+const thisLang = "english";
+const language = require(`./languages/${thisLang}`);
 
-//Britta requirements
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
-var table = new ascii("Britta is now ready");
-table.setHeading("Command", "Description", "Load status");
+const client = new Client({ disableMentions: "everyone" });
 
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+client.login(config.client.token);
+client.commands = new Collection();
+client.queue = new Map();
+client.config = config;
+const cooldowns = new Collection();
 
+/**
+ * Client Events
+ */
+client.on("ready", () => {
+  console.log(`${client.user.tag} is online!`);
+  setInterval(() => {
+    const statusArray = config.client.games;
+    const randomStatus = Math.floor(Math.random() * statusArray.length);
+    const status = statusArray[randomStatus];
+    client.user.setActivity(
+      status.name
+        .replace("{users}", client.users.cache.size)
+        .replace("{servers}", "7098")
+        .replace("{clientname}", client.user.username)
+    );
+  }, 15000);
+});
+
+client.on("warn", (info) => console.log(info));
+client.on("error", console.error);
+
+/**
+ * Import all commands
+ */
+const commandFiles = readdirSync(join(__dirname, "commands")).filter((file) =>
+  file.endsWith(".js")
+);
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const command = require(join(__dirname, "commands", `${file}`));
   client.commands.set(command.name, command);
-  if (command.name) {
-    table.addRow(command.name, command.description, "✔️");
-  } else {
-    table.addRow("❌ -> something went wrong", "");
-  }
 }
 
-table.setAlign(2, ascii.CENTER);
-
-//Britta data
-var { PREFIX, TOKEN } = require("./config/config.json");
-client.PREFIX = PREFIX;
-client.VERSION = 1.0;
-client.NAME = "Britta";
-client.admins = [
-  {
-    username: "Behemoth",
-    discriminator: "4026",
-    id: "491539179642028032",
-    icon_url:
-      "https://cdn.discordapp.com/avatars/491539179642028032/ece3770ec792f9919df9e2bf4fbdabd9.png?size=128",
-  },
-  {
-    username: "PatPlayz",
-    discriminator: "3128",
-    id: "348463533287145484",
-  },
-];
-client.inviteLink =
-  "https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=104123392";
-client.messageEmbedData = {
-  color: "e97e37",
-};
-
-client.resources = {
-  youtubeIcon:
-    "http://pluspng.com/img-png/youtube-play-button-transparent-png-image-42015-800.png",
-  spotifyIcon: "http://pluspng.com/img-png/spotify-logo-png-open-2000.png",
-};
-
-client.on("ready", () => {
-  client.user.setUsername(client.NAME);
-  client.user.setActivity(client.NAME, { type: "LISTENING" });
-  console.log(table.toString());
-});
-
-//QUEUE
-client.queue = new Map();
-
-//LOGGING
-const { logMessage } = require("./components/log");
-
-//MESSAGE
 client.on("message", async (message) => {
   if (message.author.bot) return;
+  if (!message.guild) return;
 
-  let prefixes = JSON.parse(
-    fs.readFileSync("./commands/prefixes.json", "utf-8")
-  );
-  if (!prefixes[message.guild.id]) {
-    prefixes[message.guild.id] = {
-      prefixes: client.PREFIX,
-    };
+  //PREFIX
+  client.prefix = getGuildPrefix(message.guild.id);
+
+  // BOT MENTİON
+  if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
+    message.channel.send(
+      new MessageEmbed()
+        .setAuthor(
+          `${message.client.config.client.name}`,
+          message.client.user.avatarURL()
+        )
+        .setTitle(`👋🏻 Hello I'm ${message.client.config.client.name}`)
+        .setDescription("I am your personal music bot")
+        .setColor(`${message.client.config.colors.primary}`)
+        .setTimestamp()
+        .addField("Prefix:", "`" + client.prefix + "`")
+    );
+
+    return;
   }
 
-  let prefix = prefixes[message.guild.id].prefixes;
+  if (message.content.startsWith(client.prefix)) {
+    const args = message.content.slice(client.prefix.length).trim().split(/ +/);
+    const commandName = args.shift().toLowerCase();
 
-  if (!message.content.startsWith(prefix)) return;
-  let args = message.content.trim().substring(prefix.length).split(" ");
+    const command =
+      client.commands.get(commandName) ||
+      client.commands.find(
+        (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+      );
 
-  logMessage(message);
+    if (!command) return;
 
-  let command = client.commands.get(args[0].toLowerCase());
-  if (command) {
-    command.execute(message, args, client);
-  } else {
-    // message.channel.send({
-    //   embed: {
-    //     color: message.client.messageEmbedData.color,
-    //     author: {
-    //       name: "❌ This command doesn't exist",
-    //     },
-    //     description: "`" + prefix + "help` to see a list of all commands",
-    //     timestamp: new Date(),
-    //     footer: {
-    //       text: "© Britta",
-    //     },
-    //   },
-    // });
+    if (!cooldowns.has(command.name)) {
+      cooldowns.set(command.name, new Collection());
+    }
+
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.name);
+    const cooldownAmount = (command.cooldown || 1) * 1000;
+
+    if (timestamps.has(message.author.id)) {
+      const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+      if (now < expirationTime) {
+        const timeLeft = (expirationTime - now) / 1000;
+        return message.reply(
+          language("warning")
+            .cooldown.replace("{timeLeft}", timeLeft.toFixed(1))
+            .replace("{command.name}", command.name)
+        );
+      }
+    }
+
+    timestamps.set(message.author.id, now);
+    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+    try {
+      command.execute(message, args);
+    } catch (error) {
+      console.error(error);
+      message.reply(language("error").command_error).catch(console.error);
+    }
   }
 });
-
-client.login(TOKEN);

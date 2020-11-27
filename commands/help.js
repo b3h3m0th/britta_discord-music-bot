@@ -1,111 +1,31 @@
-/* eslint-disable no-unused-vars */
+const { MessageEmbed } = require("discord.js");
+
 module.exports = {
   name: "help",
-  description: "Shows a list of all of brittas commands",
-  category: "info",
-  execute(message, args) {
-    var embed;
-    var commands = message.client.commands;
-    if (args.length <= 1) {
-      embed = {
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: message.client.user.username,
-            icon_url: message.client.user.avatarURL(),
-          },
-          title: "Command list",
-          description:
-            "This is a brief overview of all of Brittas commands sorted by category. \n If you want to have an alphabetically sorted list of all of Brittas commands including a detailed description to every command you can type `bri!help -l` ",
-          fields: [
-            {
-              name: "🎵  Music commands",
-            },
-            {
-              name: "ℹ️  Info",
-            },
-            {
-              name: "🤪  Fun",
-            },
-            {
-              name: "⚙️  Moderation",
-            },
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      };
+  aliases: ["h"],
+  description: "Display all commands and descriptions",
+  execute(message) {
+    let commands = message.client.commands.array();
 
-      //music commands
-      var musicCommands = message.client.commands.filter(
-        (command) => command.category == "music"
+    let helpEmbed = new MessageEmbed()
+      .setAuthor(
+        `${message.client.config.client.name} loves to help you`,
+        message.client.user.avatarURL()
+      )
+      .setDescription("This is a brief overview of all of Brittas commands.")
+      .setColor(`${message.client.config.colors.primary}`)
+      .setTimestamp();
+
+    commands.forEach((cmd) => {
+      helpEmbed.addField(
+        `**${message.client.prefix}${cmd.name} ${
+          cmd.aliases ? `(${cmd.aliases})` : ""
+        }**`,
+        `${cmd.description}`,
+        true
       );
-      musicCommands.forEach((value, index, map) => {
-        embed.embed.fields[0].value += "`" + value.name + "`, ";
-      });
-      embed.embed.fields[0].value = embed.embed.fields[0].value.slice(0, -2);
+    });
 
-      //info commands
-      var infoCommands = message.client.commands.filter(
-        (command) => command.category == "info"
-      );
-      infoCommands.forEach((value, index, map) => {
-        embed.embed.fields[1].value += "`" + value.name + "`, ";
-      });
-      embed.embed.fields[1].value = embed.embed.fields[1].value.slice(0, -2);
-
-      //fun commands
-      var funCommands = message.client.commands.filter(
-        (command) => command.category == "fun"
-      );
-      funCommands.forEach((value, index, map) => {
-        embed.embed.fields[2].value += "`" + value.name + "`, ";
-      });
-      embed.embed.fields[2].value = embed.embed.fields[2].value.slice(0, -2);
-
-      // //moderation commands
-      // var moderationCommands = message.client.commands.filter(
-      //   (command) => command.category == "moderation"
-      // );
-      // moderationCommands.forEach((value, index, map) => {
-      //   embed.embed.fields[3].value += "`" + value.name + "`, ";
-      // });
-      // embed.embed.fields[3].value = embed.embed.fields[3].value.slice(0, -2);
-
-      //send embed
-      message.channel.send(embed);
-    } else {
-      var userHelpFlag = args[1];
-      console.log(userHelpFlag);
-      if (userHelpFlag == "-l") {
-        embed = {
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: message.client.user.username,
-              icon_url: message.client.user.avatarURL(),
-            },
-            title: "Command list",
-            description:
-              "This is the alphabetically sorted list of all of Brittas commands with a detailed description to every command.",
-            fields: [],
-            timestamp: new Date(),
-            footer: {
-              text: "© Britta",
-            },
-          },
-        };
-
-        commands.forEach((value, key, map) => {
-          embed.embed.fields.push({
-            name: "`" + value.name + "`",
-            value: value.description,
-          });
-        });
-        message.channel.send(embed);
-      }
-    }
+    return message.channel.send(helpEmbed).catch(console.error);
   },
 };

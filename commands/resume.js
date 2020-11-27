@@ -1,37 +1,46 @@
-/* eslint-disable no-unused-vars */
+const { canModifyQueue } = require("../util/shuffleUtil");
+const config = require("../config.js");
+
 module.exports = {
   name: "resume",
-  description: "Resumes the music player",
-  category: "music",
-  execute(message, args) {
-    const serverQueue = message.client.queue.get(message.guild.id);
-    if (serverQueue && !serverQueue.playing) {
-      serverQueue.playing = true;
-      serverQueue.connection.dispatcher.resume();
-      return message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "▶️ Song resumed by " + message.author.username,
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
+  aliases: ["r"],
+  description: "Resume currently playing music",
+  execute(message) {
+    const thisLang = "english";
+    const language = require(`../languages/${thisLang}`);
+
+    const queue = message.client.queue.get(message.guild.id);
+    if (!queue)
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(language("error").nothing_music, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
+    if (!canModifyQueue(message.member)) return;
+
+    if (!queue.playing) {
+      queue.playing = true;
+      queue.connection.dispatcher.resume();
+      return queue.textChannel
+        .send(
+          new MessageEmbed()
+            .setAuthor(
+              language("succes").resumed_music.replace("{author}", message.author.tag),
+              message.author.avatarURL()
+            )
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
     }
-    message.channel.send({
-      embed: {
-        color: message.client.messageEmbedData.color,
-        author: {
-          name: "❗ There is nothing playing that can be resumed",
-        },
-        timestamp: new Date(),
-        footer: {
-          text: "© Britta",
-        },
-      },
-    });
-  },
+
+    return queue.textChannel
+      .send(
+        new MessageEmbed()
+          .setAuthor(language("error").queue_isnot, message.author.avatarURL())
+          .setColor(config.colors.failed)
+      )
+      .catch(console.error);
+  }
 };

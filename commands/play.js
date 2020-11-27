@@ -1,819 +1,192 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-const {
-  PREFIX,
-  TOKEN,
-  YOUTUBE_API,
-  SPOTIFY_CLIENT_ID,
-  SPOTIFY_CLIENT_SECRET,
-  SPOTIFY_REDIRECT_URI,
-} = require("../config/config.json");
+const { play } = require("../include/play");
+const config = require("../config.js");
+const youtube_key = config.api.youtube_key;
+const SOUNDCLOUD_CLIENT_ID = "";
 const ytdl = require("ytdl-core");
-
-var SpotifyWebApi = require("spotify-web-api-node");
-
-var spotifyApi = new SpotifyWebApi({
-  clientId: SPOTIFY_CLIENT_ID,
-  clientSecret: SPOTIFY_CLIENT_SECRET,
-  redirectUri: SPOTIFY_REDIRECT_URI,
-});
-const { play } = require("../utils/include/play");
-
-// Spotify Token
-//test song: https://open.spotify.com/track/5hdOAZuYJWsAGOxBKUHpvu?si=KHSPjTTqS2mOcVWx2-zKkw
-//same song but url from browser: https://open.spotify.com/track/5hdOAZuYJWsAGOxBKUHpvu
-
-// spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
-
-//const sAPI = new _spotifyWebApiNode.default({
-//  clientId: process.env.SPOTIFY_CLIENT_ID,
-//   clientSecret: process.env.SPOTIFY_CLIENT_SECRET
-//  });
-var token = 0;
-
-const getToken = () => {
-  try {
-    spotifyApi.clientCredentialsGrant().then(
-      (data) => {
-        console.log("The access token expires in " + data.body["expires_in"]);
-        spotifyApi.setAccessToken(data.body["access_token"]);
-        setTimeout(() => getToken(), (data.body["expires_in"] - 20) * 1000);
-      },
-      (err) => {
-        console.log(
-          "Something went wrong when retrieving an access token",
-          err
-        );
-        process.exit(1);
-      }
-    );
-  } catch (error) {}
-};
-getToken();
-
-var ytSearch = require("youtube-search");
-const { lastIndexOf } = require("ffmpeg-static");
-
-var opts = {
-  maxResults: 1,
-  key: YOUTUBE_API,
-  type: "video",
-};
-
-//PRIVATE FUNCTIONS
-
-let getSpotifyTrackID = (uri) => {
-  try {
-    if (uri.includes("https://")) {
-      let url_parameters = uri.split("?");
-      let actual_url = url_parameters[0];
-      console.log("actual url: " + actual_url);
-      url_parts = actual_url.split("/");
-      console.log(url_parts);
-      console.log(url_parts[url_parts.length - 1]);
-      return url_parts[url_parts.length - 1];
-    } else {
-      let uri_parts = uri.split(":");
-      console.log(uri_parts[uri_parts.length - 1]);
-      return uri_parts[uri_parts.length - 1];
-    }
-  } catch (error) {
-    message.channel.send({
-      embed: {
-        color: 3447003,
-        author: {
-          name: "❗ Please enter a valid Spotify URL of URI",
-          icon_url: message.client.user.avatarURL(),
-        },
-        timestamp: new Date(),
-        footer: {
-          text: "© Britta",
-        },
-      },
-    });
-  }
-};
-
-let getSpotifyAlbumID = (uri) => {
-  try {
-    if (uri.includes("https://")) {
-      let url_parameters = uri.split("?");
-      let actual_url = url_parameters[0];
-      console.log("actual url: " + actual_url);
-      url_parts = actual_url.split("/");
-      console.log(url_parts);
-      console.log(url_parts[url_parts.length - 1]);
-      return url_parts[url_parts.length - 1];
-    } else {
-      let uri_parts = uri.split(":");
-      console.log(uri_parts[uri_parts.length - 1]);
-      return uri_parts[uri_parts.length - 1];
-    }
-  } catch (error) {
-    message.channel.send({
-      embed: {
-        color: 3447003,
-        author: {
-          name: "❗ Please enter a valid Spotify URL of URI",
-        },
-        timestamp: new Date(),
-        footer: {
-          text: "© Britta",
-        },
-      },
-    });
-  }
-};
-
-let getSpotifyPlaylistID = (uri) => {
-  try {
-    if (uri.includes("https://")) {
-      let url_parameters = uri.split("?");
-      let actual_url = url_parameters[0];
-      console.log("actual url: " + actual_url);
-      url_parts = actual_url.split("/");
-      console.log(url_parts);
-      console.log(url_parts[url_parts.length - 1]);
-      return url_parts[url_parts.length - 1];
-    } else {
-      let uri_parts = uri.split(":");
-      console.log(uri_parts[uri_parts.length - 1]);
-      return uri_parts[uri_parts.length - 1];
-    }
-  } catch (error) {
-    message.channel.send({
-      embed: {
-        color: message.client.messageEmbedData.color,
-        author: {
-          name: "❗ Please enter a valid Spotify URL of URI",
-        },
-        timestamp: new Date(),
-        footer: {
-          text: "© Britta",
-        },
-      },
-    });
-  }
-};
+const YouTubeAPI = require("simple-youtube-api");
+const youtube = new YouTubeAPI(youtube_key);
+const scdl = require("soundcloud-downloader");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "play",
-  description: "plays a song and adds it to the queue",
-  category: "music",
+  cooldown: 3,
+  aliases: ["p"],
+  description: "Plays audio from YouTube or Soundcloud",
   async execute(message, args) {
-    if (!message.member.voice.channel) {
-      return message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ You need to be in a voice channel",
-            icon_url: message.member.user.avatarURL(),
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-    }
-    const play = async (song) => {
-      const queue = message.client.queue.get(message.guild.id);
-      if (!song) {
-        queue.voiceChannel.leave();
-        message.client.queue.delete(message.guild.id);
-        return;
-      }
+    let thisLang = "english";
+    const language = require(`../languages/${thisLang}`);
 
-      const dispatcher = queue.connection
-        .play(ytdl(song.link))
-        .on("finish", () => {
-          queue.songs.shift();
-          play(queue.songs[0]);
-        })
-        .on("error", (error) => console.error(error));
-      dispatcher.setVolumeLogarithmic(queue.volume / 100);
-    };
+    const { channel } = message.member.voice;
 
     const serverQueue = message.client.queue.get(message.guild.id);
+    // console.log(language("error").soundcloud.soundcloud_client_id)
+    if (!channel)
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(language("error").joinvoicechannel, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
+    if (serverQueue && channel !== message.guild.me.voice.channel)
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(
+              language("error").joinsamechannel.replace("{client}", message.client.user.tag),
+              message.author.avatarURL()
+            )
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
 
-    var songRequest;
-    var song = {};
+    if (!args.length)
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(language("error").play_args, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
 
-    if (args.length < 2) {
-      message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ Couldn't find a song request",
-            icon_url: message.client.user.avatarURL(),
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-      return;
+    const permissions = channel.permissionsFor(message.client.user);
+    if (!permissions.has("CONNECT"))
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(language("perrmissions").connect, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
+    if (!permissions.has("SPEAK"))
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(language("perrmissions").speak, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
+
+    const search = args.join(" ");
+    const videoPattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
+    const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
+    const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
+    const url = args[0];
+    const urlValid = videoPattern.test(args[0]);
+
+    // Start the playlist if playlist url was provided
+    if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
+      return message.client.commands.get("playlist").execute(message, args);
     }
-    if (
-      args[1].includes("https://youtube.com/watch") ||
-      args[1].includes("https://www.youtube.com/watch") ||
-      args[1].includes("http://youtube.com/watch") ||
-      args[1].includes("http://www.youtube.com/watch") ||
-      args[1].includes("https://youtu.be/") ||
-      args[1].includes("https://www.youtu.be/") ||
-      args[1].includes("http://www.youtu.be/") ||
-      args[1].includes("http://youtu.be/")
-    ) {
-      songRequest = args[1];
+
+    const queueConstruct = {
+      textChannel: message.channel,
+      channel,
+      connection: null,
+      songs: [],
+      loop: false,
+      volume: 100,
+      playing: true
+    };
+
+    let songInfo = null;
+    let song = null;
+
+    if (urlValid) {
       try {
-        ytSearch(songRequest, opts, async function (err, results) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-
-          if (!results) {
-            message.channel.send({
-              embed: {
-                color: message.client.messageEmbedData.color,
-                author: {
-                  name: "❗ This song couldn't be found",
-                  icon_url: message.client.user.avatarURL(),
-                },
-                timestamp: new Date(),
-                footer: {
-                  text: "© Britta",
-                },
-              },
-            });
-            return;
-          }
-          song = {
-            link: results[0].link,
-            title: results[0].title,
-            description: results[0].description,
-            thumbnail: results[0].thumbnails.high.url,
-          };
-          console.log(song);
-
-          if (serverQueue) {
-            serverQueue.songs.push(song);
-            message.channel.send({
-              embed: {
-                color: message.client.messageEmbedData.color,
-                author: {
-                  name: "Song has been added to queue",
-                  icon_url: message.client.resources.youtubeIcon,
-                },
-                title: song.title,
-                url: song.link,
-                description: song.description,
-                thumbnail: {
-                  url: song.thumbnail,
-                },
-                timestamp: new Date(),
-                footer: {
-                  icon_url: message.client.user.avatarURL,
-                  text: "© Britta",
-                },
-              },
-            });
-            return;
-          } else {
-            const queueConstruct = {
-              textChannel: message.channel,
-              voiceChannel: message.member.voice.channel,
-              connection: null,
-              songs: [],
-              volume: 100,
-              playing: true,
-            };
-
-            message.client.queue.set(message.guild.id, queueConstruct);
-            queueConstruct.songs.push(song);
-
-            try {
-              const connection = await message.member.voice.channel.join();
-              queueConstruct.connection = connection;
-              if (message.guild.me.voice.channel) {
-                // Checking if the bot is in a VoiceChannel.
-                message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-              }
-              play(queueConstruct.songs[0]);
-            } catch (error) {
-              console.error(`I could not join the voice channel: ${error}`);
-              message.client.queue.delete(message.guild.id);
-              await message.member.voice.channel.leave();
-              return message.channel.send({
-                embed: {
-                  color: message.client.messageEmbedData.color,
-                  author: {
-                    name: "❗ I could not join your voice channel",
-                    icon_url: message.client.user.avatarURL(),
-                  },
-                  timestamp: new Date(),
-                  footer: {
-                    text: "© Britta",
-                  },
-                },
-              });
-            }
-          }
-        });
+        songInfo = await ytdl.getInfo(url);
+        song = {
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds
+        };
       } catch (error) {
-        message.channel.send({
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: "⚠️ There was an error adding your song to queue",
-              icon_url: message.client.user.avatarURL(),
-            },
-            timestamp: new Date(),
-            footer: {
-              text: "© Britta",
-            },
-          },
-        });
+        console.error(error);
+        return message.reply(error.message).catch(console.error);
       }
-    } else if (
-      args[1].includes("https://open.spotify.com/track/") ||
-      args[1].includes("spotify:track:")
-    ) {
-      songRequest = args[1];
-      console.log(songRequest);
-      spotifyApi.getTrack(getSpotifyTrackID(songRequest)).then(
-        function (data) {
-          let track = data.body;
-          track_data = track.name + " " + track.artists[0].name;
-
-          try {
-            ytSearch(track_data, opts, async function (err, results) {
-              if (err) {
-                console.log(err);
-                return;
-              }
-
-              if (!results) {
-                message.channel.send({
-                  embed: {
-                    color: message.client.messageEmbedData.color,
-                    author: {
-                      name: "❗ This song couln't be found",
-                      icon_url: message.client.user.avatarURL(),
-                    },
-                    timestamp: new Date(),
-                    footer: {
-                      text: "© Britta",
-                    },
-                  },
-                });
-                return;
-              }
-
-              song = {
-                link: results[0].link,
-                title: results[0].title,
-                description: results[0].description,
-                thumbnail: results[0].thumbnails.high.url,
-              };
-              console.log(song);
-
-              if (serverQueue) {
-                serverQueue.songs.push(song);
-                message.channel.send({
-                  embed: {
-                    color: message.client.messageEmbedData.color,
-                    author: {
-                      name: "Song has been added to queue",
-                      icon_url:
-                        "http://pluspng.com/img-png/spotify-logo-png-open-2000.png",
-                    },
-                    title: song.title,
-                    url: song.link,
-                    description: song.description,
-                    thumbnail: {
-                      url: song.thumbnail,
-                    },
-                    timestamp: new Date(),
-                    footer: {
-                      text: "© Britta",
-                    },
-                  },
-                });
-                return;
-              } else {
-                const queueConstruct = {
-                  textChannel: message.channel,
-                  voiceChannel: message.member.voice.channel,
-                  connection: null,
-                  songs: [],
-                  volume: 100,
-                  playing: true,
-                };
-
-                message.client.queue.set(message.guild.id, queueConstruct);
-                queueConstruct.songs.push(song);
-
-                try {
-                  const connection = await message.member.voice.channel.join();
-                  queueConstruct.connection = connection;
-                  if (message.guild.me.voice.channel) {
-                    // Checking if the bot is in a VoiceChannel.
-                    message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-                  }
-                  play(queueConstruct.songs[0]);
-                } catch (error) {
-                  console.error(`I could not join the voice channel: ${error}`);
-                  message.client.queue.delete(message.guild.id);
-                  await message.member.voice.channel.leave();
-                  return message.channel.send({
-                    embed: {
-                      color: message.client.messageEmbedData.color,
-                      author: {
-                        name: "❗ I could not join your voice channel",
-                        icon_url: message.client.user.avatarURL(),
-                      },
-                      timestamp: new Date(),
-                      footer: {
-                        text: "© Britta",
-                      },
-                    },
-                  });
-                }
-              }
-
-              message.channel.send({
-                embed: {
-                  color: message.client.messageEmbedData.color,
-                  author: {
-                    name: "Song has been added to queue",
-                    icon_url: message.client.resources.spotifyIcon,
-                  },
-                  title: song.title,
-                  url: song.link,
-                  description: song.description,
-                  thumbnail: {
-                    url: song.thumbnail,
-                  },
-                  timestamp: new Date(),
-                  footer: {
-                    icon_url: message.client.user.avatarURL,
-                    text: "© Britta",
-                  },
-                },
-              });
-            });
-          } catch (error) {
-            message.channel.send({
-              embed: {
-                color: message.client.messageEmbedData.color,
-                author: {
-                  name: "⚠️ There was an error adding your song to queue",
-                  icon_url: message.client.resources.spotifyIcon,
-                },
-                timestamp: new Date(),
-                footer: {
-                  icon_url: message.client.user.avatarURL,
-                  text: "© Britta",
-                },
-              },
-            });
-          }
-        },
-        function (err) {
-          console.log(err);
-          message.channel.send({
-            embed: {
-              color: message.client.messageEmbedData.color,
-              author: {
-                name: "❗ There was an error finding your song",
-                icon_url:
-                  "http://pluspng.com/img-png/spotify-logo-png-open-2000.png",
-              },
-              timestamp: new Date(),
-              footer: {
-                text: "© Britta",
-              },
-            },
-          });
-        }
-      );
-      //https://open.spotify.com/track/6skRokbpxb1OFXqxzpEQVi?si=R4vnoprlT5SaXi7JduBrzA
-      //spotify:track:6skRokbpxb1OFXqxzpEQVi
-    } else if (
-      args[1].includes("https://open.spotify.com/album/") ||
-      args[1].includes("spotify:album:")
-    ) {
-      //PLAYLISTS
-      //https://open.spotify.com/album/2mGohCvbL3klQgXyTj7uNB?si=Aja8MUa9QDytoUNlPjfMRA
-      //spotify:album:311FLOGT9CsxDwy86X9nyl
-      songRequest = args[1];
-      spotifyApi.getAlbumTracks(getSpotifyAlbumID(songRequest)).then(
-        function (data) {
-          let tracks = data.body.items;
-          let tracks_count = data.body.total;
-          // console.log(tracks);
-          tracks.forEach((item, index) => {
-            let track_name = item.name;
-            let artist_name = item.artists[0].name;
-            let track_data = track_name + " by " + artist_name;
-            console.log(track_data);
-
-            try {
-              ytSearch(track_data, opts, async function (err, results) {
-                if (err) return;
-
-                if (!results) {
-                  message.channel.send({
-                    embed: {
-                      color: message.client.messageEmbedData.color,
-                      author: {
-                        name: "❗ A song of that album couln't be found",
-                        icon_url: message.client.resources.spotifyIcon,
-                      },
-                      timestamp: new Date(),
-                      footer: {
-                        text: "© Britta",
-                      },
-                    },
-                  });
-                  return;
-                }
-
-                song = {
-                  link: results[0].link,
-                  title: results[0].title,
-                  description: results[0].description,
-                  thumbnail: results[0].thumbnails.high.url,
-                };
-                console.log(song);
-
-                if (serverQueue) {
-                  serverQueue.songs.push(song);
-                  message.channel.send({
-                    embed: {
-                      color: message.client.messageEmbedData.color,
-                      author: {
-                        name: "Song has been added to queue",
-                        icon_url: message.client.resources.spotifyIcon,
-                      },
-                      title: song.title,
-                      url: song.link,
-                      description: song.description,
-                      thumbnail: {
-                        url: song.thumbnail,
-                      },
-                      timestamp: new Date(),
-                      footer: {
-                        text: "© Britta",
-                      },
-                    },
-                  });
-                  return;
-                } else {
-                  const queueConstruct = {
-                    textChannel: message.channel,
-                    voiceChannel: message.member.voice.channel,
-                    connection: null,
-                    songs: [],
-                    volume: 100,
-                    playing: true,
-                  };
-
-                  message.client.queue.set(message.guild.id, queueConstruct);
-                  queueConstruct.songs.push(song);
-
-                  try {
-                    const connection = await message.member.voice.channel.join();
-                    queueConstruct.connection = connection;
-                    if (message.guild.me.voice.channel) {
-                      // Checking if the bot is in a VoiceChannel.
-                      message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-                    }
-                    play(queueConstruct.songs[0]);
-                  } catch (error) {
-                    console.error(
-                      `I could not join the voice channel: ${error}`
-                    );
-                    message.client.queue.delete(message.guild.id);
-                    await message.member.voice.channel.leave();
-                    return message.channel.send({
-                      embed: {
-                        color: message.client.messageEmbedData.color,
-                        author: {
-                          name: "❗ I could not join your voice channel",
-                          icon_url: message.client.user.avatarURL(),
-                        },
-                        timestamp: new Date(),
-                        footer: {
-                          text: "© Britta",
-                        },
-                      },
-                    });
-                  }
-                }
-              });
-            } catch (error) {
-              message.channel.send({
-                embed: {
-                  color: message.client.messageEmbedData.color,
-                  author: {
-                    name:
-                      "⚠️ There was an error adding one of the song of you album to queue",
-                    icon_url: message.client.user.avatarURL(),
-                  },
-                  timestamp: new Date(),
-                  footer: {
-                    text: "© Britta",
-                  },
-                },
-              });
-            }
-          });
-          message.channel.send({
-            embed: {
-              color: message.client.messageEmbedData.color,
-              author: {
-                name: "✔️ Added " + tracks_count + " songs to the queue",
-                icon_url: message.client.resources.spotifyIcon,
-              },
-              timestamp: new Date(),
-              footer: {
-                icon_url: message.client.user.avatarURL,
-                text: "© Britta",
-              },
-            },
-          });
-        },
-        function (err) {
-          console.error(err);
-          message.channel.send({
-            embed: {
-              color: message.client.messageEmbedData.color,
-              author: {
-                name: "❗ There was an error finding your album",
-                icon_url: message.client.resources.spotifyIcon,
-              },
-              timestamp: new Date(),
-              footer: {
-                text: "© Britta",
-              },
-            },
-          });
-        }
-      );
-    } else if (
-      args[1].includes("https://open.spotify.com/playlist/") ||
-      args[1].includes("spotify:playlist:")
-    ) {
-      songRequest = args[1];
-      console.log(songRequest);
-      spotifyApi
-        .getPlaylistTracks(getSpotifyAlbumID(songRequest))
-        .then(function (data) {
-          let tracks = data.body.items;
-          let tracks_count = data.body.total;
-          console.log(tracks);
-        });
-      //https://open.spotify.com/playlist/1s3lodV2riSx7EjVxHYafc?si=GSNA_gZPRCaZnu3JjZFC5g
-      //spotify:playlist:1s3lodV2riSx7EjVxHYafc
+    } else if (scRegex.test(url)) {
+      // It is a valid Soundcloud URL
+      if (!SOUNDCLOUD_CLIENT_ID)
+        return message.channel.send(
+          new MessageEmbed()
+            .setAuthor(language("error").soundcloud.client_id, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        );
+      try {
+        const trackInfo = await scdl.getInfo(url, SOUNDCLOUD_CLIENT_ID);
+        song = {
+          title: trackInfo.title,
+          url: url
+        };
+      } catch (error) {
+        if (error.statusCode === 404)
+          return message.channel.send(
+            new MessageEmbed()
+              .setAuthor(language("error").soundcloud.piece_not_found, message.author.avatarURL())
+              .setColor(config.colors.failed)
+          );
+        return message.channel.send(
+          new MessageEmbed()
+            .setAuthor(language("error").soundcloud.piece_error, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        );
+      }
     } else {
-      args.shift();
-      songRequest = args.join(" ");
-      console.log(songRequest);
       try {
-        ytSearch(songRequest, opts, async function (err, results) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-
-          if (!results) {
-            message.channel.send({
-              embed: {
-                color: message.messageEmbedData.client.color,
-                author: {
-                  name: "❗ This song couldn't be found",
-                  icon_url: message.client.user.avatarURL(),
-                },
-                timestamp: new Date(),
-                footer: {
-                  text: "© Britta",
-                },
-              },
-            });
-            return;
-          }
-
-          song = {
-            link: results[0].link,
-            title: results[0].title,
-            description: results[0].description,
-            thumbnail: results[0].thumbnails.high.url,
-          };
-          console.log(song);
-
-          if (serverQueue) {
-            serverQueue.songs.push(song);
-            message.channel.send({
-              embed: {
-                color: message.client.messageEmbedData.color,
-                author: {
-                  name: "Song has been added to queue",
-                  icon_url: message.client.resources.youtubeIcon,
-                },
-                title: song.title,
-                url: song.link,
-                description: song.description,
-                thumbnail: {
-                  url: song.thumbnail,
-                },
-                timestamp: new Date(),
-                footer: {
-                  icon_url: message.client.user.avatarURL,
-                  text: "© Britta",
-                },
-              },
-            });
-            return;
-          } else {
-            const queueConstruct = {
-              textChannel: message.channel,
-              voiceChannel: message.member.voice.channel,
-              connection: null,
-              songs: [],
-              volume: 100,
-              playing: true,
-            };
-
-            message.client.queue.set(message.guild.id, queueConstruct);
-            queueConstruct.songs.push(song);
-
-            try {
-              const connection = await message.member.voice.channel.join();
-              queueConstruct.connection = connection;
-              if (message.guild.me.voice.channel) {
-                // Checking if the bot is in a VoiceChannel.
-                message.guild.me.voice.setSelfDeaf(true); // Using setSelfDeaf to self-deafen the bot.
-              }
-              play(queueConstruct.songs[0]);
-            } catch (error) {
-              console.error(`I could not join the voice channel: ${error}`);
-              message.client.queue.delete(message.guild.id);
-              return message.channel.send({
-                embed: {
-                  color: message.client.messageEmbedData.color,
-                  author: {
-                    name: "❗ I could not join your voice channel",
-                    icon_url: message.client.user.avatarURL(),
-                  },
-                  timestamp: new Date(),
-                  footer: {
-                    text: "© Britta",
-                  },
-                },
-              });
-              message.member.voice.channel.leave();
-            }
-          }
-
-          message.channel.send({
-            embed: {
-              color: message.client.messageEmbedData.color,
-              author: {
-                name: "Song has been added to queue",
-                icon_url: message.client.resources.youtubeIcon,
-              },
-              title: song.title,
-              url: song.link,
-              description: song.description,
-              thumbnail: {
-                url: song.thumbnail,
-              },
-              timestamp: new Date(),
-              footer: {
-                text: "© Britta",
-              },
-            },
-          });
-        });
+        const results = await youtube.searchVideos(search, 1);
+        songInfo = await ytdl.getInfo(results[0].url);
+        song = {
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
+          duration: songInfo.videoDetails.lengthSeconds
+        };
       } catch (error) {
-        message.channel.send({
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: "⚠️ There was an error adding your song to queue",
-              icon_url: message.client.user.avatarURL(),
-            },
-            timestamp: new Date(),
-            footer: {
-              text: "© Britta",
-            },
-          },
-        });
+        console.error(error);
+        return message.channel
+          .send(
+            new MessageEmbed()
+              .setAuthor(language("error").matching_video, message.author.avatarURL())
+              .setColor(config.colors.failed)
+          )
+          .catch(console.error);
       }
     }
-  },
+
+    if (serverQueue) {
+      serverQueue.songs.push(song);
+      return serverQueue.textChannel
+        .send(
+          new MessageEmbed()
+            .setAuthor(
+              language("succes")
+                .playing_music.replace("{song.title}", song.title)
+                .replace("{author}", message.author),
+              message.author.avatarURL()
+            )
+            .setColor(config.colors.succes)
+        )
+        .catch(console.error);
+    }
+
+    queueConstruct.songs.push(song);
+    message.client.queue.set(message.guild.id, queueConstruct);
+
+    try {
+      queueConstruct.connection = await channel.join();
+      await queueConstruct.connection.voice.setSelfDeaf(true);
+      play(queueConstruct.songs[0], message);
+    } catch (error) {
+      console.error(error);
+      message.client.queue.delete(message.guild.id);
+      await channel.leave();
+      return message.channel
+        .send(
+          new MessageEmbed()
+            .setAuthor(language("error").joinvoicechannel_2.replace, message.author.avatarURL())
+            .setColor(config.colors.failed)
+        )
+        .catch(console.error);
+    }
+  }
 };

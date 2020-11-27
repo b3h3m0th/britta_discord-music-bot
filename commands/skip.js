@@ -1,89 +1,17 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
+const { canModifyQueue } = require("../util/shuffleUtil");
+
 module.exports = {
   name: "skip",
-  description: "Skips a song of the queue",
-  category: "music",
-  execute(message, args) {
-    const serverQueue = message.client.queue.get(message.guild.id);
-    if (!message.member.voice.channel) {
-      return message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ You are not in a voice channel",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-    }
+  aliases: ["s"],
+  description: "Skip the currently playing song",
+  execute(message) {
+    const queue = message.client.queue.get(message.guild.id);
+    if (!queue)
+      return message.reply("There is nothing playing that I could skip for you.").catch(console.error);
+    if (!canModifyQueue(message.member)) return;
 
-    if (!serverQueue) {
-      return message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ There is nothing playing that can be skipped",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-    }
-
-    try {
-      serverQueue.connection.dispatcher.end(() => {
-        message.channel
-          .send({
-            embed: {
-              color: message.client.messageEmbedData.color,
-              author: {
-                name: "⏭️ Skipping a song",
-                icon_url: message.client.user.avatarURL,
-              },
-              timestamp: new Date(),
-              footer: {
-                icon_url: message.client.user.avatarURL,
-                text: "© Britta",
-              },
-            },
-          })
-          .then((m) => {
-            ping = m.createdTimestamp - message.createdTimestamp + " ms";
-            m.edit({
-              embed: {
-                color: message.client.messageEmbedData.color,
-                author: {
-                  name: "✔️ Skipped a song",
-                  icon_url: message.client.user.avatarURL,
-                },
-                timestamp: new Date(),
-                footer: {
-                  icon_url: message.client.user.avatarURL,
-                  text: "© Britta",
-                },
-              },
-            });
-          });
-      });
-    } catch (error) {
-      return message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ An error has occured while skipping that song",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-    }
-  },
+    queue.playing = true;
+    queue.connection.dispatcher.end();
+    queue.textChannel.send(`${message.author} ⏭ skipped the song`).catch(console.error);
+  }
 };

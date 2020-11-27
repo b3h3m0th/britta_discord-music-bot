@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 const alexa = require("alexa-bot-api");
 const chatbot = new alexa("aw2plm");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "britta",
+  aliases: ["b"],
   description:
     "Britta will introduce herself. If you provide arguments after the Britta-command Britta she will start having a conversation with you",
-  category: "info",
   execute(message, args) {
     let role = message.guild.roles.cache.find((role) => role.name === "Britta");
-    const prefix = "bri!";
+    const prefix = message.client.config.client.prefix;
 
     if (!role) {
       role = message.guild.roles.create({
@@ -28,28 +29,18 @@ module.exports = {
         .getReply(userMessage)
         .then((reply) => message.channel.send(reply));
     } else {
-      message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "Britta",
-            icon_url: message.client.user.avatarURL(),
-          },
-          title: "👋🏻 Hello I'm Britta",
-          description: "I am your personal music bot",
-          fields: [
-            {
-              name: "PREFIX:",
-              value: "`" + prefix + "`",
-            },
-          ],
-          timestamp: new Date(),
-          footer: {
-            icon_url: message.client.user.avatarURL,
-            text: "© Britta",
-          },
-        },
-      });
+      message.channel.send(
+        new MessageEmbed()
+          .setAuthor(
+            `${message.client.config.client.name}`,
+            message.client.user.avatarURL()
+          )
+          .setTitle(`👋🏻 Hello I'm ${message.client.config.client.name}`)
+          .setDescription("I am your personal music bot")
+          .setColor(`${message.client.config.colors.primary}`)
+          .setTimestamp()
+          .addField("Prefix:", "`" + prefix + "`")
+      );
     }
   },
 };

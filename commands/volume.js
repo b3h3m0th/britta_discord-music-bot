@@ -1,104 +1,24 @@
+const { canModifyQueue } = require("../util/shuffleUtil");
+
 module.exports = {
   name: "volume",
-  description: "Adjusts Brittas volume (1-100%)",
-  category: "music",
+  aliases: ["v"],
+  description: "Change volume of currently playing music",
   execute(message, args) {
-    const channel = message.member.voice.channel;
-    if (!channel) {
-      message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ You need to be in a voice channel to adjust the volume",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-      return;
-    }
+    const queue = message.client.queue.get(message.guild.id);
 
-    const serverQueue = message.client.queue.get(message.guild.id);
-    try {
-      if (!args[1]) {
-        message.channel.send({
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: "🔊The current volume is " + serverQueue.volume + "%",
-            },
-            timestamp: new Date(),
-            footer: {
-              text: "© Britta",
-            },
-          },
-        });
-        return;
-      }
-    } catch (error) {
-      message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ There is no music playing right now",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-      return;
-    }
+    if (!queue) return message.reply("There is nothing playing.").catch(console.error);
+    if (!canModifyQueue(message.member))
+      return message.reply("You need to join a voice channel first!").catch(console.error);
 
-    try {
-      if (Number.isInteger(parseInt(args[1]))) {
-        var newVolume = args[1];
-        serverQueue.volume = newVolume;
-        serverQueue.connection.dispatcher.setVolumeLogarithmic(
-          serverQueue.volume / 100
-        );
-        message.channel.send({
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: "🔊 Volume set to " + serverQueue.volume + "%",
-            },
-            timestamp: new Date(),
-            footer: {
-              text: "© Britta",
-            },
-          },
-        });
-      } else {
-        message.channel.send({
-          embed: {
-            color: message.client.messageEmbedData.color,
-            author: {
-              name: "❗ Couldn't find a new volume",
-            },
-            timestamp: new Date(),
-            footer: {
-              text: "© Britta",
-            },
-          },
-        });
-      }
-    } catch (error) {
-      message.channel.send({
-        embed: {
-          color: message.client.messageEmbedData.color,
-          author: {
-            name: "❗ There is no music playing right now",
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "© Britta",
-          },
-        },
-      });
-    }
-  },
+    if (!args[0]) return message.reply(`🔊 The current volume is: **${queue.volume}%**`).catch(console.error);
+    if (isNaN(args[0])) return message.reply("Please use a number to set volume.").catch(console.error);
+    if (parseInt(args[0]) > 100 || parseInt(args[0]) < 0)
+      return message.reply("Please use a number between 0 - 100.").catch(console.error);
+
+    queue.volume = args[0];
+    queue.connection.dispatcher.setVolumeLogarithmic(args[0] / 100);
+
+    return queue.textChannel.send(`Volume set to: **${args[0]}%**`).catch(console.error);
+  }
 };
