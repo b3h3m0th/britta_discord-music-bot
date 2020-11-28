@@ -39,7 +39,7 @@ const languageData = {
 
     playing_music: "✔️ {song.title} has been added to the queue",
     playing_playlist: "✔️ **{song.title}** has been added to the queue",
-    started_playlist: "| Started a playlist",
+    started_playlist: "Started a playlist",
     music_remove: "{author} ❌ removed **${song.title}** from the queue.",
 
     paused_music: "{author} ⏸ paused the music.",

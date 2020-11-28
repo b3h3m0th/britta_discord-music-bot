@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "coinflip",
   description: "Flips a coin for you",
-  category: "fun",
+  aliases: ["cf", "flipacoin"],
   execute(message) {
     var result;
     var random = Math.random();
@@ -12,11 +12,7 @@ module.exports = {
     message.channel.send(
       new MessageEmbed()
         .setColor(message.client.config.colors.primary)
-        .setAuthor(
-          `You got: ${result}`,
-          message.client.config.resources.coinflip
-        )
-        .setTimestamp()
+        .setAuthor(`${result}`, message.client.config.resources.coinflip)
     );
   },
 };

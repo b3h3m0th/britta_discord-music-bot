@@ -3,7 +3,6 @@ const config = require("../config.js");
 const { play } = require("../include/play");
 const YouTubeAPI = require("simple-youtube-api");
 const youtube = new YouTubeAPI(config.api.youtube_key);
-const { PRUNING } = require("../config.json");
 
 module.exports = {
   name: "playlist",
@@ -136,21 +135,18 @@ module.exports = {
 
       if (serverQueue) {
         serverQueue.songs.push(song);
-        if (!PRUNING)
-          message.channel
-            .send(
-              new MessageEmbed()
-                .setAuthor(
-                  language("succes")
-                    .playing_playlist.replace("{song.title}", song.title)
-                    .replace("{author}", message.author),
-                  message.author.avatarURL()
-                )
-                .setColor(config.colors.succes)
-            )
-            .catch(console.error);
-      } else {
-        queueConstruct.songs.push(song);
+        message.channel
+          .send(
+            new MessageEmbed()
+              .setAuthor(
+                language("succes")
+                  .playing_playlist.replace("{song.title}", song.title)
+                  .replace("{author}", message.author),
+                message.author.avatarURL()
+              )
+              .setColor(config.colors.succes)
+          )
+          .catch(console.error);
       }
     });
 
@@ -179,19 +175,17 @@ module.exports = {
       .setTimestamp()
       .setFooter(message.client.user.username, message.client.user.avatarURL());
 
-    if (!PRUNING) {
-      playlistEmbed.setDescription(
-        queueConstruct.songs.map(
-          (song, index) => `${map[index + 1]}︲${song.title}`
-        )
-      );
-      if (playlistEmbed.description.length >= 2048)
-        playlistEmbed.description =
-          playlistEmbed.description.substr(0, 2007) +
-          "\n" +
-          language("error").playlist_character +
-          " ";
-    }
+    playlistEmbed.setDescription(
+      queueConstruct.songs.map(
+        (song, index) => `${map[index + 1]}︲${song.title}`
+      )
+    );
+    if (playlistEmbed.description.length >= 2048)
+      playlistEmbed.description =
+        playlistEmbed.description.substr(0, 2007) +
+        "\n" +
+        language("error").playlist_character +
+        " ";
 
     message.channel.send(playlistEmbed);
 

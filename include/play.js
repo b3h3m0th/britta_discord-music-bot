@@ -2,10 +2,10 @@ const ytdlDiscord = require("ytdl-core-discord");
 const scdl = require("soundcloud-downloader");
 const { canModifyQueue } = require("../util/shuffleUtil");
 const { MessageEmbed } = require("discord.js");
+const { soundcloud_client_id } = require("../config");
 
 module.exports = {
   async play(song, message) {
-    const { PRUNING, SOUNDCLOUD_CLIENT_ID } = require("../config.json");
     const queue = message.client.queue.get(message.guild.id);
 
     if (!song) {
@@ -21,12 +21,12 @@ module.exports = {
     try {
       if (song.url.includes("youtube.com")) {
         stream = await ytdlDiscord(song.url, { highWaterMark: 1 << 25 });
-      } else if (song.url.includes("soundcloud.com") && SOUNDCLOUD_CLIENT_ID) {
-        const info = await scdl.getInfo(song.url, SOUNDCLOUD_CLIENT_ID);
+      } else if (song.url.includes("soundcloud.com") && soundcloud_client_id) {
+        const info = await scdl.getInfo(song.url, soundcloud_client_id);
         const opus = scdl.filterMedia(info.media.transcodings, {
           format: scdl.FORMATS.OPUS,
         });
-        stream = await scdl.downloadFromURL(opus[0].url, SOUNDCLOUD_CLIENT_ID);
+        stream = await scdl.downloadFromURL(opus[0].url, soundcloud_client_id);
       }
     } catch (error) {
       if (queue) {
@@ -162,7 +162,7 @@ module.exports = {
 
     collector.on("end", () => {
       playingMessage.reactions.removeAll().catch(console.error);
-      if (PRUNING && playingMessage && !playingMessage.deleted) {
+      if (playingMessage && !playingMessage.deleted) {
         playingMessage.delete({ timeout: 3000 }).catch(console.error);
       }
     });
