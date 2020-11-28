@@ -165,6 +165,10 @@ module.exports = {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
           duration: songInfo.videoDetails.lengthSeconds,
+          thumbnail:
+            songInfo.videoDetails.thumbnail.thumbnails[
+              songInfo.videoDetails.thumbnail.thumbnails.length - 1
+            ].url,
         };
       } catch (error) {
         console.error(error);
@@ -187,9 +191,10 @@ module.exports = {
         .send(
           new MessageEmbed()
             .setAuthor(
-              language("succes")
-                .playing_music.replace("{song.title}", song.title)
-                .replace("{author}", message.author),
+              language("succes").playing_music.replace(
+                "{song.title}",
+                song.title
+              ),
               message.author.avatarURL()
             )
             .setColor(config.colors.succes)

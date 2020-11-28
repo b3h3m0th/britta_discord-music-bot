@@ -37,9 +37,8 @@ const languageData = {
   succes: {
     language_updated: "| Bot language updated to {language}",
 
-    playing_music: "✅ {song.title} has been added to the queue by {author}",
-    playing_playlist:
-      "✅ **${song.title}** has been added to the queue by ${message.author}",
+    playing_music: "✅ {song.title} has been added to the queue",
+    playing_playlist: "✅ **${song.title}** has been added to the queue",
     started_playlist: "| Started a playlist",
     music_remove: "{author} ❌ removed **${song.title}** from the queue.",
 
