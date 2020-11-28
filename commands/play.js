@@ -195,9 +195,11 @@ module.exports = {
                 "{song.title}",
                 song.title
               ),
-              message.author.avatarURL()
+              message.client.config.resources.youtubeIcon
             )
-            .setColor(config.colors.succes)
+            .setColor(message.client.config.colors.primary)
+            .setThumbnail(song.thumbnail)
+            .setURL(song.url)
         )
         .catch(console.error);
     }
