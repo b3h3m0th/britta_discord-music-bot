@@ -147,6 +147,8 @@ module.exports = {
         //       .setColor(config.colors.succes)
         //   )
         //   .catch(console.error);
+      } else {
+        queueConstruct.songs.push(song);
       }
     });
 
@@ -175,12 +177,11 @@ module.exports = {
       .setTitle(`${playlist.title}`)
       .setURL(playlist.url)
       .setColor(config.colors.primary)
-      .setTimestamp()
-      .setFooter(message.client.user.username, message.client.user.avatarURL());
+      .setTimestamp();
 
     playlistEmbed.setDescription(
       queueConstruct.songs.map(
-        (song, index) => `${map[index + 1]}︲${song.title}`
+        (song, index) => `**${index + 1}.** [${song.title}](${song.url})`
       )
     );
     if (playlistEmbed.description.length >= 2048)
