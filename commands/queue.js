@@ -30,7 +30,7 @@ module.exports = {
       queue.songs[0].duration
     )}]**\n\n🔊 **Coming up next**:\n`;
 
-    for (let i = 1; i < queue.songs.length - 1; i++) {
+    for (let i = 1; i < queue.songs.length; i++) {
       description += `**${i}.** [${queue.songs[i].title.slice(0, 50)}](${
         queue.songs[i].url
       })  **[${getFormattedTime(queue.songs[i].duration)}]**\n`;
