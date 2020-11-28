@@ -11,9 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "alexa-bot-api": "^0.1.2",
+    "canvas": "^2.6.1",
     "chalk": "^4.1.0",
-    "jimp": "^0.16.1",
     "discord.js": "^12.5.0",
+    "jimp": "^0.16.1",
     "lyrics-finder": "^21.4.0",
     "nodemon": "^2.0.6",
     "simple-youtube-api": "^5.2.1",
