@@ -42,7 +42,7 @@ module.exports = {
         message.client.config.resources.now_playing
       )
       .setDescription(description)
-      .setColor("#F8AA2A");
+      .setColor(config.colors.primary);
 
     const splitDescription = splitMessage(description, {
       maxLength: 2048,

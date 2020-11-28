@@ -135,18 +135,18 @@ module.exports = {
 
       if (serverQueue) {
         serverQueue.songs.push(song);
-        message.channel
-          .send(
-            new MessageEmbed()
-              .setAuthor(
-                language("succes")
-                  .playing_playlist.replace("{song.title}", song.title)
-                  .replace("{author}", message.author),
-                message.author.avatarURL()
-              )
-              .setColor(config.colors.succes)
-          )
-          .catch(console.error);
+        // message.channel
+        //   .send(
+        //     new MessageEmbed()
+        //       .setAuthor(
+        //         language("succes")
+        //           .playing_playlist.replace("{song.title}", song.title)
+        //           .replace("{author}", message.author),
+        //         message.author.avatarURL()
+        //       )
+        //       .setColor(config.colors.succes)
+        //   )
+        //   .catch(console.error);
       }
     });
 
@@ -166,12 +166,15 @@ module.exports = {
 
     let playlistEmbed = new MessageEmbed()
       .setAuthor(
-        language("succes").started_playlist,
+        language("succes").started_playlist.replace(
+          "{tracks}",
+          `${playlist.videos.length}`
+        ),
         message.author.avatarURL()
       )
       .setTitle(`${playlist.title}`)
       .setURL(playlist.url)
-      .setColor(config.colors.default)
+      .setColor(config.colors.primary)
       .setTimestamp()
       .setFooter(message.client.user.username, message.client.user.avatarURL());
 
