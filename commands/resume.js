@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 const { canModifyQueue } = require("../util/shuffleUtil");
 const config = require("../config.js");
 
@@ -14,7 +15,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("error").nothing_music, message.author.avatarURL())
+            .setAuthor(
+              language("error").nothing_music,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -27,7 +31,10 @@ module.exports = {
         .send(
           new MessageEmbed()
             .setAuthor(
-              language("succes").resumed_music.replace("{author}", message.author.tag),
+              language("succes").resumed_music.replace(
+                "{author}",
+                message.author.username
+              ),
               message.author.avatarURL()
             )
             .setColor(config.colors.failed)
@@ -42,5 +49,5 @@ module.exports = {
           .setColor(config.colors.failed)
       )
       .catch(console.error);
-  }
+  },
 };

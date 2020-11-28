@@ -29,8 +29,7 @@ module.exports = {
         message.client.config.resources.now_playing
       )
       .setDescription(`${song.title}\n${song.url}`)
-      .setColor(config.colors.primary)
-      .setTimestamp();
+      .setColor(config.colors.primary);
 
     if (song.duration > 0)
       nowPlaying.setFooter(

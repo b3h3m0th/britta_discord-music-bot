@@ -1,4 +1,5 @@
-const { MessageEmbed, splitMessage, escapeMarkdown } = require("discord.js");
+const { MessageEmbed, splitMessage } = require("discord.js");
+const { getFormattedTime } = require("../util/formatUtil");
 const config = require("../config.js");
 
 module.exports = {
@@ -14,15 +15,32 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("error").nothing_music, message.author.avatarURL())
+            .setAuthor(
+              language("error").nothing_music,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
 
-    const description = queue.songs.map((song, index) => `${index + 1}. ${escapeMarkdown(song.title)}`);
+    let description = `🔊 **Now Playing**:\n[${queue.songs[0].title.slice(
+      0,
+      50
+    )}](${queue.songs[0].url})  **[${getFormattedTime(
+      queue.songs[0].duration
+    )}]**\n\n🔊 **Coming up next**:\n`;
+
+    for (let i = 1; i < queue.songs.length - 1; i++) {
+      description += `**${i}.** [${queue.songs[i].title.slice(0, 50)}](${
+        queue.songs[i].url
+      })  **[${getFormattedTime(queue.songs[i].duration)}]**\n`;
+    }
 
     let queueEmbed = new MessageEmbed()
-      .setTitle(language("succes").queue_title)
+      .setAuthor(
+        language("succes").queue_title,
+        message.client.config.resources.now_playing
+      )
       .setDescription(description)
       .setColor("#F8AA2A");
 
@@ -30,12 +48,12 @@ module.exports = {
       maxLength: 2048,
       char: "\n",
       prepend: "",
-      append: ""
+      append: "",
     });
 
     splitDescription.forEach(async (m) => {
       queueEmbed.setDescription(m);
       message.channel.send(queueEmbed);
     });
-  }
+  },
 };
