@@ -25,7 +25,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("error").joinvoicechannel, message.author.avatarURL())
+            .setAuthor(
+              language("error").joinvoicechannel,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -34,7 +37,10 @@ module.exports = {
         .send(
           new MessageEmbed()
             .setAuthor(
-              language("error").joinsamechannel.replace("{client}", message.client.user.tag),
+              language("error").joinsamechannel.replace(
+                "{client}",
+                message.client.user.tag
+              ),
               message.author.avatarURL()
             )
             .setColor(config.colors.failed)
@@ -55,7 +61,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("perrmissions").connect, message.author.avatarURL())
+            .setAuthor(
+              language("perrmissions").connect,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -63,7 +72,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("perrmissions").speak, message.author.avatarURL())
+            .setAuthor(
+              language("perrmissions").speak,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -87,7 +99,7 @@ module.exports = {
       songs: [],
       loop: false,
       volume: 100,
-      playing: true
+      playing: true,
     };
 
     let songInfo = null;
@@ -99,7 +111,11 @@ module.exports = {
         song = {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
-          duration: songInfo.videoDetails.lengthSeconds
+          duration: songInfo.videoDetails.lengthSeconds,
+          thumbnail:
+            songInfo.videoDetails.thumbnail.thumbnails[
+              songInfo.videoDetails.thumbnail.thumbnails.length - 1
+            ].url,
         };
       } catch (error) {
         console.error(error);
@@ -110,25 +126,34 @@ module.exports = {
       if (!SOUNDCLOUD_CLIENT_ID)
         return message.channel.send(
           new MessageEmbed()
-            .setAuthor(language("error").soundcloud.client_id, message.author.avatarURL())
+            .setAuthor(
+              language("error").soundcloud.client_id,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         );
       try {
         const trackInfo = await scdl.getInfo(url, SOUNDCLOUD_CLIENT_ID);
         song = {
           title: trackInfo.title,
-          url: url
+          url: url,
         };
       } catch (error) {
         if (error.statusCode === 404)
           return message.channel.send(
             new MessageEmbed()
-              .setAuthor(language("error").soundcloud.piece_not_found, message.author.avatarURL())
+              .setAuthor(
+                language("error").soundcloud.piece_not_found,
+                message.author.avatarURL()
+              )
               .setColor(config.colors.failed)
           );
         return message.channel.send(
           new MessageEmbed()
-            .setAuthor(language("error").soundcloud.piece_error, message.author.avatarURL())
+            .setAuthor(
+              language("error").soundcloud.piece_error,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         );
       }
@@ -139,14 +164,17 @@ module.exports = {
         song = {
           title: songInfo.videoDetails.title,
           url: songInfo.videoDetails.video_url,
-          duration: songInfo.videoDetails.lengthSeconds
+          duration: songInfo.videoDetails.lengthSeconds,
         };
       } catch (error) {
         console.error(error);
         return message.channel
           .send(
             new MessageEmbed()
-              .setAuthor(language("error").matching_video, message.author.avatarURL())
+              .setAuthor(
+                language("error").matching_video,
+                message.author.avatarURL()
+              )
               .setColor(config.colors.failed)
           )
           .catch(console.error);
@@ -183,10 +211,13 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("error").joinvoicechannel_2.replace, message.author.avatarURL())
+            .setAuthor(
+              language("error").joinvoicechannel_2.replace,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
     }
-  }
+  },
 };

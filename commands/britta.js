@@ -2,6 +2,7 @@
 const alexa = require("alexa-bot-api");
 const chatbot = new alexa("aw2plm");
 const { MessageEmbed } = require("discord.js");
+const { getGuildPrefix } = require("../util/prefixUtil");
 
 module.exports = {
   name: "britta",
@@ -10,7 +11,7 @@ module.exports = {
     "Britta will introduce herself. If you provide arguments after the Britta-command Britta she will start having a conversation with you",
   execute(message, args) {
     let role = message.guild.roles.cache.find((role) => role.name === "Britta");
-    const prefix = message.client.config.client.prefix;
+    const prefix = getGuildPrefix(message.guild.id);
 
     if (!role) {
       role = message.guild.roles.create({
@@ -22,8 +23,7 @@ module.exports = {
       message.client.guild.roles.add(role);
     }
 
-    if (args.length >= 2) {
-      args.shift();
+    if (args.length >= 1) {
       var userMessage = args.join(" ");
       chatbot
         .getReply(userMessage)

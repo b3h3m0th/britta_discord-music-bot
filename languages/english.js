@@ -37,8 +37,7 @@ const languageData = {
   succes: {
     language_updated: "| Bot language updated to {language}",
 
-    playing_music:
-      "✅ **{song.title}** has been added to the queue by {author}",
+    playing_music: "✅ {song.title} has been added to the queue by {author}",
     playing_playlist:
       "✅ **${song.title}** has been added to the queue by ${message.author}",
     started_playlist: "| Started a playlist",
@@ -47,7 +46,7 @@ const languageData = {
     paused_music: "{author} ⏸ paused the music.",
     resumed_music: "${author} ▶ resumed the music!",
 
-    queue_title: "ShuffleBot Music Queue",
+    queue_title: "Britta music queue",
 
     nowplaying_title: "Now Playing",
     nowplaying_lyrics_title: "Lyrics",
