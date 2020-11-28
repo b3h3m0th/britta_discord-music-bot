@@ -127,7 +127,6 @@ module.exports = {
     }
 
     videos.forEach((video) => {
-      console.log(video);
       song = {
         title: video.title,
         url: video.url,
