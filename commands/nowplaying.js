@@ -24,10 +24,12 @@ module.exports = {
     const song = queue.songs[0];
 
     let nowPlaying = new MessageEmbed()
-      .setTitle(language("succes").nowplaying_title)
+      .setAuthor(
+        language("succes").nowplaying_title,
+        message.client.config.resources.now_playing
+      )
       .setDescription(`${song.title}\n${song.url}`)
-      .setColor(config.colors.succes)
-      .setAuthor(message.client.user.username)
+      .setColor(config.colors.primary)
       .setTimestamp();
 
     if (song.duration > 0)
