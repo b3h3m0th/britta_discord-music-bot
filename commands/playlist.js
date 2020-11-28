@@ -1,9 +1,9 @@
 const { MessageEmbed } = require("discord.js");
-const { play } = require("../include/play");
-const { YOUTUBE_API_KEY, MAX_PLAYLIST_SIZE } = require("../config.json");
-const YouTubeAPI = require("simple-youtube-api");
-const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const config = require("../config.js");
+const { play } = require("../include/play");
+const YouTubeAPI = require("simple-youtube-api");
+const youtube = new YouTubeAPI(config.api.youtube_key);
+const { PRUNING } = require("../config.json");
 
 module.exports = {
   name: "playlist",
@@ -11,14 +11,15 @@ module.exports = {
   aliases: ["pl"],
   description: "Play a playlist from youtube",
   async execute(message, args) {
-    const { PRUNING } = require("../config.json");
     const { channel } = message.member.voice;
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);
 
     const serverQueue = message.client.queue.get(message.guild.id);
     if (serverQueue && channel !== message.guild.me.voice.channel)
-      return message.reply(`You must be in the same channel as ${message.client.user}`).catch(console.error);
+      return message
+        .reply(`You must be in the same channel as ${message.client.user}`)
+        .catch(console.error);
     if (!args.length)
       return message.channel
         .send(
@@ -31,7 +32,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("error").joinvoicechannel, message.author.avatarURL())
+            .setAuthor(
+              language("error").joinvoicechannel,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -41,7 +45,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("perrmissions").connect, message.author.avatarURL())
+            .setAuthor(
+              language("perrmissions").connect,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -49,7 +56,10 @@ module.exports = {
       return message.channel
         .send(
           new MessageEmbed()
-            .setAuthor(language("perrmissions").speak, message.author.avatarURL())
+            .setAuthor(
+              language("perrmissions").speak,
+              message.author.avatarURL()
+            )
             .setColor(config.colors.failed)
         )
         .catch(console.error);
@@ -66,7 +76,7 @@ module.exports = {
       songs: [],
       loop: false,
       volume: 100,
-      playing: true
+      playing: true,
     };
 
     let song = null;
@@ -76,28 +86,40 @@ module.exports = {
     if (urlValid) {
       try {
         playlist = await youtube.getPlaylist(url, { part: "snippet" });
-        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" });
+        videos = await playlist.getVideos(config.max_playlist_size || 10, {
+          part: "snippet",
+        });
       } catch (error) {
         console.error(error);
         return message.channel
           .send(
             new MessageEmbed()
-              .setAuthor(language("error").matching_playlist, message.author.avatarURL())
+              .setAuthor(
+                language("error").matching_playlist,
+                message.author.avatarURL()
+              )
               .setColor(config.colors.failed)
           )
           .catch(console.error);
       }
     } else {
       try {
-        const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
+        const results = await youtube.searchPlaylists(search, 1, {
+          part: "snippet",
+        });
         playlist = results[0];
-        videos = await playlist.getVideos(MAX_PLAYLIST_SIZE || 10, { part: "snippet" });
+        videos = await playlist.getVideos(config.api.max_playlist_size || 10, {
+          part: "snippet",
+        });
       } catch (error) {
         console.error(error);
         return message.channel
           .send(
             new MessageEmbed()
-              .setAuthor(language("error").matching_playlist, message.author.avatarURL())
+              .setAuthor(
+                language("error").matching_playlist,
+                message.author.avatarURL()
+              )
               .setColor(config.colors.failed)
           )
           .catch(console.error);
@@ -105,10 +127,12 @@ module.exports = {
     }
 
     videos.forEach((video) => {
+      console.log(video);
       song = {
         title: video.title,
         url: video.url,
-        duration: video.durationSeconds
+        duration: video.durationSeconds,
+        thumbnail: video.thumbnails.high.url,
       };
 
       if (serverQueue) {
@@ -142,11 +166,14 @@ module.exports = {
       7: "<:seven:741005686258925650>",
       8: "<:eight:741005686736945173>",
       9: "<:nine:741005686288285750>",
-      10: "<:one:741005685155954688><:zero:741005686795927692>"
+      10: "<:one:741005685155954688><:zero:741005686795927692>",
     };
 
     let playlistEmbed = new MessageEmbed()
-      .setAuthor(language("succes").started_playlist, message.author.avatarURL())
+      .setAuthor(
+        language("succes").started_playlist,
+        message.author.avatarURL()
+      )
       .setTitle(`${playlist.title}`)
       .setURL(playlist.url)
       .setColor(config.colors.default)
@@ -155,16 +182,22 @@ module.exports = {
 
     if (!PRUNING) {
       playlistEmbed.setDescription(
-        queueConstruct.songs.map((song, index) => `${map[index + 1]}︲${song.title}`)
+        queueConstruct.songs.map(
+          (song, index) => `${map[index + 1]}︲${song.title}`
+        )
       );
       if (playlistEmbed.description.length >= 2048)
         playlistEmbed.description =
-          playlistEmbed.description.substr(0, 2007) + "\n" + language("error").playlist_character + " ";
+          playlistEmbed.description.substr(0, 2007) +
+          "\n" +
+          language("error").playlist_character +
+          " ";
     }
 
     message.channel.send(playlistEmbed);
 
-    if (!serverQueue) message.client.queue.set(message.guild.id, queueConstruct);
+    if (!serverQueue)
+      message.client.queue.set(message.guild.id, queueConstruct);
 
     if (!serverQueue) {
       try {
@@ -178,11 +211,14 @@ module.exports = {
         return message.channel
           .send(
             new MessageEmbed()
-              .setAuthor(language("error").joinvoicechannel_2.replace, message.author.avatarURL())
+              .setAuthor(
+                language("error").joinvoicechannel_2.replace,
+                message.author.avatarURL()
+              )
               .setColor(config.colors.failed)
           )
           .catch(console.error);
       }
     }
-  }
+  },
 };

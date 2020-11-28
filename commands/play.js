@@ -197,9 +197,9 @@ module.exports = {
               ),
               message.client.config.resources.youtubeIcon
             )
+            .setURL(song.url)
             .setColor(message.client.config.colors.primary)
             .setThumbnail(song.thumbnail)
-            .setURL(song.url)
         )
         .catch(console.error);
     }
