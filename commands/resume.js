@@ -46,7 +46,7 @@ module.exports = {
       .send(
         new MessageEmbed()
           .setAuthor(language("error").queue_isnot, message.author.avatarURL())
-          .setColor(config.colors.failed)
+          .setColor(config.colors.primary)
       )
       .catch(console.error);
   },
