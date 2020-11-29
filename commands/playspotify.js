@@ -1,76 +1,21 @@
 const { play } = require("../include/play");
-const {
-  YOUTUBE_API_KEY,
-  SPOTIFY_ACCESS_TOKEN,
-  SOUNDCLOUD_CLIENT_ID,
-  SPOTIFY_CLIENT_ID,
-  SPOTIFY_CLIENT_SECRET,
-  SPOTIFY_REDIRECT_URI
-} = require("../config.json");
-const ytdl = require("ytdl-core");
+const config = require("../config");
 const YouTubeAPI = require("simple-youtube-api");
-const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
-const scdl = require("soundcloud-downloader");
+const youtube = new YouTubeAPI(config.api.youtube_key);
 const { MessageEmbed } = require("discord.js");
-const config = require("../config.js");
+const spotifyUtil = require("../util/spotifyUtil");
+const spotifyUri = require("spotify-uri");
+const ytdl = require("ytdl-core");
 
-var SpotifyWebApi = require("spotify-web-api-node");
+const SpotifyWebApi = require("spotify-web-api-node");
 
-var spotifyApi = new SpotifyWebApi({
-  clientId: SPOTIFY_CLIENT_ID,
-  clientSecret: SPOTIFY_CLIENT_SECRET,
-  redirectUri: SPOTIFY_REDIRECT_URI
+const spotifyApi = new SpotifyWebApi({
+  clientId: config.api.spotify_client_id,
+  clientSecret: config.api.spotify_client_secret,
+  redirectUri: config.api.spotify_redirect_uri,
 });
 
-spotifyApi.setAccessToken(SPOTIFY_ACCESS_TOKEN);
-
-const getSpotifyTrackID = (uri) => {
-  try {
-    if (uri.includes("https://")) {
-      let url_parameters = uri.split("?");
-      let actual_url = url_parameters[0];
-      url_parts = actual_url.split("/");
-      return url_parts[url_parts.length - 1];
-    } else {
-      let uri_parts = uri.split(":");
-      return uri_parts[uri_parts.length - 1];
-    }
-  } catch (err) {
-    console.log("error " + err);
-  }
-};
-
-const getSpotifyAlbumID = (uri) => {
-  try {
-    if (uri.includes("https://")) {
-      let url_parameters = uri.split("?");
-      let actual_url = url_parameters[0];
-      url_parts = actual_url.split("/");
-      return url_parts[url_parts.length - 1];
-    } else {
-      let uri_parts = uri.split(":");
-      return uri_parts[uri_parts.length - 1];
-    }
-  } catch (err) {
-    console.log("error " + err);
-  }
-};
-
-const getSpotifyPlaylistID = (uri) => {
-  try {
-    if (uri.includes("https://")) {
-      let url_parameters = uri.split("?");
-      let actual_url = url_parameters[0];
-      url_parts = actual_url.split("/");
-      return url_parts[url_parts.length - 1];
-    } else {
-      let uri_parts = uri.split(":");
-      return uri_parts[uri_parts.length - 1];
-    }
-  } catch (err) {
-    console.log("error " + err);
-  }
-};
+spotifyUtil.getSpotifyAccessToken(spotifyApi);
 
 module.exports = {
   name: "playspotify",
@@ -87,14 +32,20 @@ module.exports = {
     if (!channel)
       return message.channel.send(
         new MessageEmbed()
-          .setAuthor(language("error").joinvoicechannel, message.author.avatarURL())
+          .setAuthor(
+            language("error").joinvoicechannel,
+            message.author.avatarURL()
+          )
           .setColor(config.colors.failed)
       );
     if (serverQueue && channel !== message.guild.me.voice.channel)
       return message.channel.send(
         new MessageEmbed()
           .setAuthor(
-            language("error").joinsamechannel.replace("{client}", message.client.user.tag),
+            language("error").joinsamechannel.replace(
+              "{client}",
+              message.client.user.tag
+            ),
             message.author.avatarURL()
           )
           .setColor(config.colors.failed)
@@ -111,7 +62,10 @@ module.exports = {
     if (!permissions.has("CONNECT"))
       return message.channel.send(
         new MessageEmbed()
-          .setAuthor(language("perrmissions").connect, message.author.avatarURL())
+          .setAuthor(
+            language("perrmissions").connect,
+            message.author.avatarURL()
+          )
           .setColor(config.colors.failed)
       );
     if (!permissions.has("SPEAK"))
@@ -121,44 +75,189 @@ module.exports = {
           .setColor(config.colors.failed)
       );
 
-    const search = args.join(" ");
     const videoPattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
     const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
-    const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
     const url = args[0];
-    const urlValid = videoPattern.test(args[0]);
+
+    const queueConstruct = {
+      textChannel: message.channel,
+      channel,
+      connection: null,
+      songs: [],
+      loop: false,
+      volume: 100,
+      playing: true,
+    };
 
     // Start the playlist if playlist url was provided
     if (!videoPattern.test(args[0]) && playlistPattern.test(args[0])) {
       return message.client.commands.get("playlist").execute(message, args);
     }
 
+    let songData;
+    let songInfo;
     const spotifyTracks = [];
+    let spotifyEmbed = new MessageEmbed().setTimestamp();
 
-    if (url.includes("https://open.spotify.com/track/") || url.includes("spotify:track:")) {
-      spotifyApi.getTrack(getSpotifyTrackID(url)).then(
-        function (data) {
-          const track = data.body;
-          spotifyTracks.push({ songName: track.name, artist: track.artists[0] });
-        },
-        function (err) {
-          console.log(err);
-        }
-      );
-    } else if (url.includes("https://open.spotify.com/album/") || url.includes("spotify:album:")) {
-      spotifyApi.getAlbumTracks(getSpotifyAlbumID(url)).then(
-        function (data) {
-          let tracks = data.body.items;
-          tracks.forEach((track) => {
-            spotifyTracks.songs.push({ songName: track.name, artist: track.artists[0] });
-          });
-        },
-        function (err) {
-          console.log(err);
-        }
+    try {
+      songData = spotifyUri.parse(url);
+    } catch (err) {
+      console.log(err);
+      return message.channel.send(
+        new MessageEmbed()
+          .setAuthor(
+            language("error").spotify_invalid_uri,
+            message.client.config.resources.spotifyIcon
+          )
+          .setColor(message.client.config.colors.failed)
       );
     }
 
-    // Now you have the song data. You can search the song now with the Youtube API and add it to the queue
-  }
+    if (songData.type === "track") {
+      spotifyApi
+        .getTrack(songData.id)
+        .then(async (data) => {
+          const track = data.body;
+          const results = await youtube.searchVideos(
+            `${track.name} ${track.artists[0].name}`
+          );
+          songInfo = await ytdl.getInfo(results[0].url);
+
+          await spotifyTracks.push({
+            title: track.name,
+            url: songInfo.videoDetails.video_url,
+            duration: Math.floor(track.duration_ms / 1000),
+            thumbnail:
+              songInfo.videoDetails.thumbnail.thumbnails[
+                songInfo.videoDetails.thumbnail.thumbnails.length - 1
+              ].url,
+          });
+
+          spotifyEmbed
+            .setAuthor(
+              `✔️ ${songInfo.videoDetails.title} has been added to queue.`,
+              message.client.config.resources.spotifyIcon
+            )
+            .setThumbnail(
+              songInfo.videoDetails.thumbnail.thumbnails[
+                songInfo.videoDetails.thumbnail.thumbnails.length - 1
+              ].url
+            );
+
+          message.channel.send(spotifyEmbed);
+
+          console.log("döner", spotifyTracks);
+        })
+        .catch((err) => console.log(err));
+    } else if (songData.type === "album") {
+      spotifyApi.getAlbum(songData.id).then((data) => {
+        const album = data.body;
+        const tracks = album.tracks.items;
+        let thumbnail;
+
+        console.log(tracks);
+
+        tracks.forEach(async (track) => {
+          const results = await youtube.searchVideos(
+            `${track.name} ${track.artists[0].name}`
+          );
+          songInfo = await ytdl.getInfo(results[0].url);
+          thumbnail =
+            songInfo.videoDetails.thumbnail.thumbnails[
+              songInfo.videoDetails.thumbnail.thumbnails.length - 1
+            ].url;
+
+          spotifyTracks.push({
+            title: track.name,
+            url: songInfo.videoDetails.video_url,
+            duration: Math.floor(track.duration_ms / 1000),
+            thumbnail: thumbnail,
+          });
+        });
+
+        spotifyEmbed
+          .setAuthor(
+            `✔️ ${album.name} with ${tracks.length} songs has been added to queue.`,
+            message.client.config.resources.spotifyIcon
+          )
+          .setThumbnail(thumbnail);
+
+        message.channel.send(spotifyEmbed);
+      });
+    } else if (songData.type === "playlist") {
+      spotifyApi.getPlaylistTracks(songData.id).then((data) => {
+        const playlist = data.body;
+
+        playlist.items.forEach(async (item) => {
+          const results = await youtube.searchVideos(
+            `${item.track.name} ${item.track.artists[0].name}`
+          );
+          songInfo = await ytdl.getInfo(results[0].url);
+
+          spotifyTracks.push({
+            title: item.track.name,
+            url: songInfo.videoDetails.video_url,
+            duration: Math.floor(item.track.duration_ms / 1000),
+            thumbnail:
+              songInfo.videoDetails.thumbnail.thumbnails[
+                songInfo.videoDetails.thumbnail.thumbnails.length - 1
+              ].url,
+          });
+        });
+
+        spotifyEmbed.setAuthor(
+          `✔️ A Playlist with ${playlist.items.length} songs has been added to queue.`,
+          message.client.config.resources.spotifyIcon
+        );
+
+        message.channel.send(spotifyEmbed);
+      });
+    } else {
+      return message.channel.send(
+        new MessageEmbed()
+          .setAuthor(
+            language("error").spotify_invalid_uri,
+            message.client.config.resources.spotifyIcon
+          )
+          .setColor(message.client.config.colors.failed)
+      );
+    }
+
+    setTimeout(async () => {
+      spotifyTracks.forEach((track) => {
+        console.log("zack");
+
+        if (serverQueue) {
+          serverQueue.push(track);
+        } else {
+          queueConstruct.songs.push(track);
+        }
+      });
+
+      if (!serverQueue)
+        message.client.queue.set(message.guild.id, queueConstruct);
+
+      if (!serverQueue) {
+        try {
+          queueConstruct.connection = await channel.join();
+          await queueConstruct.connection.voice.setSelfDeaf(true);
+          play(queueConstruct.songs[0], message);
+        } catch (error) {
+          console.error(error);
+          message.client.queue.delete(message.guild.id);
+          await channel.leave();
+          return message.channel
+            .send(
+              new MessageEmbed()
+                .setAuthor(
+                  language("error").joinvoicechannel_2.replace,
+                  message.author.avatarURL()
+                )
+                .setColor(config.colors.failed)
+            )
+            .catch(console.error);
+        }
+      }
+    }, 8000);
+  },
 };

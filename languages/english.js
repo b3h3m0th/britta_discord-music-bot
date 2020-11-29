@@ -32,6 +32,7 @@ const languageData = {
     nothing_music: "There is nothing playing.",
 
     lyrics_not_found: "No lyrics found for **{song.title}**",
+    spotify_invalid_uri: "Please provide a valid spotify URI.",
   },
 
   succes: {
