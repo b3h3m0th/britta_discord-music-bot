@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "stats",
-  aliases: ["statistics", "i", "info"],
+  aliases: ["statistics"],
   description: "Display all commands and descriptions",
   execute(message) {
     const client = message.client;
@@ -14,7 +14,10 @@ module.exports = {
     let uptime = `${hours} hours, ${minutes} minutes and ${seconds} seconds`;
 
     const statsEmbed = new MessageEmbed()
-      .setAuthor(message.author.tag, message.author.avatarURL())
+      .setAuthor(
+        `${message.client.user.username} stats`,
+        message.client.user.avatarURL()
+      )
       .setDescription(
         `
     Guild Count: ${client.guilds.cache.size.toLocaleString()}
