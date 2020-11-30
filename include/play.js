@@ -8,8 +8,6 @@ module.exports = {
   async play(song, message) {
     const queue = message.client.queue.get(message.guild.id);
 
-    console.log("song:", song);
-
     if (!song) {
       queue.channel.leave();
       message.client.queue.delete(message.guild.id);

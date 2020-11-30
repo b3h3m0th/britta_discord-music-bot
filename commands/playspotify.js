@@ -145,8 +145,6 @@ module.exports = {
             );
 
           message.channel.send(spotifyEmbed);
-
-          console.log("spotifyTracks:", spotifyTracks);
         })
         .catch((err) => console.log(err));
       // } else if (songData.type === "album") {
