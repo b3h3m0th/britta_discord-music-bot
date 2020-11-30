@@ -30,9 +30,7 @@ module.exports = {
       .send(
         new MessageEmbed()
           .setAuthor(
-            `${language("succes").queue_loop} ${
-              queue.loop ? "**on**" : "**off**"
-            }`,
+            `${language("succes").queue_loop} ${queue.loop ? "on" : "off"}`,
             message.author.avatarURL()
           )
           .setColor(config.colors.succes)

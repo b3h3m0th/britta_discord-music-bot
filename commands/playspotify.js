@@ -146,71 +146,82 @@ module.exports = {
 
           message.channel.send(spotifyEmbed);
 
-          console.log("döner", spotifyTracks);
+          console.log("spotifyTracks:", spotifyTracks);
         })
         .catch((err) => console.log(err));
-    } else if (songData.type === "album") {
-      spotifyApi.getAlbum(songData.id).then((data) => {
-        const album = data.body;
-        const tracks = album.tracks.items;
-        let thumbnail;
+      // } else if (songData.type === "album") {
+      //   spotifyApi.getAlbum(songData.id).then((data) => {
+      //     const album = data.body;
+      //     const tracks = album.tracks.items;
+      //     let thumbnail;
 
-        console.log(tracks);
+      //     console.log(tracks);
 
-        tracks.forEach(async (track) => {
-          const results = await youtube.searchVideos(
-            `${track.name} ${track.artists[0].name}`
-          );
-          songInfo = await ytdl.getInfo(results[0].url);
-          thumbnail =
-            songInfo.videoDetails.thumbnail.thumbnails[
-              songInfo.videoDetails.thumbnail.thumbnails.length - 1
-            ].url;
+      //     tracks.forEach(async (track) => {
+      //       const results = await youtube.searchVideos(
+      //         `${track.name} ${track.artists[0].name}`
+      //       );
+      //       songInfo = await ytdl.getInfo(results[0].url);
+      //       thumbnail =
+      //         songInfo.videoDetails.thumbnail.thumbnails[
+      //           songInfo.videoDetails.thumbnail.thumbnails.length - 1
+      //         ].url;
 
-          spotifyTracks.push({
-            title: track.name,
-            url: songInfo.videoDetails.video_url,
-            duration: Math.floor(track.duration_ms / 1000),
-            thumbnail: thumbnail,
-          });
-        });
+      //       await spotifyTracks.push({
+      //         title: track.name,
+      //         url: songInfo.videoDetails.video_url,
+      //         duration: Math.floor(track.duration_ms / 1000),
+      //         thumbnail: thumbnail,
+      //       });
+      //     });
 
-        spotifyEmbed
-          .setAuthor(
-            `✔️ ${album.name} with ${tracks.length} songs has been added to queue.`,
-            message.client.config.resources.spotifyIcon
-          )
-          .setThumbnail(thumbnail);
+      //     spotifyEmbed
+      //       .setAuthor(
+      //         `✔️ ${album.name} with ${tracks.length} songs has been added to queue.`,
+      //         message.client.config.resources.spotifyIcon
+      //       )
+      //       .setThumbnail(thumbnail);
 
-        message.channel.send(spotifyEmbed);
-      });
+      //     message.channel.send(spotifyEmbed);
+      //   });
     } else if (songData.type === "playlist") {
       spotifyApi.getPlaylistTracks(songData.id).then((data) => {
         const playlist = data.body;
 
-        playlist.items.forEach(async (item) => {
-          const results = await youtube.searchVideos(
-            `${item.track.name} ${item.track.artists[0].name}`
-          );
-          songInfo = await ytdl.getInfo(results[0].url);
+        if (playlist.items.length <= config.api.max_playlist_size) {
+          playlist.items.forEach(async (item) => {
+            const results = await youtube.searchVideos(
+              `${item.track.name} ${item.track.artists[0].name}`
+            );
+            songInfo = await ytdl.getInfo(results[0].url);
 
-          spotifyTracks.push({
-            title: item.track.name,
-            url: songInfo.videoDetails.video_url,
-            duration: Math.floor(item.track.duration_ms / 1000),
-            thumbnail:
-              songInfo.videoDetails.thumbnail.thumbnails[
-                songInfo.videoDetails.thumbnail.thumbnails.length - 1
-              ].url,
+            await spotifyTracks.push({
+              title: item.track.name,
+              url: songInfo.videoDetails.video_url,
+              duration: Math.floor(item.track.duration_ms / 1000),
+              thumbnail:
+                songInfo.videoDetails.thumbnail.thumbnails[
+                  songInfo.videoDetails.thumbnail.thumbnails.length - 1
+                ].url,
+            });
           });
-        });
+          spotifyEmbed.setAuthor(
+            `✔️ A Playlist with ${playlist.items.length} songs has been added to queue.`,
+            message.client.config.resources.spotifyIcon
+          );
 
-        spotifyEmbed.setAuthor(
-          `✔️ A Playlist with ${playlist.items.length} songs has been added to queue.`,
-          message.client.config.resources.spotifyIcon
-        );
-
-        message.channel.send(spotifyEmbed);
+          message.channel.send(spotifyEmbed);
+        } else {
+          return message.channel.send(
+            new MessageEmbed()
+              .setTimestamp()
+              .setAuthor(
+                `This playlist is longer than the maximum of ${config.api.max_playlist_size} songs.`,
+                config.resources.spotifyIcon
+              )
+              .setColor(config.colors.failed)
+          );
+        }
       });
     } else {
       return message.channel.send(
@@ -225,10 +236,8 @@ module.exports = {
 
     setTimeout(async () => {
       spotifyTracks.forEach((track) => {
-        console.log("zack");
-
         if (serverQueue) {
-          serverQueue.push(track);
+          serverQueue.songs.push(track);
         } else {
           queueConstruct.songs.push(track);
         }
@@ -242,8 +251,8 @@ module.exports = {
           queueConstruct.connection = await channel.join();
           await queueConstruct.connection.voice.setSelfDeaf(true);
           play(queueConstruct.songs[0], message);
-        } catch (error) {
-          console.error(error);
+        } catch (err) {
+          console.error(err);
           message.client.queue.delete(message.guild.id);
           await channel.leave();
           return message.channel
@@ -258,6 +267,6 @@ module.exports = {
             .catch(console.error);
         }
       }
-    }, 8000);
+    }, 6000);
   },
 };
