@@ -8,7 +8,7 @@ module.exports = {
           );
           spotifyApi.setAccessToken(data.body["access_token"]);
           setTimeout(
-            () => this.getSpotifyAccessToken(),
+            () => this.getSpotifyAccessToken(spotifyApi),
             (data.body["expires_in"] - 20) * 1000
           );
         },
