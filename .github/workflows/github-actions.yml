@@ -15,7 +15,7 @@ jobs:
         run: npm install
       - name: NODE CI
         run: npm ci
-      - name: ESlint Checks
-        run: npx eslint .
+#       - name: ESlint Checks
+#         run: npx eslint .
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag britta-bot:$(date +%s)
