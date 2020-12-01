@@ -29,8 +29,22 @@ const cooldowns = new Collection();
 client.on("ready", () => {
   console.log(`${client.user.tag} is online!`);
   setInterval(() => {
-    const statusArray = config.client.games;
-    const randomStatus = Math.floor(Math.random() * statusArray.length);
+    var statusArray = [
+      {
+        type: "PLAYING",
+        name: "with {users} users",
+      },
+      {
+        type: "LISTENING",
+        name: "{clientname}",
+      },
+      {
+        type: "WATCHING",
+        name: "{servers} servers",
+      },
+    ];
+    var statusArrayLen = statusArray.length;
+    const randomStatus = Math.floor(Math.random() * statusArrayLen);
     const status = statusArray[randomStatus];
     client.user.setActivity(
       status.name

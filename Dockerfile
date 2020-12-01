@@ -1,4 +1,4 @@
-FROM dftechs/ubuntu-dev:latest
+FROM ubuntu:latest
 WORKDIR /app
 
 RUN apt update -y && apt upgrade -y && apt install tzdata -y
@@ -10,7 +10,7 @@ RUN apt install wget git curl -y
 
 RUN export PORT=5000
 
-RUN apt install make python gcc g++ python3-pip build-essential bash git ffmpeg libopus-dev libffi-dev libsodium-dev python3 python git openjdk-11-jre-headless -y
+RUN apt install make python gcc g++ python3-pip build-essential bash git ffmpeg libopus-dev libffi-dev libsodium-dev python3 python git -y
 
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs 
