@@ -3,7 +3,6 @@ const config = require("../config.js");
 const { play } = require("../include/play");
 const YouTubeAPI = require("simple-youtube-api");
 const youtube = new YouTubeAPI(config.api.youtube_key);
-const { getFormatedTime } = require("../util/formatUtil");
 
 module.exports = {
   name: "playlist",
