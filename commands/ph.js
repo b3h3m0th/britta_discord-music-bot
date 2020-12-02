@@ -1,4 +1,6 @@
 const Discord = require("discord.js");
+global.fetch = require("node-fetch");
+const config = require("../config");
 
 module.exports = {
   name: "pornhub",
@@ -12,6 +14,7 @@ module.exports = {
     if (!args.join(" ").split("").join(" ").split(" ").includes(",")) {
       return message.channel.send("There are no (,)");
     }
+
     let firstArg = args.join(" ").split(",")[0];
     let secArg;
     if (args.join(" ").split(",")[1].startsWith(" ")) {
@@ -19,12 +22,29 @@ module.exports = {
     } else {
       secArg = args.join(" ").split(",")[1];
     }
-    let phAttachment = new Discord.MessageAttachment(
-      `https://api.alexflipnote.dev/pornhub?text=${firstArg
-        .split(" ")
-        .join("%20")}&text2=${secArg.split(" ").join("%20")}`,
-      "PHText.png"
-    );
+
+    try {
+      const phImageRes = await fetch(
+        `https://api.alexflipnote.dev/pornhub?text=${firstArg
+          .split(" ")
+          .join("%20")}&text2=${secArg.split(" ").join("%20")}`,
+        {
+          headers: {
+            Authorization: config.api.alexflipnote_token,
+            "User-Agent": "AlexFlipnote.js@2.2.0 by HarutoHiroki#4000",
+          },
+        }
+      );
+
+      console.log(phImageRes);
+
+      message.channel.send(
+        new Discord.MessageAttachment(phImageRes.body),
+        "ph.jpg"
+      );
+    } catch (err) {
+      console.log(err);
+    }
 
     let phEmbed = new Discord.MessageEmbed()
       .setColor("#2f3136")
