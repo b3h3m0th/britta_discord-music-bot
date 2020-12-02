@@ -8,6 +8,8 @@ const { readdirSync } = require("fs");
 const { join } = require("path");
 const config = require("./config.js");
 const { getGuildPrefix } = require("./util/prefixUtil");
+const flipnoteClient = require("alexflipnote.js");
+const alexclient = new flipnoteClient(config.api.alexflipnote_token);
 
 /**
  * Language
@@ -21,6 +23,7 @@ client.login(config.client.token);
 client.commands = new Collection();
 client.queue = new Map();
 client.config = config;
+client.alexclient = alexclient;
 const cooldowns = new Collection();
 
 /**

@@ -1,6 +1,5 @@
-const Discord = require("discord.js");
 global.fetch = require("node-fetch");
-const config = require("../config");
+const { MessageAttachment } = require("discord.js");
 
 module.exports = {
   name: "pornhub",
@@ -24,36 +23,14 @@ module.exports = {
     }
 
     try {
-      const phImageRes = await fetch(
-        `https://api.alexflipnote.dev/pornhub?text=${firstArg
-          .split(" ")
-          .join("%20")}&text2=${secArg.split(" ").join("%20")}`,
-        {
-          headers: {
-            Authorization: config.api.alexflipnote_token,
-            "User-Agent": "AlexFlipnote.js@2.2.0 by HarutoHiroki#4000",
-          },
-        }
-      );
+      let phRes = await message.client.alexclient.image.pornhub({
+        text: firstArg,
+        text2: secArg,
+      });
 
-      console.log(phImageRes);
-
-      message.channel.send(
-        new Discord.MessageAttachment(phImageRes.body),
-        "ph.jpg"
-      );
+      return message.channel.send(new MessageAttachment(phRes, "phtext.png"));
     } catch (err) {
       console.log(err);
     }
-
-    let phEmbed = new Discord.MessageEmbed()
-      .setColor("#2f3136")
-      .setImage(
-        `https://api.alexflipnote.dev/pornhub?text=${firstArg
-          .split(" ")
-          .join("%20")}&text2=${secArg.split(" ").join("%20")}`,
-        "PHText.png"
-      );
-    return message.channel.send(phEmbed);
   },
 };
