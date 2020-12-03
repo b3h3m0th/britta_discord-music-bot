@@ -39,21 +39,21 @@ client.on("ready", () => {
       },
       {
         type: "LISTENING",
-        name: "{clientname}",
+        name: "{prefix}help",
       },
       {
         type: "WATCHING",
         name: "{servers} servers",
       },
     ];
-    let statusArrayLen = statusArray.length;
-    const randomStatus = Math.floor(Math.random() * statusArrayLen);
-    const status = statusArray[randomStatus];
+
+    const status = statusArray[Math.floor(Math.random() * statusArray.length)];
     client.user.setActivity(
       status.name
         .replace("{users}", client.users.cache.size)
-        .replace("{servers}", "7098")
-        .replace("{clientname}", client.user.username)
+        .replace("{servers}", client.guilds.cache.size)
+        .replace("{prefix}", config.client.prefix),
+      { type: status.type }
     );
   }, 15000);
 });

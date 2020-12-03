@@ -12,7 +12,7 @@ module.exports = {
   name: "play",
   cooldown: 3,
   aliases: ["p"],
-  description: "Plays audio from YouTube",
+  description: "Plays audio from YouTube or Spotify",
   async execute(message, args) {
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);
