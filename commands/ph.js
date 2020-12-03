@@ -1,5 +1,5 @@
 global.fetch = require("node-fetch");
-const { MessageAttachment } = require("discord.js");
+const { MessageAttachment, MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "pornhub",
@@ -8,10 +8,24 @@ module.exports = {
   description: "Print a text in Pornhub style",
   execute: async (message, args) => {
     if (!args[0]) {
-      return message.channel.send("No arguments");
+      return message.channel.send(
+        new MessageEmbed()
+          .setAuthor(
+            "Please provide 2 arguments divided by a `,`",
+            message.author.avatarURL()
+          )
+          .setColor(message.client.config.colors.failed)
+      );
     }
     if (!args.join(" ").split("").join(" ").split(" ").includes(",")) {
-      return message.channel.send("There are no (,)");
+      return message.channel.send(
+        new MessageEmbed()
+          .setAuthor(
+            "Please provide 2 arguments divided by a ,",
+            message.author.avatarURL()
+          )
+          .setColor(message.client.config.colors.failed)
+      );
     }
 
     let firstArg = args.join(" ").split(",")[0];
