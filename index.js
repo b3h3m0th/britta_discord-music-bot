@@ -52,7 +52,7 @@ client.on("ready", () => {
     client.user.setActivity(
       status.name
         .replace("{users}", client.users.cache.size)
-        .replace("{servers}", "7098")
+        .replace("{servers}", client.guilds.cache.size)
         .replace("{clientname}", client.user.username)
     );
   }, 15000);
