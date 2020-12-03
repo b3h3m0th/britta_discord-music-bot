@@ -3,7 +3,7 @@ const { MessageAttachment, MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "pornhub",
-  cooldown: "4",
+  cooldown: 4,
   aliases: ["ph"],
   description: "Print a text in Pornhub style",
   execute: async (message, args) => {

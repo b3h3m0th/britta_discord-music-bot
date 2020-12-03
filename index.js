@@ -4,8 +4,8 @@
  */
 const { Client, Collection } = require("discord.js");
 const { MessageEmbed } = require("discord.js");
-const { readdirSync } = require("fs");
-const { join } = require("path");
+const fs = require("fs");
+const path = require("path");
 const config = require("./config.js");
 const { getGuildPrefix } = require("./util/prefixUtil");
 const flipnoteClient = require("alexflipnote.js");
@@ -64,17 +64,18 @@ client.on("error", console.error);
 /**
  * Import all commands
  */
-const commandFiles = readdirSync(join(__dirname, "commands")).filter((file) =>
-  file.endsWith(".js")
-);
+const commandFiles = fs
+  .readdirSync(path.join(__dirname, "commands"))
+  .filter((file) => file.endsWith(".js"));
 for (const file of commandFiles) {
-  const command = require(join(__dirname, "commands", `${file}`));
+  const command = require(path.join(__dirname, "commands", `${file}`));
   client.commands.set(command.name, command);
 }
 
 client.on("message", async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
+  if (message.webhookID) return;
 
   //PREFIX
   client.prefix = getGuildPrefix(message.guild.id);
