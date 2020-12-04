@@ -35,14 +35,13 @@
     "prettier": "^2.1.2",
     "request": "^2.88.2",
     "simple-youtube-api": "^5.2.1",
-    "soundcloud-downloader": "0.1.9",
+    "soundcloud-downloader": "^0.2.1",
     "spotify-uri": "^2.1.0",
     "spotify-web-api-js": "^1.5.1",
     "spotify-web-api-node": "^4.0.0",
     "superagent": "^5.3.1",
     "youtube-search": "^1.1.4",
-    "ytdl-core": "^4.1.2",
-    "ytdl-core-discord": "^1.2.4"
+    "ytdl-core": "^4.1.2"
   },
   "devDependencies": {
     "eslint": "^7.14.0",

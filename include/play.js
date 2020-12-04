@@ -1,4 +1,4 @@
-const ytdlDiscord = require("ytdl-core-discord");
+const ytdl = require("ytdl-core");
 const scdl = require("soundcloud-downloader");
 const { canModifyQueue } = require("../util/shuffleUtil");
 const { MessageEmbed } = require("discord.js");
@@ -20,7 +20,10 @@ module.exports = {
 
     try {
       if (song.url.includes("youtube.com")) {
-        stream = await ytdlDiscord(song.url, { highWaterMark: 1 << 25 });
+        stream = await ytdl(song.url, {
+          highWaterMark: 1 << 25,
+          opusEncoded: true,
+        });
       } else if (song.url.includes("soundcloud.com") && soundcloud_client_id) {
         const info = await scdl.getInfo(song.url, soundcloud_client_id);
         const opus = scdl.filterMedia(info.media.transcodings, {
@@ -46,7 +49,7 @@ module.exports = {
 
     const type = song.url.includes("youtube.com") ? "opus" : "ogg/opus";
     const dispatcher = queue.connection
-      .play(stream, { type: type })
+      .play(stream, { filter: "audioonly", quality: "highest" })
       .on("finish", () => {
         if (collector && !collector.ended) collector.stop();
 
