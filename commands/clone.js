@@ -1,5 +1,4 @@
-const { WebhookClient, MessageEmbed } = require("discord.js");
-const config = require("../config");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   name: "clone",
