@@ -1,8 +1,12 @@
 const { MessageEmbed } = require("discord.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "stats",
   aliases: ["statistics"],
+  categories: [categories.info],
   description: "Display all commands and descriptions",
   execute(message) {
     const client = message.client;

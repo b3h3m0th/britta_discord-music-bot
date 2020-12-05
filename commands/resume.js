@@ -1,10 +1,14 @@
 const { MessageEmbed } = require("discord.js");
 const { canModifyQueue } = require("../util/shuffleUtil");
 const config = require("../config.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "resume",
   aliases: ["r"],
+  categories: [categories.music],
   description: "Resume currently playing music",
   execute(message) {
     const thisLang = "english";

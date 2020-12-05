@@ -2,12 +2,15 @@
 const fs = require("fs");
 const { getAllGuildPrefixes, getGuildPrefix } = require("../util/prefixUtil");
 const { MessageEmbed } = require("discord.js");
-const path = require("path");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "prefix",
   description: "Sets a new, custom prefix for the bot",
-  async execute(message, args) {
+  categories: [categories.config],
+  execute: async (message, args) => {
     let prefixes = getAllGuildPrefixes();
     console.log(args);
 

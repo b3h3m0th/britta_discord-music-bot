@@ -1,10 +1,14 @@
 const { MessageEmbed, splitMessage } = require("discord.js");
 const { getFormattedTime } = require("../util/formatUtil");
-const config = require("../config.js");
+const config = require("../config");
+const {
+  commands: { categories },
+} = require("../config.js");
 
 module.exports = {
   name: "queue",
   aliases: ["q"],
+  categories: [categories.music],
   description: "Show the music queue and now playing.",
   execute(message) {
     const thisLang = "english";

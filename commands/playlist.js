@@ -3,11 +3,15 @@ const config = require("../config.js");
 const { play } = require("../include/play");
 const YouTubeAPI = require("simple-youtube-api");
 const youtube = new YouTubeAPI(config.api.youtube_key);
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "playlist",
   cooldown: 3,
   aliases: ["pl"],
+  categories: [categories.music],
   description: "Play a playlist from youtube",
   async execute(message, args) {
     const { channel } = message.member.voice;

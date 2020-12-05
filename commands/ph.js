@@ -1,10 +1,14 @@
 global.fetch = require("node-fetch");
 const { MessageAttachment, MessageEmbed } = require("discord.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "pornhub",
   cooldown: 4,
   aliases: ["ph"],
+  categories: [categories.fun],
   description: "Print a text in Pornhub style",
   execute: async (message, args) => {
     if (!args[0]) {

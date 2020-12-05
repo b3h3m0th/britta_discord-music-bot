@@ -1,9 +1,14 @@
+const {
+  commands: { categories },
+} = require("../config");
 const { MessageEmbed } = require("discord.js");
+
 module.exports = {
   name: "coinflip",
   description: "Flips a coin for you",
+  categories: [categories.fun],
   aliases: ["cf", "flipacoin"],
-  execute(message) {
+  execute: (message) => {
     var result;
     var random = Math.random();
     if (random > 0.5) result = "HEADS";

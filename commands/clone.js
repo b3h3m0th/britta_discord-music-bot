@@ -1,9 +1,13 @@
 const { MessageEmbed } = require("discord.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "clone",
   cooldown: 4,
   aliases: ["cl"],
+  categories: [categories.fun],
   description: "Prints a fakemessage",
   execute: async (message, args) => {
     if (!args.length)

@@ -1,9 +1,13 @@
 const { MessageEmbed } = require("discord.js");
 const config = require("../config.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "nowplaying",
   aliases: ["np"],
+  categories: [categories.music],
   description: "Show now playing song",
   execute(message) {
     let thisLang = "english";

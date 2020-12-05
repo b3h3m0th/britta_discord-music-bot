@@ -3,10 +3,14 @@ const alexa = require("alexa-bot-api");
 const chatbot = new alexa("aw2plm");
 const { MessageEmbed } = require("discord.js");
 const { getGuildPrefix } = require("../util/prefixUtil");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "britta",
   aliases: ["b"],
+  categories: [categories.fun, categories.info],
   description:
     "Britta will introduce herself. If you provide arguments after the Britta-command Britta she will start having a conversation with you",
   execute(message, args) {

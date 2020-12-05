@@ -1,10 +1,14 @@
 const { canModifyQueue } = require("../util/shuffleUtil");
 const { MessageEmbed } = require("discord.js");
 const config = require("../config.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "loop",
   aliases: ["l"],
+  categories: [categories.music],
   description: "Toggle music loop",
   execute(message) {
     let thisLang = "english";

@@ -6,8 +6,10 @@ const { MessageEmbed } = require("discord.js");
 const spotifyUtil = require("../util/spotifyUtil");
 const spotifyUri = require("spotify-uri");
 const ytdl = require("ytdl-core");
-
 const SpotifyWebApi = require("spotify-web-api-node");
+const {
+  commands: { categories },
+} = require("../config");
 
 const spotifyApi = new SpotifyWebApi({
   clientId: config.api.spotify_client_id,
@@ -21,6 +23,7 @@ module.exports = {
   name: "playspotify",
   cooldown: 3,
   aliases: ["ps"],
+  categories: [categories.music],
   description: "Plays audio from Spotify",
   async execute(message, args) {
     let thisLang = "english";

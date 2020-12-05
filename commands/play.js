@@ -1,5 +1,5 @@
+const config = require("../config");
 const { play } = require("../include/play");
-const config = require("../config.js");
 const youtube_key = config.api.youtube_key;
 const SOUNDCLOUD_CLIENT_ID = "";
 const ytdl = require("ytdl-core");
@@ -7,11 +7,15 @@ const YouTubeAPI = require("simple-youtube-api");
 const youtube = new YouTubeAPI(youtube_key);
 const scdl = require("soundcloud-downloader");
 const { MessageEmbed } = require("discord.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "play",
   cooldown: 3,
   aliases: ["p"],
+  categories: [categories.music],
   description: "Plays audio from YouTube or Spotify",
   async execute(message, args) {
     let thisLang = "english";

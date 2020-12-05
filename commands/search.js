@@ -2,10 +2,14 @@ const { MessageEmbed } = require("discord.js");
 const config = require("../config");
 const YouTubeAPI = require("simple-youtube-api");
 const youtube = new YouTubeAPI(config.api.youtube_key);
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "search",
   description: "Search and select videos to play",
+  categories: [categories.music],
   async execute(message, args) {
     if (!args.length)
       return message

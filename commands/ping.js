@@ -1,8 +1,12 @@
 const { MessageEmbed } = require("discord.js");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "ping",
   description: "Returns the bot's ping",
+  categories: [categories.info],
   execute: async (message, args) => {
     let ping;
     console.log(message.client.ws);

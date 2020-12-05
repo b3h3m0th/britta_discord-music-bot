@@ -1,10 +1,14 @@
 const { canModifyQueue } = require("../util/shuffleUtil");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "skipto",
   aliases: ["st"],
+  categories: [categories.music],
   description: "Skip to the selected queue number",
-  execute(message, args) {
+  execute: (message, args) => {
     if (!args.length)
       return message.reply(
         `Usage: ${message.client.prefix}${module.exports.name} <Queue Number>`

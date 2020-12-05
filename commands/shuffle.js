@@ -1,12 +1,16 @@
 const { MessageEmbed } = require("discord.js");
 const { canModifyQueue } = require("../util/shuffleUtil");
 const language = require("../languages/english");
+const {
+  commands: { categories },
+} = require("../config");
 
 module.exports = {
   name: "shuffle",
   description: "Shuffle queue",
   aliases: ["sh"],
-  execute(message) {
+  categories: [categories.music],
+  execute: (message) => {
     const queue = message.client.queue.get(message.guild.id);
     if (!queue)
       return message.channel.send(
