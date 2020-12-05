@@ -16,6 +16,11 @@ module.exports = {
   cooldown: 3,
   aliases: ["p"],
   categories: [categories.music],
+  usages: ["song_name", "song_url"],
+  examples: [
+    "Cowboys From Hell",
+    "https://www.youtube.com/watch?v=i97OkCXwotE",
+  ],
   description: "Plays audio from YouTube or Spotify",
   async execute(message, args) {
     let thisLang = "english";

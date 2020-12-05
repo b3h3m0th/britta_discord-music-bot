@@ -7,7 +7,9 @@ module.exports = {
   name: "ping",
   description: "Returns the bot's ping",
   categories: [categories.info],
-  execute: async (message, args) => {
+  usages: [""],
+  examples: [""],
+  execute: async (message) => {
     let ping;
     console.log(message.client.ws);
 

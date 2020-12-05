@@ -6,6 +6,8 @@ const {
 module.exports = {
   name: "stop",
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   description: "Stops the music",
   execute(message) {
     const queue = message.client.queue.get(message.guild.id);

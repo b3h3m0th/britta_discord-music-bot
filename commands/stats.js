@@ -7,6 +7,8 @@ module.exports = {
   name: "stats",
   aliases: ["statistics"],
   categories: [categories.info],
+  usages: ["song_name"],
+  examples: [""],
   description: "Display all commands and descriptions",
   execute(message) {
     const client = message.client;

@@ -10,6 +10,8 @@ module.exports = {
   name: "search",
   description: "Search and select videos to play",
   categories: [categories.music],
+  usages: ["song_name"],
+  examples: ["Cowboys From Hell"],
   async execute(message, args) {
     if (!args.length)
       return message

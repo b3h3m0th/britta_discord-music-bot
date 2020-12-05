@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 4,
   aliases: ["cl"],
   categories: [categories.fun],
+  usages: ["@user message"],
+  examples: ["@Behemoth#4026 I'm Brittas creator"],
   description: "Prints a fakemessage",
   execute: async (message, args) => {
     if (!args.length)

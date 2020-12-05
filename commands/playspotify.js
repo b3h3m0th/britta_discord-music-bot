@@ -24,7 +24,12 @@ module.exports = {
   cooldown: 3,
   aliases: ["ps"],
   categories: [categories.music],
-  description: "Plays audio from Spotify",
+  usages: ["song_url", "song_uri"],
+  examples: [
+    "https://open.spotify.com/track/2SgbR6ttzoNlCRGQOKjrop?si=4kzNpMp3STGjZdZ-uVyuBg",
+    "spotify:track:2SgbR6ttzoNlCRGQOKjrop",
+  ],
+  description: "Plays a song from Spotify",
   async execute(message, args) {
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);

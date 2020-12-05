@@ -9,6 +9,8 @@ module.exports = {
   name: "resume",
   aliases: ["r"],
   categories: [categories.music],
+  usages: ["", ""],
+  examples: [""],
   description: "Resume currently playing music",
   execute(message) {
     const thisLang = "english";

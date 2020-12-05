@@ -7,6 +7,8 @@ module.exports = {
   name: "skipto",
   aliases: ["st"],
   categories: [categories.music],
+  usages: ["queue_number"],
+  examples: ["3"],
   description: "Skip to the selected queue number",
   execute: (message, args) => {
     if (!args.length)

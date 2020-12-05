@@ -8,6 +8,8 @@ module.exports = {
   description: "Flips a coin for you",
   categories: [categories.fun],
   aliases: ["cf", "flipacoin"],
+  usages: [""],
+  examples: [""],
   execute: (message) => {
     var result;
     var random = Math.random();

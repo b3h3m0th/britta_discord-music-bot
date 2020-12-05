@@ -9,6 +9,8 @@ module.exports = {
   name: "loop",
   aliases: ["l"],
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   description: "Toggle music loop",
   execute(message) {
     let thisLang = "english";

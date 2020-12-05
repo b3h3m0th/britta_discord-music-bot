@@ -9,6 +9,8 @@ module.exports = {
   name: "queue",
   aliases: ["q"],
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   description: "Show the music queue and now playing.",
   execute(message) {
     const thisLang = "english";

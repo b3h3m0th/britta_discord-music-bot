@@ -7,6 +7,8 @@ module.exports = {
   name: "volume",
   aliases: ["v"],
   categories: [categories.music],
+  usages: ["", "new_volume"],
+  examples: ["", "20", "100"],
   description: "Change volume of currently playing music",
   execute(message, args) {
     const queue = message.client.queue.get(message.guild.id);

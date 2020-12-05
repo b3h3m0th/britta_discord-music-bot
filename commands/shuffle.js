@@ -10,6 +10,8 @@ module.exports = {
   description: "Shuffle queue",
   aliases: ["sh"],
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   execute: (message) => {
     const queue = message.client.queue.get(message.guild.id);
     if (!queue)

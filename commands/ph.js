@@ -9,6 +9,8 @@ module.exports = {
   cooldown: 4,
   aliases: ["ph"],
   categories: [categories.fun],
+  usages: ["word1 word2"],
+  examples: ["Porn, Hub", "Git, hub"],
   description: "Print a text in Pornhub style",
   execute: async (message, args) => {
     if (!args[0]) {

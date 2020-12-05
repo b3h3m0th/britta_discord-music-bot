@@ -9,6 +9,8 @@ module.exports = {
   name: "lyrics",
   aliases: ["ly"],
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   description: "Get lyrics for the currently playing song",
   async execute(message) {
     let thisLang = "english";

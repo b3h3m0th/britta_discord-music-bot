@@ -7,8 +7,10 @@ const {
 
 module.exports = {
   name: "remove",
-  description: "Remove song from the queue",
+  description: "Removes a song from the queue",
   categories: [categories.music],
+  usages: ["queue_number"],
+  examples: ["2", "0"],
   execute(message, args) {
     const thisLang = "english";
     const language = require(`../languages/${thisLang}`);

@@ -8,6 +8,8 @@ module.exports = {
   name: "nowplaying",
   aliases: ["np"],
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   description: "Show now playing song",
   execute(message) {
     let thisLang = "english";

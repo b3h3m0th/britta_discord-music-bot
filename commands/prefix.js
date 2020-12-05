@@ -10,6 +10,8 @@ module.exports = {
   name: "prefix",
   description: "Sets a new, custom prefix for the bot",
   categories: [categories.config],
+  usages: ["", "new_prefix"],
+  examples: ["", "+"],
   execute: async (message, args) => {
     let prefixes = getAllGuildPrefixes();
     console.log(args);

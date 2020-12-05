@@ -9,6 +9,8 @@ module.exports = {
   name: "pause",
   description: "Pause the currently playing music",
   categories: [categories.music],
+  usages: [""],
+  examples: [""],
   execute(message) {
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);

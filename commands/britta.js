@@ -7,10 +7,21 @@ const {
   commands: { categories },
 } = require("../config");
 
+// +help britta
+
+// => +britta
+// => +britta <message>
+
+// +clone @b3h3m0th nachricht
+
+// +clone <user> <message>
+
 module.exports = {
   name: "britta",
   aliases: ["b"],
   categories: [categories.fun, categories.info],
+  usages: ["", "message"],
+  examples: ["", "Talk to me :D"],
   description:
     "Britta will introduce herself. If you provide arguments after the Britta-command Britta she will start having a conversation with you",
   execute(message, args) {
