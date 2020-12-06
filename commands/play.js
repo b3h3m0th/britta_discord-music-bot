@@ -21,7 +21,7 @@ module.exports = {
     "Cowboys From Hell",
     "https://www.youtube.com/watch?v=i97OkCXwotE",
   ],
-  description: "Plays audio from YouTube or Spotify",
+  description: "Plays songs from YouTube",
   async execute(message, args) {
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);

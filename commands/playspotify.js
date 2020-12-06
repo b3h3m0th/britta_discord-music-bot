@@ -29,7 +29,7 @@ module.exports = {
     "https://open.spotify.com/track/2SgbR6ttzoNlCRGQOKjrop?si=4kzNpMp3STGjZdZ-uVyuBg",
     "spotify:track:2SgbR6ttzoNlCRGQOKjrop",
   ],
-  description: "Plays a song from Spotify",
+  description: "Plays songs from Spotify",
   async execute(message, args) {
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);

@@ -17,7 +17,7 @@ module.exports = {
     "Far Beyond Driven - Pantera album",
     "https://www.youtube.com/watch?v=yRxg8yVhbQY&list=OLAK5uy_kgCe3XwLN3N-QUoKKvLume7MKqAXAUnaU",
   ],
-  description: "Play a playlist from youtube",
+  description: "Play a playlist from YouTube",
   async execute(message, args) {
     const { channel } = message.member.voice;
     let thisLang = "english";
