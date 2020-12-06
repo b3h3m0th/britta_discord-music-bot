@@ -7,11 +7,9 @@
 
 [![Discord Bots](https://top.gg/api/widget/722497903146565722.svg)](https://top.gg/bot/722497903146565722)
 
-## Bot Website
-[Click here to Visit](https://britta.netlify.app/)
 
 ## How to add Britta to your server
-- Open https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=3460160
+- Go to https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=2083908704
 - invite Britta to your server
 
 ### Build Status
@@ -23,4 +21,3 @@
 ### Vote for Britta
 
 Vote for Britta on top.gg: https://top.gg/bot/722497903146565722/vote
- 
