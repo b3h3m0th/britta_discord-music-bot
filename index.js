@@ -8,6 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const config = require("./config.js");
 const { getGuildPrefix } = require("./util/prefixUtil");
+const { getIntroEmbed } = require("./util/introUtil");
 const flipnoteClient = require("alexflipnote.js");
 const alexclient = new flipnoteClient(config.api.alexflipnote_token);
 
@@ -82,20 +83,7 @@ client.on("message", async (message) => {
 
   // BOT MENTİON
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>( |)$`))) {
-    message.channel.send(
-      new MessageEmbed()
-        .setAuthor(
-          `${message.client.config.client.name}`,
-          message.client.user.avatarURL()
-        )
-        .setTitle(`👋🏻 Hello I'm ${message.client.config.client.name}`)
-        .setDescription("I am your personal music bot")
-        .setColor(`${message.client.config.colors.primary}`)
-        .setTimestamp()
-        .addField("Prefix:", "`" + client.prefix + "`")
-    );
-
-    return;
+    return message.channel.send(getIntroEmbed(message));
   }
 
   if (message.content.startsWith(client.prefix)) {
