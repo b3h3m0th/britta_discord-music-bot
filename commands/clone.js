@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const config = require("../config");
 const {
   commands: { categories },
 } = require("../config");
@@ -9,7 +10,9 @@ module.exports = {
   aliases: ["cl"],
   categories: [categories.fun],
   usages: ["@user message"],
-  examples: ["@Behemoth#4026 I'm Brittas creator"],
+  examples: [
+    `@${config.dev.behemoth.name}#${config.dev.behemoth.discriminator} I'm Brittas creator`,
+  ],
   description: "Prints a fakemessage",
   execute: async (message, args) => {
     if (!args.length)

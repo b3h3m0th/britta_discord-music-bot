@@ -9,15 +9,19 @@ module.exports = {
   name: "captcha",
   cooldown: 3,
   categories: [categories.fun],
-  usages: ["name"],
-  examples: ["Akephalo"],
-  description: "Returns a picture of google reCaptcha",
-  execute: async (message, args) => {
+  usages: ["@user"],
+  examples: [
+    `@${config.dev.behemoth.name}#${config.dev.behemoth.discriminator}`,
+  ],
+  description: "Returns a picture of Google reCaptcha",
+  execute: async (message) => {
     try {
-      let name = args[0];
-      if (name) {
+      let user = message.mentions.members.first();
+      if (user) {
         let capRes = await message.client.alexclient.image.captcha({
-          text: `${name}, you are smurfing too hard. Please verify you are human.`,
+          text: `${
+            user.nickname ? user.nickname : user.user.username
+          }, you are smurfing too hard. Please verify you are human.`,
         });
         return message.channel.send(new MessageAttachment().setFile(capRes));
       } else {
