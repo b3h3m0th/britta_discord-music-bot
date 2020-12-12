@@ -6,6 +6,7 @@ const {
 module.exports = {
   name: "stop",
   categories: [categories.music],
+  aliases: ["leave"],
   usages: [""],
   examples: [""],
   description: "Stops the music",

@@ -11,6 +11,7 @@ module.exports = {
   categories: [categories.fun],
   usages: [""],
   examples: [""],
+  aliases: ["pussy"],
   description: "Sends a cat image",
   execute: async (message) => {
     try {
