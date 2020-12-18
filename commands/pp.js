@@ -19,7 +19,6 @@ module.exports = {
       const max = 40;
       const limit = 5;
       const ppSize = Math.floor(Math.random() * (max - min + 1)) + min;
-      const username = user.nickname ? user.nickname : user.user.username;
       let elipses = [
         "Holy sh*t",
         "WTF",
@@ -30,15 +29,34 @@ module.exports = {
         "Insane",
         "How??",
       ];
-      const result =
-        ppSize < limit
-          ? `${username} doesn't have a pp :(`
-          : `${username} has a **${ppSize} inch PP**. ${
-              elipses[Math.floor(Math.random() * elipses.length)]
-            }!`;
 
       if (user) {
-        message.channel.send(
+        const username = user.nickname ? user.nickname : user.user.username;
+        const result =
+          ppSize < limit
+            ? `${username} doesn't have a PP :(`
+            : `${username} has a **${ppSize} inch PP**. ${
+                elipses[Math.floor(Math.random() * elipses.length)]
+              }!`;
+
+        return message.channel.send(
+          new MessageEmbed()
+            .setColor(config.colors.primary)
+            .setAuthor(
+              `${config.client.name} speaking facts:`,
+              message.client.user.avatarURL()
+            )
+            .setDescription(result)
+        );
+      } else {
+        const result =
+          ppSize < limit
+            ? `You don't have a PP :(`
+            : `You have a **${ppSize} inch PP**. ${
+                elipses[Math.floor(Math.random() * elipses.length)]
+              }!`;
+
+        return message.channel.send(
           new MessageEmbed()
             .setColor(config.colors.primary)
             .setAuthor(
@@ -49,7 +67,7 @@ module.exports = {
         );
       }
     } catch (err) {
-      console.log(err);
+      return console.log(err);
     }
   },
 };
