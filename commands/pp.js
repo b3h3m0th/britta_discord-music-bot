@@ -16,20 +16,36 @@ module.exports = {
     try {
       const user = message.mentions.members.first();
       const min = 2;
-      const max = 150;
+      const max = 40;
       const limit = 5;
       const ppSize = Math.floor(Math.random() * (max - min + 1)) + min;
       const username = user.nickname ? user.nickname : user.user.username;
+      let elipses = [
+        "Holy sh*t",
+        "WTF",
+        "OMG",
+        "No way!",
+        "haha",
+        "Unbelievable",
+        "Insane",
+        "How??",
+      ];
       const result =
         ppSize < limit
           ? `${username} doesn't have a pp :(`
-          : `${username} has a ${ppSize} inch pp. Holy sh*t!`;
+          : `${username} has a **${ppSize} inch PP**. ${
+              elipses[Math.floor(Math.random() * elipses.length)]
+            }!`;
 
       if (user) {
         message.channel.send(
           new MessageEmbed()
             .setColor(config.colors.primary)
-            .setAuthor(result, message.client.user.avatarURL())
+            .setAuthor(
+              `${config.client.name} speaking facts:`,
+              message.client.user.avatarURL()
+            )
+            .setDescription(result)
         );
       }
     } catch (err) {
