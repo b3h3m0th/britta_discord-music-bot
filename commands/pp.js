@@ -16,7 +16,7 @@ module.exports = {
     try {
       const user = message.mentions.members.first();
       const min = 2;
-      const max = 40;
+      const max = 50;
       const limit = 5;
       const ppSize = Math.floor(Math.random() * (max - min + 1)) + min;
       let elipses = [
