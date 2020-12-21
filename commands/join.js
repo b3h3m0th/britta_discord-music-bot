@@ -18,6 +18,7 @@ module.exports = {
     console.log(message.guild.voice);
     if (channel) {
       await channel.join();
+      message.guild.voice.setDeaf(true);
       return message.channel.send(
         new MessageEmbed()
           .setColor(config.colors.primary)

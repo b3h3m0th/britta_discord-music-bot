@@ -3,7 +3,6 @@
  * Module Imports
  */
 const { Client, Collection } = require("discord.js");
-const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 const config = require("./config.js");
