@@ -9,47 +9,62 @@ module.exports = {
   name: "lyrics",
   aliases: ["ly"],
   categories: [categories.music],
-  usages: [""],
-  examples: [""],
+  usages: ["", "songname"],
+  examples: ["", "Pantera - Cowboys from Hell"],
   description: "Get lyrics for the currently playing song",
-  async execute(message) {
+  async execute(message, args) {
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);
 
     const queue = message.client.queue.get(message.guild.id);
-    if (!queue)
-      return message.channel
-        .send(
-          new MessageEmbed()
-            .setAuthor(
-              language("error").nothing_music,
-              message.author.avatarURL()
-            )
-            .setColor(config.colors.failed)
-        )
-        .catch(console.error);
-
     let lyrics = null;
-
-    try {
-      lyrics = await lyricsFinder(queue.songs[0].title, "");
-      if (!lyrics)
-        lyrics = language("error").lyrics_not_found.replace(
-          "{song.title}",
-          queue.songs[0].title
-        );
-    } catch (error) {
-      lyrics = language("error").lyrics_not_found.replace(
-        "{song.title}",
-        queue.songs[0].title
-      );
-    }
-
     let lyricsEmbed = new MessageEmbed()
-      .setTitle(language("succes").nowplaying_lyrics_title)
-      .setDescription(lyrics)
-      .setColor(config.colors.default)
-      .setTimestamp();
+      .setTimestamp()
+      .setColor(config.colors.primary);
+
+    const setLyricsNotFound = () => {
+      lyricsEmbed.setTitle("No lyrics found for this song :(");
+      lyricsEmbed.setColor(config.colors.failed);
+    };
+
+    if (args.length) {
+      const searchQuery = args.join(" ");
+      try {
+        lyrics = await lyricsFinder(searchQuery, "");
+        if (!lyrics) {
+          setLyricsNotFound();
+        } else {
+          lyricsEmbed.setDescription(lyrics);
+          lyricsEmbed.setTitle(`Lyrics for "${searchQuery}"`);
+        }
+      } catch (err) {
+        setLyricsNotFound();
+      }
+    } else {
+      if (!queue)
+        return message.channel
+          .send(
+            new MessageEmbed()
+              .setAuthor(
+                language("error").nothing_music,
+                message.author.avatarURL()
+              )
+              .setColor(config.colors.failed)
+          )
+          .catch(console.error);
+
+      try {
+        lyrics = await lyricsFinder(queue.songs[0].title, "");
+        if (!lyrics) {
+          setLyricsNotFound();
+        } else {
+          lyricsEmbed.setTitle(`Lyrics for ${queue.songs[0].title}`);
+          lyricsEmbed.setDescription(lyrics);
+        }
+      } catch (error) {
+        setLyricsNotFound();
+      }
+    }
 
     if (lyricsEmbed.description.length >= 2048)
       lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;

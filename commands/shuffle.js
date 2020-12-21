@@ -36,7 +36,7 @@ module.exports = {
       .send(
         new MessageEmbed()
           .setAuthor(
-            `🔀 ${message.author.username} shuffled te queue`,
+            `🔀 ${message.author.username} shuffled the queue`,
             message.author.avatarURL()
           )
           .setColor(message.client.config.colors.primary)
