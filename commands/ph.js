@@ -11,7 +11,7 @@ module.exports = {
   categories: [categories.fun],
   usages: ["word1 word2"],
   examples: ["Porn, Hub", "Git, hub"],
-  description: "Print a text in Pornhub style",
+  description: "Print a text in PornHub style",
   execute: async (message, args) => {
     if (!args[0]) {
       return message.channel.send(
