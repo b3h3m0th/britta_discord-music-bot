@@ -22,7 +22,7 @@ module.exports = {
         .setColor(config.colors.primary)
         .setAuthor(
           "JavaScript eval",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/480px-Unofficial_JavaScript_logo_2.svg.png"
+          "https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png"
         );
 
       try {
@@ -40,7 +40,7 @@ module.exports = {
           )
           .addField("Type of output", "```" + `${type}` + "```")
           .addField(
-            "Time taken",
+            "Execution time",
             "```" + `${(stop[0] * 1e9 + stop[1]) / 1e6} ms` + "```"
           );
 
