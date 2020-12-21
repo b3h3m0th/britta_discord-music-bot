@@ -13,6 +13,7 @@ module.exports = {
   examples: ["", "Pantera - Cowboys from Hell"],
   description: "Get lyrics for the currently playing song",
   async execute(message, args) {
+    console.log(args);
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);
 
@@ -23,7 +24,7 @@ module.exports = {
       .setColor(config.colors.primary);
 
     const setLyricsNotFound = () => {
-      lyricsEmbed.setTitle("No lyrics found for this song :(");
+      lyricsEmbed.setAuthor("No lyrics found for this song :(");
       lyricsEmbed.setColor(config.colors.failed);
     };
 
@@ -35,7 +36,7 @@ module.exports = {
           setLyricsNotFound();
         } else {
           lyricsEmbed.setDescription(lyrics);
-          lyricsEmbed.setTitle(`Lyrics for "${searchQuery}"`);
+          lyricsEmbed.setAuthor(`Lyrics for "${searchQuery}"`);
         }
       } catch (err) {
         setLyricsNotFound();
@@ -58,7 +59,7 @@ module.exports = {
         if (!lyrics) {
           setLyricsNotFound();
         } else {
-          lyricsEmbed.setTitle(`Lyrics for ${queue.songs[0].title}`);
+          lyricsEmbed.setAuthor(`Lyrics for ${queue.songs[0].title}`);
           lyricsEmbed.setDescription(lyrics);
         }
       } catch (error) {
@@ -66,7 +67,7 @@ module.exports = {
       }
     }
 
-    if (lyricsEmbed.description.length >= 2048)
+    if (lyricsEmbed.description && lyricsEmbed.description.length >= 2048)
       lyricsEmbed.description = `${lyricsEmbed.description.substr(0, 2045)}...`;
     return message.channel.send(lyricsEmbed).catch(console.error);
   },
