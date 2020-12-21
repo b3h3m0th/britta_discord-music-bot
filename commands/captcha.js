@@ -29,7 +29,7 @@ module.exports = {
           new MessageEmbed()
             .setColor(config.colors.failed)
             .setAuthor(
-              `Please enter a name as an argument`,
+              `Please enter a user as a paramter`,
               message.author.avatarURL()
             )
         );
