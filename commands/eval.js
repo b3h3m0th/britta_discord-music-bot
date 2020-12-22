@@ -38,7 +38,7 @@ module.exports = {
             "Output",
             "```javascript\n" + `${util.inspect(output, { depth: 0 })}` + "```"
           )
-          .addField("Type of output", "```" + `${type}` + "```")
+          .addField("Type of output", "```javascript\n" + `${type}` + "```")
           .addField(
             "Execution time",
             "```" + `${(stop[0] * 1e9 + stop[1]) / 1e6} ms` + "```"
@@ -46,7 +46,18 @@ module.exports = {
 
         return message.channel.send(evalEmbed);
       } catch (err) {
-        console.log(err);
+        evalEmbed
+          .addField("Input", "```javascript\n" + `${input}` + "```")
+          .addField("Output", "```javascript\n" + `${err}` + "```")
+          .addField(
+            "Type of output",
+            "```javascript\n" + `${typeof err}` + "```"
+          );
+        // .addField(
+        //   "Execution time",
+        //   "```" + `${(stop[0] * 1e9 + stop[1]) / 1e6} ms` + "```"
+        // );
+        return message.channel.send(evalEmbed);
       }
     } else {
       return message.channel.send(
