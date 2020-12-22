@@ -53,10 +53,6 @@ module.exports = {
             "Type of output",
             "```javascript\n" + `${typeof err}` + "```"
           );
-        // .addField(
-        //   "Execution time",
-        //   "```" + `${(stop[0] * 1e9 + stop[1]) / 1e6} ms` + "```"
-        // );
         return message.channel.send(evalEmbed);
       }
     } else {
