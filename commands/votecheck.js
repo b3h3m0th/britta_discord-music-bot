@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const config = require("../config");
 const {
   commands: { categories },

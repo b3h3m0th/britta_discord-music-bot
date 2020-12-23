@@ -15,7 +15,6 @@ module.exports = {
   execute: async (message) => {
     try {
       let birbRes = await message.client.alexclient.image.birb();
-      console.log(birbRes);
       return message.channel.send(
         new MessageEmbed()
           .setTimestamp()
