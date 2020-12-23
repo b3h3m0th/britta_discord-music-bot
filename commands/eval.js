@@ -11,7 +11,7 @@ module.exports = {
   cooldown: 2,
   categories: [categories.owner],
   usages: ["your_code"],
-  examples: [`console.log("Hello Discord!);`],
+  examples: [`const myVariable = "Hello Discord"; myVariable;`],
   execute: async (message, args) => {
     if (isDeveloper(message.author)) {
       const input = args.join(" ");

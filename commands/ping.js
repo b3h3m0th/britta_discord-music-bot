@@ -11,7 +11,6 @@ module.exports = {
   examples: [""],
   execute: async (message) => {
     let ping;
-    console.log(message.client.ws);
 
     message.channel
       .send(
