@@ -8,7 +8,7 @@ const {
 module.exports = {
   name: "lyrics",
   aliases: ["ly"],
-  categories: [categories.music],
+  categories: [categories.music, categories.premium],
   usages: ["", "songname"],
   examples: ["", "Pantera - Cowboys from Hell"],
   description: "Get lyrics for the currently playing song",

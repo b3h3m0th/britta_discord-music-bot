@@ -37,7 +37,7 @@ module.exports = {
           .addField(
             "Output",
             "```javascript\n" +
-              `${util.inspect(output, { depth: 0 }).substring(0, 1000)}...` +
+              `${util.inspect(output, { depth: 0 }).substring(0, 1000)}` +
               "```"
           )
           .addField("Type of output", "```javascript\n" + `${type}` + "```")

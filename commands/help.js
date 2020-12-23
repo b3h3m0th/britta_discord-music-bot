@@ -20,7 +20,12 @@ module.exports = {
           `${message.client.config.client.name} command list`,
           message.client.user.avatarURL()
         )
-        .setDescription("This is a brief overview of all of Brittas commands.")
+        .setDescription(
+          `Here is a brief overview of what ${config.client.name} can do.\n` +
+            "`" +
+            `${message.client.prefix}help <command>` +
+            "` will give you detailed instructions to any command."
+        )
         .setColor(`${message.client.config.colors.primary}`)
         .setTimestamp();
 
@@ -31,9 +36,16 @@ module.exports = {
 
         helpEmbed.addField(
           `**${categories[cat]}**`,
-          cmdsOfCat.map((cmd) => "`" + cmd.name + "`").join(", ")
+          cmdsOfCat.map((cmd) => "`" + cmd.name + "`").join(" ")
         );
       }
+
+      helpEmbed.addFields([
+        {
+          name: "\u200B",
+          value: `[📑 Vote](${config.client.top_gg_vote_link}) | [❓ Support](${config.client.top_gg_vote_link}) | [📢 Invite](${config.client.invite_link})`,
+        },
+      ]);
 
       return message.channel.send(helpEmbed).catch(console.error);
     };
@@ -66,6 +78,13 @@ module.exports = {
         .setColor(config.colors.primary)
         .setAuthor(`${command.name} help`, message.client.user.avatarURL())
         .setDescription(description);
+
+      helpCommandEmbed.addFields([
+        {
+          name: "\u200B",
+          value: `[📑 Vote](${config.client.top_gg_vote_link}) | [❓ Support](${config.client.top_gg_vote_link}) | [📢 Invite](${config.client.invite_link})`,
+        },
+      ]);
 
       return message.channel.send(helpCommandEmbed);
     };
