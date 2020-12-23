@@ -56,6 +56,7 @@ module.exports = {
 
         collector.on("collect", (reaction, user) => {
           if (reaction.emoji.name === "❌") {
+            evalMessage.reactions.removeAll();
             evalMessage.edit(
               new MessageEmbed()
                 .setColor(config.colors.primary)
@@ -80,7 +81,33 @@ module.exports = {
             "Type of output",
             "```javascript\n" + `${typeof err}` + "```"
           );
-        return message.channel.send(evalEmbed);
+        const evalMessage = await message.channel.send(evalEmbed);
+        await evalMessage.react("❌");
+
+        const filter = (reaction, user) => user.id !== message.client.user.id;
+        const collector = evalMessage.createReactionCollector(filter, {
+          time: 2000,
+        });
+
+        collector.on("collect", (reaction, user) => {
+          if (reaction.emoji.name === "❌") {
+            evalMessage.reactions.removeAll();
+            evalMessage.edit(
+              new MessageEmbed()
+                .setColor(config.colors.primary)
+                .setAuthor(
+                  "Javascript eval",
+                  "https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png"
+                )
+                .setTimestamp()
+                .setDescription(
+                  "```\n" +
+                    `The output of this eval has been deleted by ${user.username}#${user.discriminator}` +
+                    "```"
+                )
+            );
+          }
+        });
       }
     } else {
       return message.channel.send(
