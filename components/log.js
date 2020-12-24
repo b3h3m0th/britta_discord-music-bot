@@ -2,7 +2,7 @@ const chalk = require("chalk");
 
 module.exports = {
   logMessage: async (message) => {
-    var timeStamp = new Date();
+    let timeStamp = new Date();
     console.log(
       chalk.gray("[" + timeStamp.toLocaleTimeString() + "]: ") +
         chalk.gray(

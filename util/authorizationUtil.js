@@ -16,7 +16,6 @@ module.exports = {
   },
   hasVoted: async (user) => {
     const voted = await api.hasVoted(user.id);
-    console.log(voted);
     return voted;
   },
 };

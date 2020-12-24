@@ -11,8 +11,8 @@ module.exports = {
   usages: [""],
   examples: [""],
   execute: (message) => {
-    var result;
-    var random = Math.random();
+    let result;
+    let random = Math.random();
     if (random > 0.5) result = "HEADS";
     else result = "TAILS";
 

@@ -44,7 +44,7 @@ module.exports = {
         resultsEmbed.addField(video.shortURL, `${index + 1}. ${video.title}`)
       );
 
-      var resultsMessage = await message.channel.send(resultsEmbed);
+      let resultsMessage = await message.channel.send(resultsEmbed);
 
       const filter = (msg) => {
         const pattern = /(^[1-9][0-9]{0,1}$)/g;

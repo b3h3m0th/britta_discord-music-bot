@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const config = require("./config.js");
 const { getGuildPrefix } = require("./util/prefixUtil");
-const { getIntroEmbed } = require("./util/introUtil");
+const { getIntroEmbed } = require("./util/embedUtil");
 const flipnoteClient = require("alexflipnote.js");
 const alexclient = new flipnoteClient(config.api.alexflipnote_token);
 

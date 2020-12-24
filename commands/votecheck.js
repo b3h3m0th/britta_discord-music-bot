@@ -21,7 +21,9 @@ module.exports = {
             : "❌ You have not voted today",
           message.author.avatarURL()
         )
-        .setDescription(!voted ? `📑 ${config.client.top_gg_vote_link}` : ``)
+        .setDescription(
+          !voted ? `📑 [Vote here](${config.client.top_gg_vote_link})` : ``
+        )
         .setColor(config.colors.primary)
     );
   },

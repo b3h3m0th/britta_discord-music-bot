@@ -4,6 +4,8 @@ const config = require("../config.js");
 const {
   commands: { categories },
 } = require("../config");
+const { hasVoted } = require("../util/authorizationUtil");
+const { getPremiumCommandErrorEmbed } = require("../util/embedUtil.js");
 
 module.exports = {
   name: "lyrics",
@@ -13,7 +15,9 @@ module.exports = {
   examples: ["", "Pantera - Cowboys from Hell"],
   description: "Get lyrics for the currently playing song",
   async execute(message, args) {
-    console.log(args);
+    if (!(await hasVoted(message.author))) {
+      return message.channel.send(getPremiumCommandErrorEmbed(message));
+    }
     let thisLang = "english";
     const language = require(`../languages/${thisLang}`);
 

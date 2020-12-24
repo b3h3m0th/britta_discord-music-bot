@@ -31,4 +31,15 @@ module.exports = {
         }
       );
   },
+  getPremiumCommandErrorEmbed: (message) => {
+    return new MessageEmbed()
+      .setAuthor(
+        "🔒 You have discovered a Premium command",
+        message.author.avatarURL()
+      )
+      .setDescription(
+        `📑 You can temporarily use Premium commands by voting [here](${config.client.top_gg_vote_link})`
+      )
+      .setColor(config.colors.failed);
+  },
 };

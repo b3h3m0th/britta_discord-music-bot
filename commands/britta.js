@@ -3,7 +3,7 @@ const alexa = require("alexa-bot-api");
 const chatbot = new alexa("aw2plm");
 const { MessageEmbed } = require("discord.js");
 const { getGuildPrefix } = require("../util/prefixUtil");
-const { getIntroEmbed } = require("../util/introUtil");
+const { getIntroEmbed } = require("../util/embedUtil");
 const {
   commands: { categories },
 } = require("../config");
@@ -30,7 +30,7 @@ module.exports = {
     }
 
     if (args.length >= 1) {
-      var userMessage = args.join(" ");
+      let userMessage = args.join(" ");
       chatbot
         .getReply(userMessage)
         .then((reply) => message.channel.send(reply));
