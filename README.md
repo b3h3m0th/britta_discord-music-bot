@@ -1,10 +1,5 @@
 # Britta discord-music-bot
 
-[![Discord Bots](https://top.gg/api/widget/status/722497903146565722.svg)](https://top.gg/bot/722497903146565722)
-[![Discord Bots](https://top.gg/api/widget/upvotes/722497903146565722.svg)](https://top.gg/bot/722497903146565722)
-[![Discord Bots](https://top.gg/api/widget/lib/722497903146565722.svg)](https://top.gg/bot/722497903146565722)
-[![Discord Bots](https://top.gg/api/widget/owner/722497903146565722.svg)](https://top.gg/bot/722497903146565722)
-
 [![Discord Bots](https://top.gg/api/widget/722497903146565722.svg)](https://top.gg/bot/722497903146565722)
 
 
