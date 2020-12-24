@@ -82,7 +82,7 @@ setInterval(() => {
   client.topggAPI.postStats({
     serverCount: client.guilds.cache.size,
   });
-}, 2000);
+}, 1800000);
 
 client.on("message", async (message) => {
   if (message.author.bot) return;
