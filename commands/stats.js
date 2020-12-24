@@ -57,7 +57,7 @@ module.exports = {
           inline: true,
         },
         {
-          name: "🛠️ Developers",
+          name: "🛠️ Developer",
           value:
             "`" +
             `${config.dev.behemoth.name}#${config.dev.behemoth.discriminator}` +
