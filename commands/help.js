@@ -17,7 +17,7 @@ module.exports = {
     const sendHelpEmed = () => {
       let helpEmbed = new MessageEmbed()
         .setAuthor(
-          `${message.client.config.client.name} command list`,
+          `${message.client.config.client.name} Command List`,
           message.client.user.avatarURL()
         )
         .setDescription(
@@ -76,7 +76,7 @@ module.exports = {
       let helpCommandEmbed = new MessageEmbed()
         .setTimestamp()
         .setColor(config.colors.primary)
-        .setAuthor(`${command.name} help`, message.client.user.avatarURL())
+        .setAuthor(`${command.name} Help`, message.client.user.avatarURL())
         .setDescription(description);
 
       helpCommandEmbed.addFields([
