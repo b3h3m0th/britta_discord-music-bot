@@ -15,7 +15,7 @@ module.exports = {
   examples: ["", "Pantera - Cowboys from Hell"],
   description: "Get lyrics for the currently playing song",
   async execute(message, args) {
-    if (!(await hasVoted(message.author))) {
+    if (!(await hasVoted(message.author, message.client))) {
       return message.channel.send(getPremiumCommandErrorEmbed(message));
     }
     let thisLang = "english";

@@ -1,6 +1,4 @@
 const config = require("../config");
-const Topgg = require("@top-gg/sdk");
-const api = new Topgg.Api(config.api.top_gg_token);
 
 // const DBL = require("dblapi.js");
 // const dbl = new DBL("Your top.gg token", client);
@@ -14,8 +12,8 @@ module.exports = {
     }
     return false;
   },
-  hasVoted: async (user) => {
-    const voted = await api.hasVoted(user.id);
+  hasVoted: async (user, client) => {
+    const voted = await client.topggAPI.hasVoted(user.id);
     return voted;
   },
 };

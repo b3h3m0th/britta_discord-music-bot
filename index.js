@@ -10,6 +10,8 @@ const { getGuildPrefix } = require("./util/prefixUtil");
 const { getIntroEmbed } = require("./util/embedUtil");
 const flipnoteClient = require("alexflipnote.js");
 const alexclient = new flipnoteClient(config.api.alexflipnote_token);
+const Topgg = require("@top-gg/sdk");
+const topggAPI = new Topgg.Api(config.api.top_gg_token);
 
 /**
  * Language
@@ -24,6 +26,7 @@ client.commands = new Collection();
 client.queue = new Map();
 client.config = config;
 client.alexclient = alexclient;
+client.topggAPI = topggAPI;
 const cooldowns = new Collection();
 
 /**
@@ -71,6 +74,15 @@ for (const file of commandFiles) {
   const command = require(path.join(__dirname, "commands", `${file}`));
   client.commands.set(command.name, command);
 }
+
+/**
+ * Update Top.gg
+ */
+setInterval(() => {
+  client.topggAPI.postStats({
+    serverCount: client.guilds.cache.size,
+  });
+}, 2000);
 
 client.on("message", async (message) => {
   if (message.author.bot) return;

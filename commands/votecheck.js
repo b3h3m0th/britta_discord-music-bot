@@ -12,7 +12,7 @@ module.exports = {
   examples: [""],
   description: `Shows whether you have already voted for ${config.client.name} today`,
   execute: async (message) => {
-    const voted = await hasVoted(message.author);
+    const voted = await hasVoted(message.author, message.client);
     return message.channel.send(
       new MessageEmbed()
         .setAuthor(
