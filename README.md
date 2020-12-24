@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="760" height="500" src="../britta_music-bot/assets/img/brittaBannerChristmasEdition.png">
+  <img width="760" height="500" src=https://raw.githubusercontent.com/b3h3m0th/britta_discord-music-bot/master/assets/img/brittaBannerChristmasEdition.png">
   <img src="https://top.gg/api/widget/722497903146565722.svg">
 </p>
 
