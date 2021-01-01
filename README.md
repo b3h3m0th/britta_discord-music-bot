@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="760" height="500" src="https://raw.githubusercontent.com/b3h3m0th/britta_discord-music-bot/master/assets/img/brittaBannerChristmasEdition.png"><br>
+  <img width="760" height="500" src="https://raw.githubusercontent.com/b3h3m0th/britta_discord-music-bot/master/assets/img/brittaBanner.png"><br>
   <img src="https://david-dm.org/b3h3m0th/britta_discord-music-bot.svg">
   <img src="https://img.shields.io/github/license/b3h3m0th/britta_discord-music-bot">
   <img src="https://img.shields.io/badge/Code%20Quality-S-brightgreen">
