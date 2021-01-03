@@ -4,6 +4,6 @@ const client = new Britta(config.client.token);
 
 client.init();
 
-["events", "commands"].forEach((handler) => {
+["events", "commands", "filters"].forEach((handler) => {
   require(`./handlers/${handler}`)(client);
 });

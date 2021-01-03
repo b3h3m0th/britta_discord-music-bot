@@ -7,4 +7,5 @@ export enum ResponseType {
   nothingPlaying,
   noPremium,
   noSearchResults,
+  filterNotExists,
 }

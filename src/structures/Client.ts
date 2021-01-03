@@ -11,6 +11,7 @@ export default class Client extends Discord.Client {
   commands: any;
   cooldowns: any;
   aliases: any;
+  filters: any;
   topggAPI: any;
   alexClient: any;
   response: any;
@@ -26,6 +27,7 @@ export default class Client extends Discord.Client {
     this.commands = new Discord.Collection();
     this.cooldowns = new Discord.Collection();
     this.aliases = new Discord.Collection();
+    this.filters = new Discord.Collection();
     this.topggAPI = new Topgg.Api(config.api.top_gg_token);
     this.alexclient = new flipnoteClient(config.api.alexflipnote_token);
     createManager(this);

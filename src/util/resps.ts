@@ -75,6 +75,16 @@ module.exports = (message: any, type: ResponseType) => {
         },
         description: " ",
       });
+      break;
+    case ResponseType.filterNotExists:
+      result = new ErrorEmbed(message, {
+        author: {
+          name: `⭕ That filter doesn't exist`,
+          icon_url: message.author.avatarURL(),
+        },
+        description: `Type \`bri!filter list\` to get a list of all available audio filters `,
+      });
+      break;
     default:
       result = new ErrorEmbed(message, {
         author: {
