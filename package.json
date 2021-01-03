@@ -4,7 +4,6 @@
   "description": "Britta is an easy to use discord music bot that lets you play songs or albums from YouTube and Spotify.",
   "main": "./src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"nodemon\" \"java -jar Lavalink.jar\""
   },
   "author": "Simon Ostini",
@@ -57,7 +56,6 @@
     "ytsr": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "^7.14.0",
     "nodemon": "^2.0.4"
   }
 }
