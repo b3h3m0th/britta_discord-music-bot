@@ -3,8 +3,8 @@ import { BrittaEmbed } from "../util/embed";
 
 export default (message: any, player: any, filter: IFilter) => {
   player.clearEQ();
-  player.setEQ(...filter.EQ.equalizer);
-  //   player.node.send({ op: "filters", guildID: message.guild.id, ...filter.EQ });
+  //   player.setEQ(...filter.EQ.equalizer);
+  //   player.node.send({ op: "filter", guildID: message.guild.id, ...filter.EQ });
   player.setDistortion(true);
   return message.channel.send(
     new BrittaEmbed(message, {

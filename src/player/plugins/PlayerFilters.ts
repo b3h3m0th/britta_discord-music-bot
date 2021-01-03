@@ -121,7 +121,7 @@ module.exports = Structure.extend("Player", (Player) => {
       this.value = value || this.value;
 
       this.node.send({
-        op: "filters",
+        op: "filter",
         guildId: this.guild,
         distortion: {
           distortion: this.value,
@@ -135,7 +135,7 @@ module.exports = Structure.extend("Player", (Player) => {
       this.gain = gain || this.gain;
 
       this.node.send({
-        op: "filters",
+        op: "filter",
         guildId: this.guild,
         equalizer: [
           {
@@ -173,7 +173,7 @@ module.exports = Structure.extend("Player", (Player) => {
       this.rate = rate || this.rate;
 
       this.node.send({
-        op: "filters",
+        op: "filter",
         guildId: this.guild,
         timescale: {
           speed: this.speed,
@@ -194,7 +194,7 @@ module.exports = Structure.extend("Player", (Player) => {
       this.clearEQ();
 
       this.node.send({
-        op: "filters",
+        op: "filter",
         guildId: this.guild,
       });
       return this;

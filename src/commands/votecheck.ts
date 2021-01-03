@@ -13,7 +13,7 @@ module.exports = class Votecheck extends Command {
       client: client,
       name: "votecheck",
       description: `Shows whether you have already voted for ${config.client.name} today`,
-      categories: [categories.fun],
+      categories: [categories.info],
       usages: [""],
       examples: [""],
       cooldown: 2,
