@@ -4,8 +4,14 @@ const config = require("../config");
 const chalk = require("chalk");
 import queueEnd from "../player/queueEnd";
 import trackStart from "./trackStart";
+const fs = require("fs");
+
+const plugins = fs.readdirSync("./src/player/plugins/");
 
 export default (client: any) => {
+  //   plugins.forEach((plugin) => {
+  //     require(`./plugins/${plugin.split(".")[0]}`);
+  //   });
   client.manager = new Manager({
     nodes: [
       {
