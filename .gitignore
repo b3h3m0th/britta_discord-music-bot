@@ -103,13 +103,12 @@ dist
 # TernJS port file
 .tern-port
 
-#config
-config/config.json
-config.json
-config.js
+#behemoth custom
+src/config.ts
+application.yml
+Lavalink.jar
+logs/
 
-#prefixes
-data/prefixes.json
 
 #commit
  🚀
