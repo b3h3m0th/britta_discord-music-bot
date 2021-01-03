@@ -1,4 +1,5 @@
 const Command = require("../structures/Command");
+import setFilter from "../player/setFilter";
 import { CommandOptions } from "../types/Command";
 import { FilterType } from "../types/Filter";
 import { ResponseType } from "../types/Response";
@@ -15,16 +16,14 @@ module.exports = class Filter extends Command {
       name: "filter",
       description: "Turns on/off audio filters",
       categories: [categories.music],
-      usages: ["filter"],
-      examples: [`${FilterType.EARRAPE.toLocaleString().toLowerCase()}`],
+      usages: ["filter_name"],
+      examples: [`${FilterType.EARRAPE}`],
       cooldown: 5,
       voteLocked: false,
     });
   }
 
   async execute(message, args) {
-    console.log(message.client.filters);
-
     const filterQuery = args[0] && args[0].toLowerCase();
 
     if (!filterQuery) {
@@ -41,20 +40,25 @@ module.exports = class Filter extends Command {
         })
       );
     } else if (filterQuery === "list") {
+      const freeFilters = message.client.filters
+        .filter((f) => !f.premium)
+        .map((fi) => `\`${fi.name}\``)
+        .join(" ");
+      const premiumFilters = message.client.filters
+        .filter((f) => f.premium)
+        .map((fi) => `\`${fi.name}\``)
+        .join(" ");
+
       const listEmbed = new BrittaEmbed(message, {
         author: { name: "Britta Filter List" },
+        description: `Type \`${await getGuildPrefix(
+          message.guild.id
+        )!}filter <filter_name>\` to enable or disable an audio filter`,
       })
-        .addField(
-          "🔓 Free Filters",
-          message.client.filters
-            .filter((f) => !f.premium)
-            .map((fi) => `\`${fi.name}\``)
-        )
+        .addField("🔓 Free Filters", freeFilters ? freeFilters : "`N/A`")
         .addField(
           "🔒 Premium Filters",
-          message.client.filters
-            .filter((f) => f.premium)
-            .map((fi) => `\`${fi.name}\``)
+          premiumFilters ? premiumFilters : "`N/A`"
         );
 
       message.channel.send(listEmbed);
@@ -74,6 +78,8 @@ module.exports = class Filter extends Command {
       );
       if (!filter)
         return message.client.response(message, ResponseType.filterNotExists);
+
+      setFilter(message, player, filter);
     }
   }
 };

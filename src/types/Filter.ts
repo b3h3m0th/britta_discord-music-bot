@@ -1,25 +1,25 @@
 export enum FilterType {
-  NONE,
-  EARRAPE,
-  BASS,
-  NIGHTCORE,
-  VAPORWAVE,
-  TREBLEBASS,
-  POP,
+  NONE = "none",
+  EARRAPE = "earrape",
+  BASS = "bass",
+  NIGHTCORE = "nightcore",
+  VAPORWAVE = "vaporwave",
+  TREBLEBASS = "treblebass",
+  POP = "pop",
 }
 
 export type FilterEQ = { band: Number; gain: Number }[];
 
 export interface IFilter {
   client: any;
-  name: String;
+  name: FilterType;
   EQ: FilterEQ;
   premium: Boolean;
 }
 
 export type FilterOptions = {
   client: any;
-  name: String;
+  name: FilterType;
   EQ: FilterEQ;
   premium: Boolean;
 };

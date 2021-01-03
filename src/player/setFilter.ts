@@ -1,3 +1,6 @@
-import { FilterType } from "../types/Filter";
+import { IFilter } from "../types/Filter";
 
-export default (player: any, filter: FilterType) => {};
+export default (message: any, player: any, filter: IFilter) => {
+  player.setEQ(...filter.EQ);
+  message.channel.send("done");
+};

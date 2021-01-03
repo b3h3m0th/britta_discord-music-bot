@@ -1,11 +1,11 @@
 const Filter = require("../structures/Filter");
-import { FilterOptions } from "../types/Filter";
+import { FilterOptions, FilterType } from "../types/Filter";
 
 module.exports = class Bass extends Filter {
   constructor(client: any) {
     super(<FilterOptions>{
       client: client,
-      name: "bass",
+      name: FilterType.BASS,
       EQ: [
         { band: 0, gain: 0.6 },
         { band: 1, gain: 0.67 },

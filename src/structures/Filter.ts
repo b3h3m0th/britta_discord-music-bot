@@ -1,8 +1,8 @@
-import { FilterEQ, IFilter, FilterOptions } from "../types/Filter";
+import { FilterEQ, IFilter, FilterOptions, FilterType } from "../types/Filter";
 
 module.exports = class Filter implements IFilter {
   client: any;
-  name: String;
+  name: FilterType;
   EQ: FilterEQ;
   premium: Boolean;
 
