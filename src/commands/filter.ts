@@ -26,20 +26,7 @@ module.exports = class Filter extends Command {
   async execute(message, args) {
     const filterQuery = args[0] && args[0].toLowerCase();
 
-    if (!filterQuery) {
-      const player = message.client.manager.get(message.guild.id);
-      if (!player)
-        return message.client.response(message, ResponseType.nothingPlaying);
-
-      return message.channel.send(
-        new ErrorEmbed(message, {
-          author: { name: "You need to provide a filter type." },
-          description: `Type \`${await getGuildPrefix(
-            message.guild.id
-          )}filter list\` in order to get a list of all filters available`,
-        })
-      );
-    } else if (filterQuery === "list") {
+    if (!filterQuery || filterQuery === "list") {
       const freeFilters = message.client.filters
         .filter((f) => !f.premium)
         .map((fi) => `\`${fi.name}\``)
@@ -60,14 +47,23 @@ module.exports = class Filter extends Command {
           "🔒 Premium Filters",
           premiumFilters ? premiumFilters : "`N/A`"
         );
-
-      message.channel.send(listEmbed);
-    } else if (filterQuery === "reset" || "disable" || "off") {
+      return message.channel.send(listEmbed);
+    } else if (
+      filterQuery === "reset" ||
+      filterQuery === "disable" ||
+      filterQuery === "off"
+    ) {
       const player = message.client.manager.get(message.guild.id);
       if (!player)
         return message.client.response(message, ResponseType.nothingPlaying);
 
-      //reset filters
+      player.clearEQ();
+      return message.channel.send(
+        new BrittaEmbed(message, {
+          author: null,
+          description: `📶 ${message.author} turned off the audio filter`,
+        })
+      );
     } else {
       const player = message.client.manager.get(message.guild.id);
       if (!player)
@@ -79,7 +75,7 @@ module.exports = class Filter extends Command {
       if (!filter)
         return message.client.response(message, ResponseType.filterNotExists);
 
-      setFilter(message, player, filter);
+      return setFilter(message, player, filter);
     }
   }
 };

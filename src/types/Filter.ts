@@ -8,7 +8,11 @@ export enum FilterType {
   POP = "pop",
 }
 
-export type FilterEQ = { band: Number; gain: Number }[];
+export type FilterEQ = {
+  equalizer: { band: Number; gain: Number }[];
+  timescale?: { pitch: Number };
+  tremolo?: { depth: Number; frequency: Number };
+};
 
 export interface IFilter {
   client: any;
