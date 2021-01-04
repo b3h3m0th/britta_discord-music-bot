@@ -53,7 +53,7 @@ module.exports = class Help extends Command {
       helpEmbed.addFields([
         {
           name: "\u200B",
-          value: `[📑 Vote](${config.client.top_gg_vote_link}) | [❓ Support](${config.client.top_gg_vote_link}) | [📢 Invite](${config.client.invite_link})`,
+          value: `[📑 Vote](${config.client.top_gg_vote_link}) | [❓ Support](${config.client.top_gg_vote_link}) | [📢 Invite](${config.client.invite_link}) | [🔒 Buy Premium](${config.client.donate_link})`,
         },
       ]);
 
@@ -92,7 +92,7 @@ module.exports = class Help extends Command {
       helpCommandEmbed.addFields([
         {
           name: "\u200B",
-          value: `[📑 Vote](${config.client.top_gg_vote_link}) | [❓ Support](${config.client.top_gg_vote_link}) | [📢 Invite](${config.client.invite_link})`,
+          value: `[📑 Vote](${config.client.top_gg_vote_link}) | [❓ Support](${config.client.top_gg_vote_link}) | [📢 Invite](${config.client.invite_link}) | [🔒 Buy Premium](${config.client.donate_link})`,
         },
       ]);
 

@@ -6,6 +6,8 @@ export enum FilterType {
   VAPORWAVE = "vaporwave",
   TREBLEBASS = "treblebass",
   POP = "pop",
+  DISTORTION = "distortion",
+  SOFT = "soft",
 }
 
 export type FilterEQ = {

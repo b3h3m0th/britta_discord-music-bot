@@ -43,7 +43,7 @@ module.exports = class Filter extends Command {
           message.guild.id
         )!}filter <filter_name>\` to enable or disable an audio filter`,
       })
-        .addField("🔓 Free Filters", freeFilters ? freeFilters : "`N/A`")
+        .addField("✔️ Free Filters", freeFilters ? freeFilters : "`N/A`")
         .addField(
           "🔒 Premium Filters",
           premiumFilters ? premiumFilters : "`N/A`"

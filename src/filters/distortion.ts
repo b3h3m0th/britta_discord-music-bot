@@ -5,7 +5,7 @@ module.exports = class Distortion extends Filter {
   constructor(client: any) {
     super(<FilterOptions>{
       client: client,
-      name: FilterType.EARRAPE,
+      name: FilterType.DISTORTION,
       EQ: {
         equalizer: [
           { band: 0, gain: 0.5 },
