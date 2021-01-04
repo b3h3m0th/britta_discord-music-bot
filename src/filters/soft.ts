@@ -22,6 +22,7 @@ module.exports = class Soft extends Filter {
           { band: 11, gain: -0.15 },
           { band: 12, gain: -0.15 },
           { band: 13, gain: -0.15 },
+          { band: 14, gain: -0.15 },
         ],
       },
       premium: true,

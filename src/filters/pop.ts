@@ -22,6 +22,7 @@ module.exports = class Pop extends Filter {
           { band: 11, gain: 0 },
           { band: 12, gain: 0 },
           { band: 13, gain: 0 },
+          { band: 14, gain: 0 },
         ],
       },
       premium: true,

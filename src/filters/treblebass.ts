@@ -22,6 +22,7 @@ module.exports = class None extends Filter {
           { band: 11, gain: 0.6 },
           { band: 12, gain: 0.55 },
           { band: 13, gain: 0 },
+          { band: 14, gain: 0 },
         ],
       },
       premium: false,

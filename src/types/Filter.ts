@@ -9,6 +9,7 @@ export enum FilterType {
   DISTORTION = "distortion",
   SOFT = "soft",
   WINSI = "winsi",
+  MOTÖRHEAD = "motörhead",
 }
 
 export type FilterEQ = {
