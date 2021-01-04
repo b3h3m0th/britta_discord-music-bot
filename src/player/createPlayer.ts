@@ -1,8 +1,7 @@
 const { Player } = require("erela.js");
-const BetterPlayer = require("../player/plugins/PlayerFilters");
 
 export default async (message) => {
-  const player = new BetterPlayer({
+  const player = new Player({
     guild: message.guild.id,
     textChannel: message.channel.id,
     voiceChannel: message.member.voice.channel.id,

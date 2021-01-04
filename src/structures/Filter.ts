@@ -12,4 +12,8 @@ module.exports = class Filter implements IFilter {
     this.premium = options.premium;
     this.client = options.client;
   }
+
+  apply(player: any) {
+    return;
+  }
 };

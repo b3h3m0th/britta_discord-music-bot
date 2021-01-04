@@ -27,4 +27,9 @@ module.exports = class None extends Filter {
       premium: false,
     });
   }
+
+  apply(player: any) {
+    player.setEQ(...this.EQ.equalizer);
+    return;
+  }
 };

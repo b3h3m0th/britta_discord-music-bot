@@ -14,7 +14,8 @@ module.exports = class Filter extends Command {
     super(<CommandOptions>{
       client: client,
       name: "filter",
-      description: "Turns on/off audio filters",
+      description:
+        "Enables an audio filter.\nType `bri!filter reset` in order to turn off the filter.\nType `bri!filter list` to get a list of all available audio filters",
       categories: [categories.music],
       usages: ["filter_name"],
       examples: [`${FilterType.EARRAPE}`],
@@ -58,6 +59,7 @@ module.exports = class Filter extends Command {
         return message.client.response(message, ResponseType.nothingPlaying);
 
       player.clearEQ();
+      player.setVolume(100);
       return message.channel.send(
         new BrittaEmbed(message, {
           author: null,

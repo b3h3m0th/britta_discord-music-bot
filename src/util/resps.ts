@@ -25,10 +25,10 @@ module.exports = (message: any, type: ResponseType) => {
     case ResponseType.noPremium:
       result = new ErrorEmbed(message, {
         author: {
-          name: `You need **Britta Premium** in order to do this. Purchase **Britta Premium** here: paste_link_here`,
+          name: `🔒 You have discovered a Britta Premium feature`,
           icon_url: message.author.avatarURL(),
         },
-        description: " ",
+        description: `You can access this feature temporarily by [voting here](${message.client.config.client.top_gg_vote_link}).\nSick of voting? Consider purchasing **Britta Premium** [here](${message.client.config.client.donate_link}).`,
       });
       break;
     case ResponseType.noVoiceChannel:

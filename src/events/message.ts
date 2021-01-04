@@ -1,4 +1,5 @@
 import Event from "../structures/Event";
+import { hasPremiumOrVoted } from "../util/authorization";
 import { BrittaIntroEmbed, ErrorEmbed } from "../util/embed";
 const path = require("path");
 const Guild = require("../models/guild");
@@ -10,7 +11,7 @@ module.exports = class Message extends Event {
     super(client, path.basename(__filename).split(".")[0].toLowerCase());
   }
 
-  run(message) {
+  async run(message) {
     if (message.author.bot || !message.guild || message.webhookID) return;
 
     //BOT MENTION
@@ -44,6 +45,9 @@ module.exports = class Message extends Event {
       } else {
         this.client.prefix = guild.prefix;
       }
+
+      //CHECK IF IN DEVELOPMENT
+      if (this.client.config.client.name !== "Britta") this.client.prefix = "-";
 
       if (message.content.toLowerCase().startsWith(this.client.prefix)) {
         const args = message.content

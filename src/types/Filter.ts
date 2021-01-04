@@ -19,6 +19,7 @@ export interface IFilter {
   name: FilterType;
   EQ: FilterEQ;
   premium: Boolean;
+  apply: (player: any) => void;
 }
 
 export type FilterOptions = {
