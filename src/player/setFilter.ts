@@ -1,9 +1,10 @@
 import { IFilter } from "../types/Filter";
 import { ResponseType } from "../types/Response";
-import { hasPremium, hasPremiumOrVoted } from "../util/authorization";
+import { hasPremiumOrVoted } from "../util/authorization";
 import { BrittaEmbed } from "../util/embed";
 
 export default async (message: any, player: any, filter: IFilter) => {
+  console.log(player);
   if (
     filter.premium &&
     !(await hasPremiumOrVoted(message.author, message.client))

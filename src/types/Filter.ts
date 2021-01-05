@@ -11,6 +11,7 @@ export enum FilterType {
   WINSI = "winsi",
   MOTÖRHEAD = "motörhead",
   BLACK_METAL = "blackmetal",
+  TREMOLO = "tremolo",
 }
 
 export type FilterEQ = {

@@ -1,5 +1,4 @@
 import Event from "../structures/Event";
-import { hasPremiumOrVoted } from "../util/authorization";
 import { BrittaIntroEmbed, ErrorEmbed } from "../util/embed";
 const path = require("path");
 const Guild = require("../models/guild");
