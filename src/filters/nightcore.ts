@@ -5,7 +5,7 @@ module.exports = class Tremolo extends Filter {
   constructor(client: any) {
     super(<FilterOptions>{
       client: client,
-      name: FilterType.TREMOLO,
+      name: FilterType.NIGHTCORE,
       EQ: {
         equalizer: [
           { band: 0, gain: 0.5 },
@@ -25,7 +25,7 @@ module.exports = class Tremolo extends Filter {
           { band: 14, gain: 0 },
         ],
       },
-      premium: false,
+      premium: true,
     });
   }
 
