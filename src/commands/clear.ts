@@ -6,7 +6,7 @@ const {
   commands: { categories },
 } = require("../config");
 
-module.exports = class Say extends Command {
+module.exports = class Clear extends Command {
   constructor(client: any) {
     super(<CommandOptions>{
       client: client,
