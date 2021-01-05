@@ -12,6 +12,7 @@ export default async (message: any, player: any, filter: IFilter) => {
     return message.client.response(message, ResponseType.noPremium);
   player.clearEQ();
   player.setVolume(100);
+  player.clearEffects();
   filter.apply(player);
   //   player.setEQ(...filter.EQ.equalizer);
   //   player.node.send({ op: "filter", guildID: message.guild.id, ...filter.EQ });

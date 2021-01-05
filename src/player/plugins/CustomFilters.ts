@@ -1,92 +1,204 @@
 const { Structure } = require("erela.js");
 
-Structure.extend(
-  "Player",
-  (Player) =>
-    class extends Player {
-      setTimescale(opts) {
-        for (let key in opts) {
-          if (typeof opts[key] !== "number")
-            throw new RangeError(`Provided argument '${key}' must be a number`);
-          if (opts[key] < 0)
-            throw new RangeError(
-              `Provided argument '${key}' cannot be smaller than 0.0.`
-            );
-        }
-
-        opts = { pitch: 1.0, rate: 1.0, speed: 1.0, ...opts };
-
-        this.node.send({
-          guildId: this.guild,
-          op: "filters",
-          timescale: opts,
-        });
-      }
-      setTremolo(opts) {
-        for (let key in opts) {
-          if (typeof opts[key] !== "number")
-            throw new RangeError(`Provided argument '${key}' must be a number`);
-        }
-
-        opts = { frequency: 2.0, depth: 0.5, ...opts };
-
-        if (opts.frequency < 0)
-          throw new RangeError(
-            "Frequency argument cannot be smaller than 0.0."
-          );
-        if (opts.depth < 0 || opts.depth > 1)
-          throw new RangeError(
-            "Depth argument cannot be smaller than 0.0 or bigger than 1.0."
-          );
-
-        this.node.send({
-          guildId: this.guild,
-          op: "filters",
-          tremolo: opts,
-        });
-      }
-      setKaraoke(opts) {
-        for (let key in opts) {
-          if (typeof opts[key] !== "number")
-            throw new RangeError(`Provided argument '${key}' must be a number`);
-        }
-
-        opts = {
-          mono: 1.0,
-          monoLevel: 1.0,
-          filterBand: 220,
-          filterWidth: 100,
-          ...opts,
-        };
-
-        this.node.send({
-          guildId: this.guild,
-          op: "filters",
-          karaoke: opts,
-        });
-      }
-      setVibrato(opts) {
-        for (let key in opts) {
-          if (typeof opts[key] !== "number")
-            throw new RangeError(`Provided argument '${key}' must be a number`);
-        }
-
-        if (opts.frequency < 0 || opts.frequency > 14)
-          throw new RangeError(
-            "Frequency argument cannot be smaller than 0.0."
-          );
-        if (opts.depth < 0 || opts.depth > 1)
-          throw new RangeError(
-            "Depth argument cannot be smaller than 0.0 or bigger than 1.0."
-          );
-
-        opts = { frequency: 2.0, depth: 0.5, ...opts };
-
-        this.node.send({
-          guildId: this.guild,
-          op: "filters",
-          vibrato: opts,
-        });
-      }
+module.exports = Structure.extend("Player", (Player) => {
+  class BrittaPlayer extends Player {
+    constructor(...args) {
+      super(...args);
+      this.speed = 1;
+      this.pitch = 1;
+      this.rate = 1;
+      this.nightcore = false;
+      this.vaporwave = false;
+      this.bassboost = false;
+      this.distortion = false;
     }
-);
+
+    setSpeed(speed) {
+      if (isNaN(speed)) {
+        throw new RangeError("Player#setSpeed() Speed must be a number.");
+      }
+      this.speed = Math.max(Math.min(speed, 5), 0.05);
+      this.setTimescale(speed);
+      return this;
+    }
+
+    setPitch(pitch) {
+      if (isNaN(pitch)) {
+        throw new RangeError("Player#setPitch() Pitch must be a number.");
+      }
+      this.pitch = Math.max(Math.min(pitch, 5), 0.05);
+      this.setTimescale(this.speed, pitch);
+      return this;
+    }
+
+    setNightcore(nighcore) {
+      if (typeof nighcore !== "boolean") {
+        throw new RangeError(
+          'Player#setNighcore() Nightcore can only be "true" or "false".'
+        );
+      }
+
+      this.nightcore = nighcore;
+      if (nighcore) {
+        this.bassboost = false;
+        this.distortion = false;
+        this.vaporwave = false;
+        this.setVaporwave(false);
+        this.setBassboost(false);
+        this.setDistortion(false);
+        this.setTimescale(1.2999999523162842, 1.2999999523162842, 1);
+      } else {
+        this.setTimescale(1, 1, 1);
+      }
+      return this;
+    }
+
+    setVaporwave(vaporwave) {
+      if (typeof vaporwave !== "boolean") {
+        throw new RangeError(
+          'Player#setVaporwave() Vaporwave can only be "true" or "false".'
+        );
+      }
+
+      this.vaporwave = vaporwave;
+      if (vaporwave) {
+        this.nightcore = false;
+        this.bassboost = false;
+        this.distortion = false;
+        this.setBassboost(false);
+        this.setNightcore(false);
+        this.setDistortion(false);
+        this.setTimescale(0.8500000238418579, 0.800000011920929, 1);
+      } else {
+        this.setTimescale(1, 1, 1);
+      }
+      return this;
+    }
+
+    setDistortion(distortion) {
+      if (typeof distortion !== "boolean") {
+        throw new RangeError(
+          'Player#setDistortion() Distortion can only be "true" or "false"'
+        );
+      }
+
+      this.distortion = distortion;
+      if (distortion) {
+        this.nightcore = false;
+        this.vaporwave = false;
+        this.bassboost = false;
+        this.setBassboost(false);
+        this.setNightcore(false);
+        this.setVaporwave(false);
+        this.setDistort(0.5);
+      } else {
+        this.clearEffects();
+      }
+      return this;
+    }
+
+    setBassboost(bassboost) {
+      if (typeof bassboost !== "boolean") {
+        throw new RangeError(
+          'Player#setBassboost() Bassboost can only be "true" or "false".'
+        );
+      }
+
+      this.bassboost = bassboost;
+      if (bassboost) {
+        this.nightcore = false;
+        this.vaporwave = false;
+        this.setVaporwave(false);
+        this.setNightcore(false);
+        this.setEqualizer(1, 0.85);
+      } else {
+        this.clearEffects();
+      }
+      return this;
+    }
+
+    setDistort(value) {
+      this.value = value || this.value;
+
+      this.node.send({
+        op: "filters",
+        guildId: this.guild,
+        distortion: {
+          distortion: this.value,
+        },
+      });
+      return this;
+    }
+
+    setEqualizer(band, gain) {
+      this.band = band || this.band;
+      this.gain = gain || this.gain;
+
+      this.node.send({
+        op: "filters",
+        guildId: this.guild,
+        equalizer: [
+          {
+            band: this.band,
+            gain: this.gain,
+          },
+          {
+            band: this.band,
+            gain: this.gain,
+          },
+          {
+            band: this.band,
+            gain: this.gain,
+          },
+          {
+            band: this.band,
+            gain: this.gain,
+          },
+          {
+            band: this.band,
+            gain: this.gain,
+          },
+          {
+            band: this.band,
+            gain: this.gain,
+          },
+        ],
+      });
+      return this;
+    }
+
+    setTimescale(speed, pitch?, rate?) {
+      this.speed = speed || this.speed;
+      this.pitch = pitch || this.pitch;
+      this.rate = rate || this.rate;
+
+      this.node.send({
+        op: "filters",
+        guildId: this.guild,
+        timescale: {
+          speed: this.speed,
+          pitch: this.pitch,
+          rate: this.rate,
+        },
+      });
+      return this;
+    }
+    clearEffects() {
+      this.speed = 1;
+      this.pitch = 1;
+      this.rate = 1;
+      this.bassboost = false;
+      this.nightcore = false;
+      this.vaporwave = false;
+      this.distortion = false;
+      this.clearEQ();
+
+      this.node.send({
+        op: "filters",
+        guildId: this.guild,
+      });
+      return this;
+    }
+  }
+  return BrittaPlayer;
+});

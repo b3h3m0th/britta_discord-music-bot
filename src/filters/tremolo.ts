@@ -30,7 +30,7 @@ module.exports = class Tremolo extends Filter {
   }
 
   apply(player: any) {
-    player.setVibrato(4);
+    player.setNightcore(true);
     // player.setEQ(...this.EQ.equalizer);
     return;
   }
