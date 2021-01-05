@@ -11,7 +11,7 @@ module.exports = class Skipto extends Command {
     super(<CommandOptions>{
       client: client,
       name: "skipto",
-      description: "Skip multiple songs in the queue",
+      description: "Skips multiple songs in the queue",
       categories: [categories.music],
       aliases: ["s"],
       usages: ["song_number"],
