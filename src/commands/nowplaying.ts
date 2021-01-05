@@ -24,7 +24,7 @@ module.exports = class NowPlaying extends Command {
 
   async execute(message) {
     const player = message.client.manager.get(message.guild.id);
-    if (!player)
+    if (!player || !player.queue.current)
       return message.client.response(message, ResponseType.nothingPlaying);
 
     const {
