@@ -4,7 +4,6 @@ import { CommandOptions } from "../types/Command";
 import { FilterType } from "../types/Filter";
 import { ResponseType } from "../types/Response";
 import { BrittaEmbed, ErrorEmbed } from "../util/embed";
-import { getGuildPrefix } from "../util/prefix";
 const {
   commands: { categories },
 } = require("../config");
@@ -14,8 +13,7 @@ module.exports = class Filter extends Command {
     super(<CommandOptions>{
       client: client,
       name: "filter",
-      description:
-        "Enables an audio filter.\nType `bri!filter reset` in order to turn off the filter.\nType `bri!filter list` to get a list of all available audio filters",
+      description: `Enables an audio filter.\nType \`${client.prefix}filter reset\` in order to turn off the filter.\nType \`${client.prefix}filter list\` to get a list of all available audio filters`,
       categories: [categories.music],
       aliases: ["filters", "audiofilters", "musicfilters"],
       usages: ["filter_name"],
@@ -40,9 +38,7 @@ module.exports = class Filter extends Command {
 
       const listEmbed = new BrittaEmbed(message, {
         author: { name: "Britta Filter List" },
-        description: `Type \`${await getGuildPrefix(
-          message.guild.id
-        )!}filter <filter_name>\` to enable or disable an audio filter`,
+        description: `Type \`${message.client.prefix}filter <filter_name>\` to enable or disable an audio filter`,
       })
         .addField("🔓 Free Filters", freeFilters ? freeFilters : "`N/A`")
         .addField(
