@@ -28,7 +28,10 @@ module.exports = class Clear extends Command {
 
     player.queue.length = [];
     return message.channel.send(
-      new BrittaEmbed(message, { author: { name: "✔️ Cleared the queue" } })
+      new BrittaEmbed(message, {
+        author: null,
+        description: `🗑️ ${message.author} cleared the queue`,
+      })
     );
   }
 };
