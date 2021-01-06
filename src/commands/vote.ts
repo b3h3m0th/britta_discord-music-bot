@@ -23,8 +23,13 @@ module.exports = class Vote extends Command {
   async execute(message) {
     return message.channel.send(
       new BrittaEmbed(message)
-        .setAuthor(`Vote for ${config.client.name}`, message.author.avatarURL())
-        .setDescription(`📑 ${config.client.top_gg_vote_link}`)
+        .setAuthor(
+          `Vote for ${config.client.name}`,
+          message.client.user.avatarURL()
+        )
+        .setDescription(
+          `📑 [Vote here](${config.client.top_gg_vote_link}) Thank you!`
+        )
     );
   }
 };

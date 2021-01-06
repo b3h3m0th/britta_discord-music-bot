@@ -23,7 +23,7 @@ module.exports = class Premium extends Command {
     return message.channel.send(
       new BrittaEmbed(message, {
         author: { name: "🔒 Buy Britta Premium" },
-        description: `Get the following Bonus features for as little as 5€\n\n`,
+        description: `Get the following Bonus features for as little as 5€ [here](${message.client.config.client.donate_link})\n\n- **Bypass** all **vote locked** commands\n- Access to **Premium audio filters** (earrape, nightcore, vaporwave, ...)\n- **Britta Premium role** on the Britta Discord server`,
       })
     );
   }
