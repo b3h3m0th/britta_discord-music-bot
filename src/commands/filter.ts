@@ -15,7 +15,7 @@ module.exports = class Filter extends Command {
       name: "filter",
       description: `Enables an audio filter.\nType \`${client.prefix}filter reset\` in order to turn off the filter.\nType \`${client.prefix}filter list\` to get a list of all available audio filters`,
       categories: [categories.music, categories.premium],
-      aliases: ["filters", "audiofilters", "musicfilters"],
+      aliases: ["filters", "audiofilters", "musicfilters", "effect", "effects"],
       usages: ["filter_name"],
       examples: [`${FilterType.EARRAPE}`],
       cooldown: 5,
