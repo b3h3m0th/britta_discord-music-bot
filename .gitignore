@@ -106,7 +106,6 @@ dist
 #behemoth custom
 src/config.ts
 application.yml
-Lavalink.jar
 logs/
 
 
