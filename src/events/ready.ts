@@ -14,7 +14,9 @@ module.exports = class Ready extends Event {
       chalk.yellow.bold(`✔️  ${this.client.user.username} is online!`)
     );
 
-    this.client.user.setActivity(`${this.client.config.client.prefix}help`);
+    this.client.user.setActivity(`${this.client.config.client.prefix}help`, {
+      type: "LISTENING",
+    });
 
     setInterval(() => {
       this.client.topggAPI.postStats({
