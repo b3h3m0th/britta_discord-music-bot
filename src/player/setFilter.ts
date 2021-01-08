@@ -13,21 +13,7 @@ export default async (message: any, player: any, filter: IFilter) => {
   player.setVolume(100);
   player.clearEffects();
   filter.apply(player);
-  //   player.setEQ(...filter.EQ.equalizer);
-  //   player.node.send({ op: "filter", guildID: message.guild.id, ...filter.EQ });
-  //   player.setDistortion(true);
-  //   player.node.send({
-  //     op: "filters",
-  //     guildID: message.guild.id,
-  //     ...{
-  //       equalizer: [
-  //         { band: 1, gain: 0.3 },
-  //         { band: 0, gain: 0.3 },
-  //       ],
-  //       timescale: { pitch: 1.2 },
-  //       tremolo: { depth: 0.3, frequency: 14 },
-  //     },
-  //   });
+
   return message.channel.send(
     new BrittaEmbed(message, {
       author: null,
