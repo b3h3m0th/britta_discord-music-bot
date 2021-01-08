@@ -43,7 +43,7 @@
     "prettier": "^2.1.2",
     "request": "^2.88.2",
     "simple-youtube-api": "^5.2.1",
-    "soundcloud-downloader": "^0.2.1",
+    "soundcloud-downloader": "^0.2.2",
     "spotify-uri": "^2.1.0",
     "spotify-url-info": "^2.2.0",
     "spotify-web-api-js": "^1.5.1",
