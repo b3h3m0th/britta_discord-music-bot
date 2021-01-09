@@ -15,7 +15,7 @@ module.exports = class Forward extends Command {
       description: "Fast forwards a track (default is 10 seconds)",
       categories: [categories.music],
       usages: ["", "seconds"],
-      examples: ["10", "45"],
+      examples: ["", "45"],
       aliases: ["fastforward", "ff"],
       cooldown: 1,
       voteLocked: true,
@@ -23,18 +23,20 @@ module.exports = class Forward extends Command {
   }
 
   async execute(message, args) {
-    const fastForwardNum = 10;
+    const defaultForwardTime = 10;
     const player = message.client.manager.get(message.guild.id);
     if (!player)
       return message.client.response(message, ResponseType.nothingPlaying);
 
+    console.log(player);
+
     if (args[0] && !isNaN(args[0])) {
-      if (player.position + args[0] * 1000 < player.current.duration) {
+      if (player.position + args[0] * 1000 < player.queue.current.duration) {
         player.seek(player.position + args[0] * 1000);
         const parsedDuration = formatDuration(player.position);
         return message.channel.send(
           new BrittaEmbed(message, {
-            description: `⏩ Fast-forwarded to ${parsedDuration}`,
+            description: `⏩ Fast-forwarded to \`${parsedDuration}\``,
           })
         );
       } else {
@@ -50,12 +52,15 @@ module.exports = class Forward extends Command {
     }
 
     if (!args[0]) {
-      if (player.position + fastForwardNum * 1000 < player.current.duration) {
-        player.seek(player.position + fastForwardNum * 1000);
+      if (
+        player.position + defaultForwardTime * 1000 <
+        player.queue.current.duration
+      ) {
+        player.seek(player.position + defaultForwardTime * 1000);
         const parsedDuration = formatDuration(player.position);
         return message.channel.send(
           new BrittaEmbed(message, {
-            description: `⏩ Fast-forwarded to ${parsedDuration}`,
+            description: `⏩ Fast-forwarded to \`${parsedDuration}\``,
           })
         );
       } else {

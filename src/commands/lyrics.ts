@@ -13,9 +13,9 @@ module.exports = class Lyrics extends Command {
       client: client,
       name: "lyrics",
       description: "Prints lyrics of the current or any other song",
-      categories: [categories.info],
+      categories: [categories.music],
       usages: ["", "song_name"],
-      examples: ["Cowboys from Hell"],
+      examples: ["", "Cowboys from Hell"],
       cooldown: 5,
       voteLocked: true,
     });
@@ -28,7 +28,6 @@ module.exports = class Lyrics extends Command {
         return message.client.response(message, ResponseType.nothingPlaying);
 
       const song = player.queue.current;
-      console.log(song);
       const lyricsEmbed = await message.channel.send(
         new BrittaEmbed(message, { description: "🎶 Fetching lyrics..." })
       );
