@@ -28,8 +28,6 @@ module.exports = class Forward extends Command {
     if (!player)
       return message.client.response(message, ResponseType.nothingPlaying);
 
-    console.log(player);
-
     if (args[0] && !isNaN(args[0])) {
       if (player.position + args[0] * 1000 < player.queue.current.duration) {
         player.seek(player.position + args[0] * 1000);
