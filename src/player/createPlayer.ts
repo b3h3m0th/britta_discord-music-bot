@@ -1,10 +1,4 @@
-// const fs = require("fs");
-// const plugins = fs.readdirSync("./src/player/plugins/");
-// plugins.forEach((p) => {
-//   require(`./plugins/${p.split(".")[0]}`);
-// });
 const BrittaPlayer = require("./plugins/CustomFilters");
-const { Player } = require("erela.js");
 
 export default async (message) => {
   const player = new BrittaPlayer({

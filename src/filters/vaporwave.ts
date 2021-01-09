@@ -31,7 +31,6 @@ module.exports = class Vaporwave extends Filter {
 
   apply(player: any) {
     player.setVaporwave(true);
-    // player.setEQ(...this.EQ.equalizer);
     return;
   }
 };

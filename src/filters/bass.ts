@@ -30,7 +30,6 @@ module.exports = class Bass extends Filter {
   }
 
   apply(player: any) {
-    // player.setEQ(...this.EQ.equalizer);
     player.setBassboost(true);
     return;
   }
