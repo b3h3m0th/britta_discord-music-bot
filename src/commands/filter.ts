@@ -18,7 +18,7 @@ module.exports = class Filter extends Command {
       aliases: ["filters", "audiofilters", "musicfilters", "effect", "effects"],
       usages: ["filter_name"],
       examples: [`${FilterType.EARRAPE}`],
-      cooldown: 5,
+      cooldown: 3,
       voteLocked: false,
     });
   }

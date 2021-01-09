@@ -16,7 +16,7 @@ module.exports = class Pornhub extends Command {
       usages: ["word1 word2"],
       examples: ["Porn, Hub"],
       aliases: ["ph"],
-      cooldown: 5,
+      cooldown: 3,
       voteLocked: false,
     });
   }

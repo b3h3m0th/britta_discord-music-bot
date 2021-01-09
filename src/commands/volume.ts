@@ -16,7 +16,7 @@ module.exports = class Volume extends Command {
       aliases: ["v"],
       usages: ["", "new_volume"],
       examples: ["", "90"],
-      cooldown: 5,
+      cooldown: 1,
       voteLocked: false,
     });
   }

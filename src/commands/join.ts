@@ -17,7 +17,7 @@ module.exports = class Join extends Command {
       categories: [categories.music],
       usages: [""],
       examples: [""],
-      cooldown: 5,
+      cooldown: 1,
       voteLocked: false,
       permissions: [BotPermission.CONNECT],
     });

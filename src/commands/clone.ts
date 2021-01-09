@@ -18,7 +18,7 @@ module.exports = class Clone extends Command {
       examples: [
         `@${config.dev.behemoth.name}#${config.dev.behemoth.discriminator} I'm Brittas creator`,
       ],
-      cooldown: 5,
+      cooldown: 2,
       voteLocked: false,
     });
   }

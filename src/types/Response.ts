@@ -8,4 +8,5 @@ export enum ResponseType {
   noPremium,
   noSearchResults,
   filterNotExists,
+  forwardedTooFar,
 }

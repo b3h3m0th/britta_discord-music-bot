@@ -17,7 +17,7 @@ module.exports = class Help extends Command {
       categories: [categories.info],
       usages: ["", "command"],
       examples: ["", "play"],
-      cooldown: 5,
+      cooldown: 3,
       voteLocked: false,
     });
   }

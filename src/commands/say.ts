@@ -15,7 +15,7 @@ module.exports = class Say extends Command {
       categories: [categories.fun],
       usages: ["message"],
       examples: ["Hello Discord!"],
-      cooldown: 5,
+      cooldown: 2,
       voteLocked: false,
     });
   }

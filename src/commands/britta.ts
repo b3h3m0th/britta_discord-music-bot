@@ -19,7 +19,7 @@ module.exports = class Britta extends Command {
       categories: [categories.fun],
       usages: ["message"],
       examples: ["Hello Britta"],
-      cooldown: 5,
+      cooldown: 2,
       voteLocked: false,
     });
   }

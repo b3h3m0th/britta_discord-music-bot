@@ -14,7 +14,7 @@ module.exports = class Ping extends Command {
       categories: [categories.info],
       usages: [""],
       examples: [""],
-      cooldown: 5,
+      cooldown: 3,
       voteLocked: false,
     });
   }

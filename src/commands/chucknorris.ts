@@ -15,7 +15,7 @@ module.exports = class Chucknorris extends Command {
       categories: [categories.fun],
       usages: [""],
       examples: [""],
-      cooldown: 5,
+      cooldown: 3,
       voteLocked: false,
     });
   }

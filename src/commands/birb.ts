@@ -14,7 +14,7 @@ module.exports = class Birb extends Command {
       categories: [categories.fun],
       usages: [""],
       examples: [""],
-      cooldown: 5,
+      cooldown: 2,
       voteLocked: false,
     });
   }

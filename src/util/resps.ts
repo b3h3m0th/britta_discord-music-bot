@@ -85,6 +85,14 @@ module.exports = (message: any, type: ResponseType) => {
         description: `Type \`${message.client.prefix}filters\` to get a list of all available audio filters `,
       });
       break;
+    case ResponseType.forwardedTooFar:
+      result = new ErrorEmbed(message, {
+        author: {
+          name: `❌ Cannot forward beyond the songs duration`,
+          icon_url: message.author.avatarURL(),
+        },
+      });
+      break;
     default:
       result = new ErrorEmbed(message, {
         author: {
