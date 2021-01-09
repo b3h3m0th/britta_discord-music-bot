@@ -19,7 +19,7 @@ module.exports = class Play extends Command {
       name: "play",
       description: "Plays a song, an album or a playlist",
       categories: [categories.music],
-      aliases: ["p"],
+      aliases: ["p", "add"],
       usages: ["song_name", "song_url", "album_url", "playlist_url"],
       examples: [
         "Cowboys From Hell",
