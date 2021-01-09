@@ -37,11 +37,11 @@ export default class Client extends Discord.Client {
     super.login(token);
   }
 
-  log(msg) {
+  log(message: string) {
     console.log(
       chalk.white.bold(`[${new Date().toLocaleString()}]`) +
         chalk.white.bold(" > ") +
-        msg
+        message
     );
   }
 }
