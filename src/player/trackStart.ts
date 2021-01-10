@@ -1,5 +1,7 @@
 import { LoopingVariants, PlayingMessageReactions } from "../types/Reaction";
 import { PlayingEmbed } from "../util/embed";
+const { MessageEmbed } = require("discord.js");
+const config = require("../config");
 
 const addReactionCommands = async (message: any, player: any) => {
   for (const reaction of Object.values(PlayingMessageReactions)) {
@@ -18,61 +20,62 @@ export default async (client: any, player: any, track: any) => {
 
   await addReactionCommands(player.playingEmbed, player);
 
-  const filter = (reaction: any, user: any) => user.id !== client.user.id;
-  //   const collector = player.playingEmbed.createReactionCollector(filter, {
-  //     time: 60000,
-  //   });
+  const filter = (reaction: any, user: any) =>
+    user.id !== client.user.id &&
+    [
+      ...Object.values(PlayingMessageReactions),
+      ...Object.values(LoopingVariants),
+      player.queueRepeat
+        ? LoopingVariants.LOOP_TRACK
+        : LoopingVariants.LOOP_QUEUE,
+    ].includes(reaction.emoji.name);
 
-  //     collector.on("collect", (reaction: any, user: any) => {
+  const collector = player.playingEmbed.createReactionCollector(filter, {
+    time: 60000,
+  });
 
-  //     })
+  collector.on("collect", async (reaction: any, user: any) => {
+    switch (reaction.emoji.name) {
+      case PlayingMessageReactions.PLAY_PAUSE:
+        player.pause(player.playing);
+        break;
+      case PlayingMessageReactions.SKIP:
+        if (player.trackRepeat) player.setTrackRepeat(false);
+        if (player.queueRepeat) player.setQueueRepeat(false);
+        player.stop();
+        await player.playingEmbed.delete();
+        break;
+      case PlayingMessageReactions.STOP:
+        player.destroy();
+        await player.playingEmbed.delete();
+        player.playingEmbed.channel.send(
+          new MessageEmbed()
+            .setColor(config.colors.primary)
+            .setAuthor("", client.user.avatarURL())
+            .setDescription(
+              `⭕ Queue has ended. Enjoying ${config.client.name}? Consider voting **[here](${config.client.top_gg_vote_link})**.`
+            )
+        );
+        break;
+      case LoopingVariants.LOOP_TRACK:
+        console.log("track");
+        break;
+      case LoopingVariants.LOOP_QUEUE:
+        console.log("queue");
+        break;
+      default:
+        break;
+    }
 
-  player.playingEmbed
-    .awaitReactions(
-      (reaction, user) =>
-        [
-          ...Object.values(PlayingMessageReactions),
-          ...Object.values(LoopingVariants),
-          player.queueRepeat
-            ? LoopingVariants.LOOP_TRACK
-            : LoopingVariants.LOOP_QUEUE,
-        ].includes(reaction.emoji.name),
-      { max: 1, time: 60000, errors: ["time"] }
-    )
-    .then(async (collected) => {
-      const reaction = collected.first();
-
-      switch (reaction.emoji.name) {
-        case PlayingMessageReactions.PLAY_PAUSE:
-          player.pause(player.playing);
-          if (player.playing) player.pause(true);
-          else player.pause(false);
-          break;
-        case PlayingMessageReactions.SKIP:
-          console.log("skip");
-          break;
-        case PlayingMessageReactions.STOP:
-          console.log("stop");
-          break;
-        case LoopingVariants.LOOP_TRACK:
-          console.log("track");
-          break;
-        case LoopingVariants.LOOP_QUEUE:
-          console.log("queue");
-          break;
-        default:
-          break;
+    const userReactions = player.playingEmbed.reactions.cache.filter(
+      (reaction) => reaction.users.cache.has(user.id)
+    );
+    try {
+      for (const reaction of userReactions.values()) {
+        await reaction.users.remove(user.id);
       }
-      console.log(user.id);
-      const userReactions = player.playingEmbed.reactions.cache.filter(
-        (reaction) => reaction.users.cache.has(user.id)
-      );
-      try {
-        for (const reaction of userReactions.values()) {
-          await reaction.users.remove(user.id);
-        }
-      } catch (error) {
-        console.error("Failed to remove reactions.");
-      }
-    });
+    } catch (err) {
+      console.log(err);
+    }
+  });
 };

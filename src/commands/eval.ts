@@ -57,7 +57,8 @@ module.exports = class Eval extends Command {
         const evalMessage = await message.channel.send(evalEmbed);
         await evalMessage.react("❌");
 
-        const filter = (reaction, user) => user.id !== message.client.user.id;
+        const filter = (reaction: any, user: any) =>
+          user.id !== message.client.user.id;
         const collector = evalMessage.createReactionCollector(filter, {
           time: 2000,
         });
