@@ -21,8 +21,10 @@ module.exports = class Leave extends Command {
 
   async execute(message) {
     const player = message.client.manager.get(message.guild.id);
-    if (player) player.destroy();
-    else message.member.voice.channel.leave();
+    if (player) {
+      player.destroy();
+      player.playingEmbed.delete();
+    } else message.member.voice.channel.leave();
 
     return message.client.response(message, ResponseType.leftVoiceChannel);
   }

@@ -31,19 +31,37 @@ export default async (client: any, player: any, track: any) => {
     ].includes(reaction.emoji.name);
 
   const collector = player.playingEmbed.createReactionCollector(filter, {
-    time: 60000,
+    time: 6000000,
   });
 
   collector.on("collect", async (reaction: any, user: any) => {
     switch (reaction.emoji.name) {
       case PlayingMessageReactions.PLAY_PAUSE:
         player.pause(player.playing);
+        player.playingEmbed.channel.send(
+          new MessageEmbed({
+            color: config.colors.primary,
+            author: null,
+            description: ` ${
+              player.playing
+                ? "▶️ Music is now playing again"
+                : "⏸️ Music is now paused"
+            }`,
+          })
+        );
         break;
       case PlayingMessageReactions.SKIP:
         if (player.trackRepeat) player.setTrackRepeat(false);
         if (player.queueRepeat) player.setQueueRepeat(false);
         player.stop();
         await player.playingEmbed.delete();
+        await player.playingEmbed.channel.send(
+          new MessageEmbed({
+            color: config.colors.primary,
+            author: null,
+            description: `⏭️ ${user} skipped a song`,
+          })
+        );
         break;
       case PlayingMessageReactions.STOP:
         player.destroy();
@@ -58,10 +76,32 @@ export default async (client: any, player: any, track: any) => {
         );
         break;
       case LoopingVariants.LOOP_TRACK:
-        console.log("track");
+        player.setTrackRepeat(true);
+        await player.playingEmbed.reactions.cache
+          .get(LoopingVariants.LOOP_TRACK)
+          .remove();
+        await player.playingEmbed.react(LoopingVariants.LOOP_QUEUE);
+        player.playingEmbed.channel.send(
+          new MessageEmbed({
+            color: config.colors.primary,
+            author: null,
+            description: "🔂 **Song** loop is now **on**",
+          })
+        );
         break;
       case LoopingVariants.LOOP_QUEUE:
-        console.log("queue");
+        player.setQueueRepeat(true);
+        await player.playingEmbed.reactions.cache
+          .get(LoopingVariants.LOOP_QUEUE)
+          .remove();
+        await player.playingEmbed.react(LoopingVariants.LOOP_TRACK);
+        player.playingEmbed.channel.send(
+          new MessageEmbed({
+            color: config.colors.primary,
+            author: null,
+            description: "🔁 **Queue** loop is now **on**",
+          })
+        );
         break;
       default:
         break;
