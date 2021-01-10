@@ -3,6 +3,7 @@ const config = require("../config");
 const { colors, client, dev, resources } = require("../config");
 import { EmbedOptions } from "../types/Embed";
 import { TrackSource } from "../types/Music";
+import { PlayingMessageReactions } from "../types/Reaction";
 import formatDuration from "./formatDuration";
 
 export class BrittaEmbed extends MessageEmbed {

@@ -38,7 +38,7 @@ module.exports = class Forward extends Command {
           })
         );
       } else {
-        return message.client.reponse(message, ResponseType.forwardedTooFar);
+        return message.client.response(message, ResponseType.forwardedTooFar);
       }
     } else if (args[0] && isNaN(args[0])) {
       return message.reply(
