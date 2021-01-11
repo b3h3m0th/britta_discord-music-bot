@@ -91,6 +91,7 @@ module.exports = (message: any, type: ResponseType) => {
           name: `❌ Cannot forward beyond the songs duration`,
           icon_url: message.author.avatarURL(),
         },
+        description: " ",
       });
       break;
     default:
