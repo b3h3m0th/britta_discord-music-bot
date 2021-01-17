@@ -62,9 +62,9 @@ module.exports = {
     mongodb_connection_string: "",
   },
   lavalink: {
-    host: "",
-    password: "",
-    port: 0,
+    host: "localhost",
+    password: "youshallnotpass",
+    port: 2444,
   },
   inDevelopment: true,
 };

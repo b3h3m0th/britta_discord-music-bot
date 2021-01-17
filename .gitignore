@@ -105,7 +105,6 @@ dist
 
 #behemoth custom
 src/config.ts
-application.yml
 logs/
 
 
