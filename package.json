@@ -17,7 +17,7 @@
     "@types/mongoose": "^5.10.3",
     "@types/node-fetch": "^2.5.7",
     "alexa-bot-api": "^0.1.2",
-    "alexflipnote.js": "^2.3.3",
+    "alexflipnote.js": "^2.3.4",
     "ascii": "^1.0.0",
     "ascii-table": "0.0.9",
     "chalk": "^4.1.0",
