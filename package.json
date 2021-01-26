@@ -37,7 +37,7 @@
     "https": "^1.0.0",
     "jimp": "^0.16.1",
     "lyrics-finder": "^21.4.0",
-    "mongoose": "^5.11.9",
+    "mongoose": "^5.11.10",
     "nodemon": "^2.0.6",
     "opusscript": "^0.0.7",
     "prettier": "^2.1.2",
