@@ -36,7 +36,7 @@
     "grunt-bump": "^0.8.0",
     "https": "^1.0.0",
     "jimp": "^0.16.1",
-    "lyrics-finder": "^21.4.0",
+    "lyrics-finder": "^21.7.0",
     "mongoose": "^5.11.10",
     "nodemon": "^2.0.7",
     "opusscript": "^0.0.7",
