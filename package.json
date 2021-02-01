@@ -16,7 +16,7 @@
     "@top-gg/sdk": "^3.0.6",
     "@types/mongoose": "^5.10.3",
     "@types/node-fetch": "^2.5.7",
-    "alexa-bot-api": "^0.1.2",
+    "alexa-bot-api": "^0.2.1",
     "alexflipnote.js": "^2.3.4",
     "ascii": "^1.0.0",
     "ascii-table": "0.0.9",
