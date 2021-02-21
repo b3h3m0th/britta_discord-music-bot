@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"nodemon\" \"java -jar Lavalink.jar\""
   },
-  "author": "Simon Ostini",
+  "author": "simonostini",
   "license": "ISC",
   "engines": {
     "node": "12.0.0"
