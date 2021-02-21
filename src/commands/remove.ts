@@ -30,7 +30,9 @@ module.exports = class Remove extends Command {
       return message.channel.send(
         new ErrorEmbed(message, {
           description: " ",
-          author: { name: "Please provide a valid number to be removed" },
+          author: {
+            name: "❌ Please provide a valid song number to be removed",
+          },
         })
       );
 
@@ -40,7 +42,7 @@ module.exports = class Remove extends Command {
           new ErrorEmbed(message, {
             author: {
               name:
-                "Cannot remove a song that is playing right now. Use skip instead",
+                "❌ Cannot remove a song that is playing right now. Use skip instead",
             },
           })
         );
@@ -49,8 +51,9 @@ module.exports = class Remove extends Command {
         return message.channel.send(
           new ErrorEmbed(message, {
             author: {
-              name: "That song could not be found",
+              name: "❌ That song number could not be found in queue",
             },
+            description: " ",
           })
         );
 
@@ -66,7 +69,7 @@ module.exports = class Remove extends Command {
       message.channel.send(
         new ErrorEmbed(message, {
           author: {
-            name: "Please provide a song number that should be removed",
+            name: "❌ Please provide a song number that should be removed",
           },
           description: " ",
         })
