@@ -52,7 +52,7 @@ module.exports = class PP extends Command {
         return message.channel.send(
           new BrittaEmbed(message)
             .setAuthor(
-              `${config.client.name} speaking facts:`,
+              `${config.client.name} speaking facts`,
               message.client.user.avatarURL()
             )
             .setDescription(result)
@@ -68,7 +68,7 @@ module.exports = class PP extends Command {
         return message.channel.send(
           new BrittaEmbed(message)
             .setAuthor(
-              `${config.client.name} speaking facts:`,
+              `${config.client.name} speaking facts`,
               message.client.user.avatarURL()
             )
             .setDescription(result)
