@@ -20,12 +20,17 @@ module.exports = class Leave extends Command {
   }
 
   async execute(message) {
-    const player = message.client.manager.get(message.guild.id);
-    if (player) {
-      player.destroy();
-      player.playingEmbed.delete();
-    } else message.member.voice.channel.leave();
+    try {
+      const player = message.client.manager.get(message.guild.id);
 
-    return message.client.response(message, ResponseType.leftVoiceChannel);
+      if (player) {
+        player.destroy();
+        player.playingEmbed.delete();
+      } else message.member.voice.channel.leave();
+
+      return message.client.response(message, ResponseType.leftVoiceChannel);
+    } catch (error) {
+      return message.client.response(message, ResponseType.leftVoiceChannel);
+    }
   }
 };
