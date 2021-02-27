@@ -22,7 +22,7 @@ module.exports = class PP extends Command {
     });
   }
 
-  async execute(message, args) {
+  async execute(message) {
     try {
       const user = message.mentions.members.first();
       const min = 2;
