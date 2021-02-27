@@ -5,7 +5,7 @@ export type EmbedOptions = {
   author?: { name: string; icon_url?: string };
   description?: string;
   thumbnail?: string;
-  fields?: { name: string; value: string }[];
+  fields?: { name: string; value: string; inline?: boolean }[];
   image?: { url: string };
   timestamp?: Date;
   footer?: { text: string; icon_url?: string };
