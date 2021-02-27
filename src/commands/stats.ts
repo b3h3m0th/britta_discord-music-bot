@@ -48,6 +48,11 @@ module.exports = class Statistics extends Command {
             name: "Uptime",
             value: `\`\`\`${uptime}\`\`\``,
           },
+          //   { name: "YouTube API", value: `\`✔️ connected\``, inline: true },
+          //   { name: "Spotify", value: `\`✔️ connected\``, inline: true },
+          //   { name: "SoundCloud", value: `\`✔️ connected\``, inline: true },
+          //   { name: "BandCamp", value: `\`✔️ connected\``, inline: true },
+          //   { name: "Twitch", value: `\`✔️️ connected\``, inline: true },
         ],
       })
     );
