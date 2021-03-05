@@ -9,7 +9,7 @@ from <b>YouTube, Spotify, Soundcloud, Twitch</b> and more.</b><br/>Free 24/7!<br
   <img src="https://github.com/b3h3m0th/britta_discord-music-bot/workflows/Discord%20Bot%20Build%20Status/badge.svg"><br/>
   <img src="https://forthebadge.com/images/badges/powered-by-black-magic.svg">
   <img src="https://forthebadge.com/images/badges/uses-brains.svg">
-  <img src="https://forthebadge.com/images/badges/open-source.svg"><br/>
+  <img src="https://forthebadge.com/images/badges/open-source.svg"> <br/>
   <img src="https://top.gg/api/widget/722497903146565722.svg"><br/>
 </p>
 
