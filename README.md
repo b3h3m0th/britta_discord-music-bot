@@ -1,6 +1,6 @@
 <p align="center">
   <img width="760" height="500" src="https://raw.githubusercontent.com/b3h3m0th/britta_discord-music-bot/master/assets/img/brittaBanner.png"> <br/>
-<b>Britta</b> is a beautiful and easy to use <b>Discord Music Bot</b> that is used worldwide by almost 10000 users.<br/>
+<b>Britta</b> is a beautiful and easy to use <b>Discord Music Bot</b> that is used worldwide by almost 10.000 users.<br/>
 that supports <b>songs, albums, playlists, artist top tracks, live streams and custom search queries.</b> <br/>
 from <b>YouTube, Spotify, Soundcloud, Twitch</b> and more.</b><br/>Free 24/7!<br/> <br/>
   <img src="https://david-dm.org/b3h3m0th/britta_discord-music-bot.svg">
