@@ -13,7 +13,7 @@ module.exports = class Prefix extends Command {
       name: "prefix",
       description: "Shows or edits the current bot prefix of this server",
       aliases: ["setprefix"],
-      usages: ["", "new_prefix"],
+      usages: ["", "new_prefix", "reset"],
       examples: ["", "+"],
       categories: [categories.config],
       cooldown: 5,
@@ -32,14 +32,31 @@ module.exports = class Prefix extends Command {
         })
       );
     } else {
-      const newPrefix = args.join(" ");
-      await setNewGuildPrefix(message.guild.id, newPrefix);
-      return message.channel.send(
-        new BrittaEmbed(message, {
-          author: { name: `💬 ${message.author.username} set the prefix to:` },
-          description: "`" + newPrefix + "`",
-        })
-      );
+      let newPrefix;
+
+      if (args[0] === "reset") {
+        newPrefix = message.client.client.prefix;
+        await setNewGuildPrefix(message.guild.id, newPrefix);
+        return message.channel.send(
+          new BrittaEmbed(message, {
+            author: {
+              name: `💬 ${message.author.username} has resetted the prefix to default:`,
+            },
+            description: "`" + newPrefix + "`",
+          })
+        );
+      } else {
+        newPrefix = args.join(" ");
+        await setNewGuildPrefix(message.guild.id, newPrefix);
+        return message.channel.send(
+          new BrittaEmbed(message, {
+            author: {
+              name: `💬 ${message.author.username} set the prefix to:`,
+            },
+            description: "`" + newPrefix + "`",
+          })
+        );
+      }
     }
   }
 };
