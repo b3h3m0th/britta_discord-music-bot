@@ -4,6 +4,7 @@ import { BrittaEmbed } from "../util/embed";
 import { getGuildPrefix, setNewGuildPrefix } from "../util/prefix";
 const {
   commands: { categories },
+  client,
 } = require("../config");
 
 module.exports = class Prefix extends Command {
@@ -35,7 +36,7 @@ module.exports = class Prefix extends Command {
       let newPrefix;
 
       if (args[0] === "reset") {
-        newPrefix = message.client.client.prefix;
+        newPrefix = client.prefix;
         await setNewGuildPrefix(message.guild.id, newPrefix);
         return message.channel.send(
           new BrittaEmbed(message, {
