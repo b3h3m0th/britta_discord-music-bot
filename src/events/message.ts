@@ -1,5 +1,6 @@
 import Event from "../structures/Event";
 import { BrittaIntroEmbed, ErrorEmbed } from "../util/embed";
+import { getGuildPrefix } from "../util/prefix";
 const path = require("path");
 const Guild = require("../models/guild");
 const User = require("../models/user");
@@ -15,7 +16,32 @@ module.exports = class Message extends Event {
 
     //BOT MENTION
     if (message.content.match(new RegExp(`^<@!?${this.client.user.id}>( |)$`)))
-      message.channel.send(new BrittaIntroEmbed(message));
+      message.channel.send(
+        new BrittaIntroEmbed(message, {
+          fields: [
+            {
+              name: "👂 Prefix",
+              value: `\`${await getGuildPrefix(message.guild.id)}\``,
+              inline: false,
+            },
+            {
+              name: "❓ Support Server",
+              value: `${message.client.config.support.server.invite_link}`,
+              inline: false,
+            },
+            {
+              name: `📑 Vote for ${message.client.config.client.name}`,
+              value: `${message.client.config.client.top_gg_vote_link}`,
+              inline: false,
+            },
+            {
+              name: "🛠️ Developer",
+              value: `${message.client.config.dev.behemoth.name}#${message.client.config.dev.behemoth.discriminator}`,
+              inline: false,
+            },
+          ],
+        })
+      );
 
     User.findOne({ id: message.author.id }, async (err, user) => {
       if (err) return this.client.log(err);

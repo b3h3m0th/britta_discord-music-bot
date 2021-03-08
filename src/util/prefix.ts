@@ -1,6 +1,6 @@
 const Guild = require("../models/guild");
 
-export const getGuildPrefix: (guildID: string) => Promise<string> = async (
+export const getGuildPrefix: (guildID: string) => void = async (
   guildID: string
 ) => {
   const guild = await Guild.findOne({ id: guildID });

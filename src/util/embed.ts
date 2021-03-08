@@ -3,8 +3,8 @@ const config = require("../config");
 const { colors, client, dev, resources } = require("../config");
 import { EmbedOptions } from "../types/Embed";
 import { TrackSource } from "../types/Music";
-import { PlayingMessageReactions } from "../types/Reaction";
 import formatDuration from "./formatDuration";
+import { getGuildPrefix } from "./prefix";
 
 export class BrittaEmbed extends MessageEmbed {
   constructor(message, options?: EmbedOptions) {
@@ -80,7 +80,12 @@ export class BrittaIntroEmbed extends MessageEmbed {
               ? options.fields
               : [
                   {
-                    name: "❓ Support Server",
+                    name: "👂 Prefix",
+                    value: `${message.client.prefix}`,
+                    inline: false,
+                  },
+                  {
+                    name: "❓ Support Servers",
                     value: `${config.support.server.invite_link}`,
                     inline: false,
                   },
@@ -119,6 +124,11 @@ export class BrittaIntroEmbed extends MessageEmbed {
             },
             description: "I am your personal music bot",
             fields: [
+              {
+                name: "👂 Prefix",
+                value: `${message.client.prefix}`,
+                inline: false,
+              },
               {
                 name: "❓ Support Server",
                 value: `${config.support.server.invite_link}`,
