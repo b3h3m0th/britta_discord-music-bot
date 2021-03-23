@@ -5,7 +5,7 @@ that supports <b>songs, albums, playlists, artist top tracks, live streams and c
 from <b>YouTube, Spotify, Soundcloud, Twitch</b> and more.</b><br/>Free 24/7!<br/><br/>
   <img src="https://david-dm.org/b3h3m0th/britta_discord-music-bot.svg"/>
   <img src="https://img.shields.io/github/license/b3h3m0th/britta_discord-music-bot">
-  <img src="https://img.shields.io/badge/Code%20Quality-S-brightgreen">
+  <img src="https://img.shields.io/badge/Code%20Quality-S-brightgreen"/>
   <img src="https://github.com/b3h3m0th/britta_discord-music-bot/workflows/Discord%20Bot%20Build%20Status/badge.svg"><br/>
   <img src="https://forthebadge.com/images/badges/powered-by-black-magic.svg">
   <img src="https://forthebadge.com/images/badges/uses-brains.svg"/>
