@@ -2,7 +2,11 @@ const { MessageEmbed } = require("discord.js");
 const config = require("../config");
 
 export default (client: any, player: any) => {
-  player.playingMessage && player.playingMessage.delete();
+  try {
+    player.playingEmbed.delete();
+  } catch (err) {
+    console.log(err);
+  }
   client.channels.cache
     .get(player.textChannel)
     .send(
