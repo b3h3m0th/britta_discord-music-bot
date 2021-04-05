@@ -192,7 +192,7 @@ module.exports = class Play extends Command {
       }
     } else {
       const searchQuery = {
-        source: "soundcloud",
+        source: "youtube",
         query: args.slice(0).join(" "),
       };
       loadTracks(
