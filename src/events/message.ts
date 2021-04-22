@@ -72,7 +72,7 @@ module.exports = class Message extends Event {
       }
 
       //CHECK IF IN DEVELOPMENT
-      if (this.client.config.inDevelopment === true) this.client.prefix = "-";
+      if (this.client.config.inDevelopment === true) this.client.prefix = "$";
 
       if (message.content.toLowerCase().startsWith(this.client.prefix)) {
         const args = message.content
