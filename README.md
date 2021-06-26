@@ -12,7 +12,7 @@ from <b>YouTube, Spotify, Soundcloud, Twitch</b> and more.</b><br/>Free 24/7!<br
   <img src="https://forthebadge.com/images/badges/open-source.svg"><br/>
   <img src="https://top.gg/api/widget/722497903146565722.svg"/> <br/>
 </p>
- 
+
 #### 📢 [Add Britta to your server](https://discord.com/oauth2/authorize?client_id=722497903146565722&scope=bot&permissions=2083908704)
 
 #### ⚙️ Prefix: `bri!` or custom
