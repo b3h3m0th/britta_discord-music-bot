@@ -1,8 +1,9 @@
 <p align="center">
   <img width="760" height="500" src="https://raw.githubusercontent.com/b3h3m0th/britta_discord-music-bot/master/assets/img/brittaBanner.png"/><br/>
-<b>Britta</b> is a beautiful and easy to use <b>Discord Music Bot</b> that is used worldwide by more than 30.000 users.<br/>
-that supports <b>songs, albums, playlists, artist top tracks, live streams and custom search queries.</b><br/>
-from <b>YouTube, Spotify, Soundcloud, Twitch</b> and more.</b><br/>Free 24/7!<br/><br/>
+<b>Britta</b> was a beautiful and easy to use <b>Discord Music Bot</b> that was used worldwide by more than 30.000 users.<br/>
+It supported <b>songs, albums, playlists, artist top tracks, live streams and custom search queries</b><br/>
+from <b>YouTube, Spotify, Soundcloud, Twitch</b> and more.</b><br/>Everything for free 24/7!<br/>
+Since YouTube doesn't allow streaming videos anymore Britta has ended it's service in September 2021<br/>
   <img src="https://david-dm.org/b3h3m0th/britta_discord-music-bot.svg"/>
   <img src="https://img.shields.io/github/license/b3h3m0th/britta_discord-music-bot">
   <img src="https://img.shields.io/badge/Code%20Quality-S-brightgreen"/>
